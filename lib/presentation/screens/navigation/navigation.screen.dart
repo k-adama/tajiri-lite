@@ -10,7 +10,9 @@ import 'package:tajiri_waitress/app/config/theme/style.theme.dart';
 import 'package:tajiri_waitress/presentation/controllers/navigation/navigation.controller.dart';
 import 'package:tajiri_waitress/presentation/routes/presentation_screen.route.dart';
 import 'package:tajiri_waitress/presentation/screens/navigation/components/drawer_page.component.dart';
+import 'package:tajiri_waitress/presentation/screens/navigation/components/navigation_menu.component.dart';
 import 'package:tajiri_waitress/presentation/screens/navigation/home/home.screen.dart';
+import 'package:tajiri_waitress/presentation/screens/navigation/pos/pos.screen.dart';
 import 'package:tajiri_waitress/presentation/ui/keyboard_dismisser.ui.dart';
 import 'package:upgrader/upgrader.dart';
 
@@ -34,6 +36,7 @@ class _NavigationScreenState extends State<NavigationScreen> {
   void initState() {
     list = [
       IndexedStackChild(child: const HomeScreen()),
+      IndexedStackChild(child: const PosScreen()),
     ];
     super.initState();
   }
@@ -66,61 +69,17 @@ class _NavigationScreenState extends State<NavigationScreen> {
               index: navigationController.selectIndex,
               children: list,
             ),
-            floatingActionButton: floatingMenu(),
+            floatingActionButton: NavigationMenuComponent(
+              onPressed: () {
+                Get.toNamed(Routes.POS);
+              },
+              OrdersOnPressed: () {
+                //Go to orders
+              },
+            ),
           ),
         ),
       ),
-    );
-  }
-
-  Widget floatingMenu() {
-    return Stack(
-      alignment: Alignment.bottomRight,
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            Container(
-              decoration: BoxDecoration(
-                gradient: const LinearGradient(
-                  begin: Alignment.topLeft,
-                  end: Alignment.topRight,
-                  colors: [
-                    Color(0xFFFFA800),
-                    Color(0xFFFFC300),
-                    Color(0xFFFFC300),
-                  ],
-                ),
-                borderRadius: BorderRadius.circular(18),
-              ),
-              child: FloatingActionButton.extended(
-                backgroundColor: Style.transparent,
-                onPressed: () {
-                  Get.toNamed(Routes.POS);
-                },
-                label: Row(
-                  children: [
-                    20.horizontalSpace,
-                    Text(
-                      'Nouvelle Commande',
-                      style: Style.interBold(),
-                    ),
-                    10.horizontalSpace,
-                    Image.asset('assets/images/mage_edit-pen-fill.png'),
-                    20.horizontalSpace,
-                  ],
-                ),
-              ),
-            ),
-            FloatingActionButton(
-              backgroundColor: Style.brandBlue950,
-              onPressed: () {},
-              child: Image.asset(
-                  'assets/images/icon-park-solid_transaction-order.png'),
-            ),
-          ],
-        ),
-      ],
     );
   }
 }

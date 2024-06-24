@@ -6,6 +6,7 @@ import 'package:tajiri_waitress/app/config/theme/style.theme.dart';
 import 'package:tajiri_waitress/presentation/controllers/navigation/home/home.controller.dart';
 import 'package:tajiri_waitress/presentation/screens/navigation/home/components/best_sale.component.dart';
 import 'package:tajiri_waitress/presentation/screens/navigation/home/components/cart_item_row.component.dart';
+import 'package:tajiri_waitress/presentation/screens/navigation/home/components/categorie_statistique.component.dart';
 import 'package:tajiri_waitress/presentation/screens/navigation/home/components/chart_bar.component.dart';
 import 'package:tajiri_waitress/presentation/screens/navigation/home/components/sale_by_category.component..dart';
 import 'package:tajiri_waitress/presentation/screens/navigation/home/components/select_periode_dropdown.component.dart';
@@ -18,8 +19,7 @@ class HomeScreen extends StatefulWidget {
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
-class _HomeScreenState extends State<HomeScreen>
-    with SingleTickerProviderStateMixin {
+class _HomeScreenState extends State<HomeScreen> {
   HomeController homeController = Get.find();
   String dropdownValue = 'Ajourd\'hui';
   late RefreshController _smartRefreshController;
