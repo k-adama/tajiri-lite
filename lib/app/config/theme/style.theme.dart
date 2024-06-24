@@ -32,7 +32,7 @@ class Style {
   static const Color lightBlueT = Color(0xFFE6ECF7);
   static const Color coralBlue = Color(0xFFDCF4F8);
   static Color borderPackColor = const Color(0xffACACAC).withOpacity(.5);
-
+  static const Color brandBlue950 = Color(0xFF00001A);
   static const Color backGreen = Color.fromRGBO(156, 233, 142, 0.10);
   static const Color backRed = Color.fromRGBO(255, 0, 0, 0.10);
   static const Color green = Color(0xFF71C761);
@@ -48,6 +48,9 @@ class Style {
   static const Color greenSelect = Color(0xFF00C49A);
   static const Color pinkSelect = Color(0xFFFF69E7);
   static const Color redSelect = Color(0xFFFF6969);
+  static const Color brandBlue50 = Color(0xFFE5E5FF);
+  static const Color grey700 = Color(0xFF484951);
+  static const Color brandColor500 = Color(0xFF0000DD);
 
   /// OLD COLOR
   static const Color bottomNavigationBarColor = Color(0xFF191919);
@@ -134,6 +137,7 @@ class Style {
   static const Color borderDark = Color(0xFF494B4D);
   static const Color partnerChatBack = Color(0xFF1A222C);
   static const Color yourChatBack = Color(0xFF25303F);
+  static const Color bodyNewColor = Color(0xFFEFF0F7);
 
   /// font style
 
