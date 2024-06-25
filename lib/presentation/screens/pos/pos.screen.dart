@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tajiri_waitress/app/config/theme/style.theme.dart';
-import 'package:tajiri_waitress/presentation/routes/presentation_screen.route.dart';
-import 'package:tajiri_waitress/presentation/screens/navigation/components/navigation_menu.component.dart';
+import 'package:tajiri_waitress/presentation/screens/home/components/navigation_menu.component.dart';
 import 'package:upgrader/upgrader.dart';
 
 class PosScreen extends StatefulWidget {
@@ -28,14 +28,25 @@ class _PosScreenState extends State<PosScreen> {
           backgroundColor: Style.white,
         ),
         backgroundColor: Style.bodyNewColor,
-        body: Center(
+        body: const Center(
           child: Text("POS"),
         ),
-        floatingActionButton:  NavigationMenuComponent(
-          isPos: true,
-          onPressed: () {
-         
-          },
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+        floatingActionButton: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 20),
+          child: Row(
+            children: [
+              const Expanded(child: PosButtonComponent()),
+              10.horizontalSpace,
+              FloatingActionButton(
+                backgroundColor: Style.brandBlue950,
+                onPressed: () {},
+                child: Image.asset(
+                  'assets/images/icon-park-solid_transaction-order.png',
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );

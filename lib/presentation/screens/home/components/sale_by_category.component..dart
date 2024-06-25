@@ -2,10 +2,8 @@ import 'package:auto_height_grid_view/auto_height_grid_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import 'package:get/get.dart';
 import 'package:tajiri_waitress/domain/entities/orders_data.entity.dart';
-import 'package:tajiri_waitress/presentation/controllers/navigation/pos/pos.controller.dart';
-import 'package:tajiri_waitress/presentation/screens/navigation/home/components/categorie_statistique.component.dart';
+import 'package:tajiri_waitress/presentation/screens/home/components/categorie_statistique.component.dart';
 
 class SaleByCategoriyComponent extends StatefulWidget {
   final List<OrdersDataEntity> orders;

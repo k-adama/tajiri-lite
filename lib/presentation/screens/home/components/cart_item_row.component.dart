@@ -7,7 +7,7 @@ import 'package:tajiri_waitress/app/common/app_helpers.common.dart';
 import 'package:tajiri_waitress/app/common/utils.common.dart';
 import 'package:tajiri_waitress/app/config/constants/tr_keys.constant.dart';
 import 'package:tajiri_waitress/app/config/theme/style.theme.dart';
-import 'package:tajiri_waitress/presentation/controllers/navigation/home/home.controller.dart';
+import 'package:tajiri_waitress/presentation/controllers/home/home.controller.dart';
 
 class CartItemRowComponent extends StatelessWidget {
   final HomeController dashboardController;

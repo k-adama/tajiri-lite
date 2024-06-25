@@ -12,10 +12,10 @@ class SplashController extends GetxController {
       if (storage.get(AuthConstant.keyOnboarding) != null) {
         Get.offAllNamed(Routes.LOGIN); //LOGIN
       } else {
-        Get.offAllNamed(Routes.NAVIGATION);
+        Get.offAllNamed(Routes.HOME);
       }
     } else {
-      Get.offAllNamed(Routes.NAVIGATION);
+      Get.offAllNamed(Routes.HOME);
     }
   }
 }

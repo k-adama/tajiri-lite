@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tajiri_waitress/app/config/theme/style.theme.dart';
-import 'package:tajiri_waitress/app/extensions/string.extension.dart';
 import 'package:tajiri_waitress/domain/entities/orders_data.entity.dart';
 import 'package:tajiri_waitress/domain/entities/top_10_food.entity.dart';
-import 'package:tajiri_waitress/presentation/screens/navigation/home/components/sale_header.component.dart';
+import 'package:tajiri_waitress/presentation/screens/home/components/sale_header.component.dart';
 import 'package:tajiri_waitress/presentation/ui/widgets/images/common_image.dart';
 
 class BestSaleComponent extends StatefulWidget {
