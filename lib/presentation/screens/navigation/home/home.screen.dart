@@ -80,12 +80,12 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     24.verticalSpace,
                     const Padding(
-                      padding: EdgeInsets.only(left:12.0, right: 12),
+                      padding: EdgeInsets.only(left: 12.0, right: 12),
                       child: ChartBarComponent(),
                     ),
                     20.verticalSpace,
                     Padding(
-                     padding: const EdgeInsets.only(left: 14.0),
+                      padding: const EdgeInsets.only(left: 14.0),
                       child: Text(
                         "Ventes/catégorie",
                         style: Style.interBold(),
@@ -93,23 +93,23 @@ class _HomeScreenState extends State<HomeScreen> {
                     ),
                     8.verticalSpace,
                     Padding(
-                       padding: const EdgeInsets.only(left: 4.0, right: 4),
+                      padding: const EdgeInsets.only(left: 4.0, right: 4),
                       child: SaleByCategoriyComponent(
                         orders: homeController.orders,
                       ),
                     ),
                     14.verticalSpace,
                     Padding(
-                       padding: const EdgeInsets.only(left: 16.0, right: 6),
+                      padding: const EdgeInsets.only(left: 16.0, right: 6),
                       child: BestSaleComponent(
                         /* orders: dashboardController.getDishOrDrinkOrders(
                             dashboardController.orders, DISHESID),*/
                         saleHeaderTitle: 'Meilleures ventes cuisine',
                       ),
                     ),
-                   24.verticalSpace,
+                    24.verticalSpace,
                     Padding(
-                        padding: const EdgeInsets.only(left: 16.0, right: 6),
+                      padding: const EdgeInsets.only(left: 16.0, right: 6),
                       child: BestSaleComponent(
                         /* orders: dashboardController
                                           .getDishOrDrinkOrders(
