@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:get/get.dart';
 import 'package:tajiri_waitress/app/config/theme/style.theme.dart';
 import 'package:tajiri_waitress/presentation/routes/presentation_screen.route.dart';
@@ -28,14 +29,18 @@ class _PosScreenState extends State<PosScreen> {
           backgroundColor: Style.white,
         ),
         backgroundColor: Style.bodyNewColor,
-        body: Center(
-          child: Text("POS"),
+        body: Column(
+          children: [
+            Container(
+              width: double.infinity,
+              height: 20,
+              color: Style.red,
+            )
+          ],
         ),
-        floatingActionButton:  NavigationMenuComponent(
+        floatingActionButton: NavigationMenuComponent(
           isPos: true,
-          onPressed: () {
-         
-          },
+          onPressed: () {},
         ),
       ),
     );
