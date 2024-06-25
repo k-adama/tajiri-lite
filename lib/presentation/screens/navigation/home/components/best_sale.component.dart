@@ -32,7 +32,7 @@ class _BestSaleComponentState extends State<BestSaleComponent> {
   Widget build(BuildContext context) {
     return Container(
       // width: 310,
-      height: 408,
+      height: 360,
       padding: EdgeInsets.symmetric(horizontal: 20.r, vertical: 12.r),
       margin: const EdgeInsets.only(right: 8),
       decoration: BoxDecoration(
@@ -107,7 +107,7 @@ class BestSaleItemComponent extends StatelessWidget {
                         'food name',
                         overflow: TextOverflow.ellipsis,
                         style: Style.interNormal(
-                          size: 12,
+                          size: 14,
                           color: Colors.grey,
                         ),
                       ),

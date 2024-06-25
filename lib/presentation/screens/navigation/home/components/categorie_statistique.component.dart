@@ -20,9 +20,9 @@ class CategoryStatistique extends StatelessWidget {
   Widget build(BuildContext context) {
     return Container(
       width: 230,
-      padding: EdgeInsets.symmetric(horizontal: 20.r, vertical: 12.r),
+      padding: EdgeInsets.symmetric(horizontal: 6, vertical: 12.r),
       decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10.r),
+        borderRadius: BorderRadius.circular(6.r),
         color: Style.white,
       ),
       child: Column(
@@ -42,7 +42,7 @@ class CategoryStatistique extends StatelessWidget {
                   ),
                 ),
               ),
-              10.horizontalSpace,
+              4.horizontalSpace,
               Expanded(
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
@@ -53,11 +53,12 @@ class CategoryStatistique extends StatelessWidget {
                       overflow: TextOverflow.ellipsis,
                       style: Style.interBold(size: 14),
                     ),
+                    4.verticalSpace,
                     Text(
                       // "$nbrProduct produit(s)",
                       "10 produits",
                       style: Style.interNormal(
-                        size: 8,
+                        size: 10,
                         color: Style.grey700,
                       ),
                     ),
@@ -75,28 +76,34 @@ class CategoryStatistique extends StatelessWidget {
                   crossAxisAlignment: CrossAxisAlignment.end,
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 4, vertical: 5),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(4),
-                        border: Border.all(color: Style.grey700, width: .5),
-                      ),
-                      child: Text(
-                        // "${saleByCategory?.count ?? "0"} vente(s)",
-                        '50 ventes',
-                        style: Style.interNormal(
-                          size: 10,
-                          color: Style.grey700,
+                    Padding(
+                      padding: const EdgeInsets.only(right: 10.0),
+                      child: Container(
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 4, vertical: 5),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(4),
+                          border: Border.all(color: Style.grey700, width: .5),
+                        ),
+                        child: Text(
+                          // "${saleByCategory?.count ?? "0"} vente(s)",
+                          '50 ventes',
+                          style: Style.interNormal(
+                            size: 10,
+                            color: Style.grey700,
+                          ),
                         ),
                       ),
                     ),
                     3.verticalSpace,
-                    Text(
-                      //'${saleByCategory?.totalAmount ?? "0"}  FCFA',
-                      '2000 FCFA',
-                      overflow: TextOverflow.ellipsis,
-                      style: Style.interBold(size: 14),
+                    Padding(
+                      padding: const EdgeInsets.only(right: 10.0),
+                      child: Text(
+                        //'${saleByCategory?.totalAmount ?? "0"}  FCFA',
+                        '2000 FCFA',
+                        overflow: TextOverflow.ellipsis,
+                        style: Style.interBold(size: 14),
+                      ),
                     ),
                   ],
                 ),

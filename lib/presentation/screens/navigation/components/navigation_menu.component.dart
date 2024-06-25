@@ -21,9 +21,10 @@ class NavigationMenuComponent extends StatelessWidget {
               begin: Alignment.topLeft,
               end: Alignment.topRight,
               colors: [
-                Color(0xFFFFA800),
+              
                 Color(0xFFFFC300),
-                Color(0xFFFFC300),
+                  Color(0xFFFFA800),
+                  Color(0xFFFFA800),
               ],
             ),
             borderRadius: BorderRadius.circular(18),

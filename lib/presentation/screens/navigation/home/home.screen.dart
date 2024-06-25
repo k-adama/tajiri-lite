@@ -6,7 +6,6 @@ import 'package:tajiri_waitress/app/config/theme/style.theme.dart';
 import 'package:tajiri_waitress/presentation/controllers/navigation/home/home.controller.dart';
 import 'package:tajiri_waitress/presentation/screens/navigation/home/components/best_sale.component.dart';
 import 'package:tajiri_waitress/presentation/screens/navigation/home/components/cart_item_row.component.dart';
-import 'package:tajiri_waitress/presentation/screens/navigation/home/components/categorie_statistique.component.dart';
 import 'package:tajiri_waitress/presentation/screens/navigation/home/components/chart_bar.component.dart';
 import 'package:tajiri_waitress/presentation/screens/navigation/home/components/sale_by_category.component..dart';
 import 'package:tajiri_waitress/presentation/screens/navigation/home/components/select_periode_dropdown.component.dart';
@@ -63,40 +62,61 @@ class _HomeScreenState extends State<HomeScreen> {
             onRefresh: () => _onRefresh(),
             child: SingleChildScrollView(
               child: Padding(
-                padding: const EdgeInsets.only(left: 16, right: 16, top: 20),
+                padding: const EdgeInsets.only(top: 20.0),
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.start,
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    const SelectPeriodeDropdownComponent(),
-                    20.verticalSpace,
-                    CartItemRowComponent(
-                      dashboardController: homeController,
+                    const Padding(
+                      padding: EdgeInsets.only(left: 12.0),
+                      child: SelectPeriodeDropdownComponent(),
+                    ),
+                    24.verticalSpace,
+                    Padding(
+                      padding: const EdgeInsets.only(left: 12.0),
+                      child: CartItemRowComponent(
+                        dashboardController: homeController,
+                      ),
+                    ),
+                    24.verticalSpace,
+                    const Padding(
+                      padding: EdgeInsets.only(left:12.0, right: 12),
+                      child: ChartBarComponent(),
                     ),
                     20.verticalSpace,
-                    const ChartBarComponent(),
-                    20.verticalSpace,
-                    Text(
-                      "Ventes/catégorie",
-                      style: Style.interBold(),
+                    Padding(
+                     padding: const EdgeInsets.only(left: 14.0),
+                      child: Text(
+                        "Ventes/catégorie",
+                        style: Style.interBold(),
+                      ),
                     ),
-                    20.verticalSpace,
-                    SaleByCategoriyComponent(
-                      orders: homeController.orders,
+                    8.verticalSpace,
+                    Padding(
+                       padding: const EdgeInsets.only(left: 4.0, right: 4),
+                      child: SaleByCategoriyComponent(
+                        orders: homeController.orders,
+                      ),
                     ),
-                    20.verticalSpace,
-                    BestSaleComponent(
-                      /* orders: dashboardController.getDishOrDrinkOrders(
-                          dashboardController.orders, DISHESID),*/
-                      saleHeaderTitle: 'Meilleures ventes cuisine',
+                    14.verticalSpace,
+                    Padding(
+                       padding: const EdgeInsets.only(left: 16.0, right: 6),
+                      child: BestSaleComponent(
+                        /* orders: dashboardController.getDishOrDrinkOrders(
+                            dashboardController.orders, DISHESID),*/
+                        saleHeaderTitle: 'Meilleures ventes cuisine',
+                      ),
                     ),
-                    20.verticalSpace,
-                    BestSaleComponent(
-                      /* orders: dashboardController
-                                        .getDishOrDrinkOrders(
-                                            dashboardController.orders,
-                                            DRINKSID),*/
-                      saleHeaderTitle: 'Meilleures ventes bar',
+                   24.verticalSpace,
+                    Padding(
+                        padding: const EdgeInsets.only(left: 16.0, right: 6),
+                      child: BestSaleComponent(
+                        /* orders: dashboardController
+                                          .getDishOrDrinkOrders(
+                                              dashboardController.orders,
+                                              DRINKSID),*/
+                        saleHeaderTitle: 'Meilleures ventes bar',
+                      ),
                     ),
                     20.verticalSpace,
                   ],
