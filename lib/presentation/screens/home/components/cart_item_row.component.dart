@@ -117,7 +117,7 @@ class CartItemComponent extends StatelessWidget {
               ),
               13.horizontalSpace,
               Column(
-                crossAxisAlignment: CrossAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.start,
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
                   Text(

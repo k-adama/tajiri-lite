@@ -1,44 +1,45 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/rendering.dart';
-import 'package:flutter/widgets.dart';
 import 'package:tajiri_waitress/app/config/theme/style.theme.dart';
 
-class SelectPeriodeDropdownComponent extends StatefulWidget {
-  const SelectPeriodeDropdownComponent({
+class SelectDropdownComponent<T> extends StatefulWidget {
+  final T value;
+  final Function(T?)? onChanged;
+  final List<T> items;
+  final String Function(T) itemAsString;
+
+  const SelectDropdownComponent({
     super.key,
+    required this.value,
+    required this.onChanged,
+    required this.items,
+    required this.itemAsString,
   });
 
   @override
-  State<SelectPeriodeDropdownComponent> createState() =>
-      _SelectPeriodeDropdownComponentState();
+  State<SelectDropdownComponent<T>> createState() =>
+      _SelectDropdownComponentState<T>();
 }
 
-class _SelectPeriodeDropdownComponentState
-    extends State<SelectPeriodeDropdownComponent> {
-  String dropdownValue = 'Ajourd\'hui';
-
+class _SelectDropdownComponentState<T>
+    extends State<SelectDropdownComponent<T>> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      // width: 120,
       height: 30,
       padding: const EdgeInsets.only(left: 8),
       decoration: BoxDecoration(
-          color: Style.black,
-          borderRadius: BorderRadius.all(Radius.circular(6))),
+        color: Style.black,
+        borderRadius: const BorderRadius.all(Radius.circular(6)),
+      ),
       child: DropdownButtonHideUnderline(
-        child: DropdownButton<String>(
-          value: dropdownValue,
-          onChanged: (String? newValue) {
-            setState(() {
-              dropdownValue = newValue!;
-            });
-          },
-          items: <String>['Ajourd\'hui'].map((String value) {
-            return DropdownMenuItem<String>(
+        child: DropdownButton<T>(
+          value: widget.value,
+          onChanged: widget.onChanged,
+          items: widget.items.map<DropdownMenuItem<T>>((T value) {
+            return DropdownMenuItem<T>(
               value: value,
               child: Text(
-                value,
+                widget.itemAsString(value),
                 style: const TextStyle(color: Style.white),
               ),
             );

@@ -30,8 +30,6 @@ class _BestSaleComponentState extends State<BestSaleComponent> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      // width: 310,
-      height: 360,
       padding: EdgeInsets.symmetric(horizontal: 20.r, vertical: 12.r),
       margin: const EdgeInsets.only(right: 8),
       decoration: BoxDecoration(
@@ -45,18 +43,18 @@ class _BestSaleComponentState extends State<BestSaleComponent> {
             title: widget.saleHeaderTitle,
             rigthItemTitle: "Produit/total vente",
           ),
-          Expanded(
-            child: ListView.builder(
-              itemCount: 5,
-              //top10Food.length,
-              itemBuilder: (context, index) {
-                //final top10 = top10Food[index];
-                return BestSaleItemComponent(
-                    // position: index + 1,
-                    // top10: top10,
-                    );
-              },
-            ),
+          ListView.builder(
+            physics: const NeverScrollableScrollPhysics(),
+            itemCount: 5,
+            shrinkWrap: true,
+            //top10Food.length,
+            itemBuilder: (context, index) {
+              //final top10 = top10Food[index];
+              return const BestSaleItemComponent(
+                  // position: index + 1,
+                  // top10: top10,
+                  );
+            },
           )
         ],
       ),
@@ -90,7 +88,7 @@ class BestSaleItemComponent extends StatelessWidget {
                   style: Style.interBold(size: 12, color: Style.brandColor500),
                 ),
                 5.horizontalSpace,
-                CommonImage(
+                const CommonImage(
                   width: 70,
                   height: 40,
                   imageUrl: '',
@@ -123,7 +121,7 @@ class BestSaleItemComponent extends StatelessWidget {
               ],
             ),
           ),
-          CardForCount(
+          const CardForCount(
             title: '2',
             //top10.count.toString(),
             color: Style.brandBlue950,

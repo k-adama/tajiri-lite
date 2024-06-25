@@ -8,20 +8,21 @@ class CustomRoundedButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      decoration: BoxDecoration(
-        gradient: Style.btnlinearGradiant,
-        borderRadius: BorderRadius.circular(48),
-        boxShadow: [
-          BoxShadow(
-            offset: const Offset(0, 8),
-            blurRadius: 16.r,
-            color: Style.brandBlue950.withOpacity(0.25),
-          ),
-        ],
-      ),
-      child: RawMaterialButton(
-        onPressed: onTap,
+    return GestureDetector(
+      onTap: onTap,
+      child: Container(
+        height: 48,
+        decoration: BoxDecoration(
+          gradient: Style.btnlinearGradiant,
+          borderRadius: BorderRadius.circular(48),
+          boxShadow: [
+            BoxShadow(
+              offset: const Offset(0, 8),
+              blurRadius: 16.r,
+              color: Style.brandBlue950.withOpacity(0.25),
+            ),
+          ],
+        ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
@@ -8,6 +9,7 @@ import 'package:tajiri_waitress/presentation/routes/presentation_screen.route.da
 import 'package:tajiri_waitress/presentation/screens/home/components/best_sale.component.dart';
 import 'package:tajiri_waitress/presentation/screens/home/components/cart_item_row.component.dart';
 import 'package:tajiri_waitress/presentation/screens/home/components/chart_bar.component.dart';
+import 'package:tajiri_waitress/presentation/screens/home/components/drawer_page.component.dart';
 import 'package:tajiri_waitress/presentation/screens/home/components/sale_by_category.component..dart';
 import 'package:tajiri_waitress/presentation/screens/home/components/select_periode_dropdown.component.dart';
 import 'package:tajiri_waitress/presentation/ui/widgets/buttons/custom.rounded.button.dart';
@@ -22,7 +24,7 @@ class HomeScreen extends StatefulWidget {
 
 class _HomeScreenState extends State<HomeScreen> {
   HomeController homeController = Get.find();
-  String dropdownValue = 'Ajourd\'hui';
+  String dropdownValue = 'Aujourd\'hui';
   late RefreshController _smartRefreshController;
 
   @override
@@ -49,6 +51,24 @@ class _HomeScreenState extends State<HomeScreen> {
   Widget build(BuildContext context) {
     return UpgradeAlert(
       child: Scaffold(
+        resizeToAvoidBottomInset: false,
+        appBar: PreferredSize(
+          preferredSize: const Size.fromHeight(kToolbarHeight),
+          child: AppBar(
+            centerTitle: true,
+            elevation: 0,
+            title: Text(
+              "Tableau de bord",
+              style: Style.interBold(size: 20, color: Style.brandBlue950),
+            ),
+            iconTheme: const IconThemeData(color: Style.secondaryColor),
+            backgroundColor: Style.white,
+          ),
+        ),
+        drawer: const Drawer(
+          backgroundColor: Style.white,
+          child: DrawerPageComponent(),
+        ),
         backgroundColor: Style.bodyNewColor,
         body: SmartRefresher(
           enablePullDown: true,
@@ -69,9 +89,22 @@ class _HomeScreenState extends State<HomeScreen> {
                 mainAxisAlignment: MainAxisAlignment.start,
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  const Padding(
-                    padding: EdgeInsets.only(left: 12.0),
-                    child: SelectPeriodeDropdownComponent(),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 12.0),
+                    child: SelectDropdownComponent<String>(
+                      value: dropdownValue,
+                      onChanged: (String? newValue) {
+                        print('Selected value: $newValue');
+                        setState(() {
+                          if (newValue == null) {
+                            return;
+                          }
+                          dropdownValue = newValue;
+                        });
+                      },
+                      items: const ['Aujourd\'hui', 'Demain', 'Hier'],
+                      itemAsString: (String value) => value,
+                    ),
                   ),
                   24.verticalSpace,
                   Padding(
@@ -140,11 +173,17 @@ class _HomeScreenState extends State<HomeScreen> {
                 ),
               ),
               10.horizontalSpace,
-              FloatingActionButton(
-                backgroundColor: Style.brandBlue950,
-                onPressed: () {},
-                child: Image.asset(
-                    'assets/images/icon-park-solid_transaction-order.png'),
+              SizedBox(
+                width: 48,
+                height: 48,
+                child: FittedBox(
+                  child: FloatingActionButton(
+                    backgroundColor: Style.brandBlue950,
+                    onPressed: () {},
+                    child: Image.asset(
+                        'assets/images/icon-park-solid_transaction-order.png'),
+                  ),
+                ),
               ),
             ],
           ),
