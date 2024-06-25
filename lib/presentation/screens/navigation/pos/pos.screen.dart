@@ -1,9 +1,13 @@
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:tajiri_waitress/app/config/theme/style.theme.dart';
 import 'package:tajiri_waitress/presentation/routes/presentation_screen.route.dart';
 import 'package:tajiri_waitress/presentation/screens/navigation/components/navigation_menu.component.dart';
+import 'package:tajiri_waitress/presentation/screens/navigation/pos/components/main_appbar.component.dart';
+import 'package:tajiri_waitress/presentation/screens/navigation/pos/components/product_list.component.dart';
 import 'package:upgrader/upgrader.dart';
 
 class PosScreen extends StatefulWidget {
@@ -31,11 +35,16 @@ class _PosScreenState extends State<PosScreen> {
         backgroundColor: Style.bodyNewColor,
         body: Column(
           children: [
-            Container(
-              width: double.infinity,
-              height: 20,
-              color: Style.red,
-            )
+            SingleChildScrollView(
+              physics: const BouncingScrollPhysics(),
+              primary: false,
+              scrollDirection: Axis.vertical,
+              child: Stack(children: [
+                MainAppbarComponent(),
+              ]),
+            ),
+            14.verticalSpace,
+            Expanded(child: ProductsListComponent())
           ],
         ),
         floatingActionButton: NavigationMenuComponent(

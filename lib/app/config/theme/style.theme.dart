@@ -37,9 +37,10 @@ class Style {
   static const Color backRed = Color.fromRGBO(255, 0, 0, 0.10);
   static const Color green = Color(0xFF71C761);
   static const Color newRed = Color(0xFFFF2700);
+  static const Color brandColor50 = Color(0xFFE5E5FF);
   static const Color orange = Color(0xFFFF9300);
   static const Color yellowLigther = Color(0xFFFFE48C);
-
+  static const Color grey600 = Color(0xFF60626C);
   static const Color ligthSecondary = Color(0xFFE6ECF6);
   static const Color lightSecondaryHover = Color(0xFFDAE3F2);
   static const Color lightSecondarActive = Color(0xFFB2C5E4);
