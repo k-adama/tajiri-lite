@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:get/instance_manager.dart';
 import 'package:tajiri_waitress/app/config/theme/style.theme.dart';
-import 'package:tajiri_waitress/presentation/controllers/pos/pos.controller.dart';
+import 'package:tajiri_waitress/presentation/controllers/navigation/pos/pos.controller.dart';
 import 'package:tajiri_waitress/presentation/screens/navigation/pos/components/select_type_of_cooking.component.dart';
 
 class TypeOfCookingComponent extends StatefulWidget {

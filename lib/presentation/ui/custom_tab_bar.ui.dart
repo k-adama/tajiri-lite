@@ -15,7 +15,7 @@ class CustomTabBarUi extends StatelessWidget {
       {super.key,
       required this.tabController,
       required this.tabs,
-      this.backgroundColor = Style.light,
+      this.backgroundColor = Style.white,
       this.labelColor = Style.black,
       this.indicatorColorStyle = Style.black,
       this.isIndicator = true,
@@ -24,11 +24,12 @@ class CustomTabBarUi extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 40.h,
+      height: 50.h,
       decoration: BoxDecoration(
         color: backgroundColor,
-        borderRadius: BorderRadius.circular(10.r),
+        borderRadius: BorderRadius.circular(4.r),
       ),
+      padding: EdgeInsets.all(5),
       child: TabBar(
         isScrollable: isScrollable,
         controller: tabController,
@@ -39,11 +40,12 @@ class CustomTabBarUi extends StatelessWidget {
         padding: isIndicator ? null : EdgeInsets.only(left: 10),
         indicator: isIndicator
             ? BoxDecoration(
-                borderRadius: BorderRadius.circular(10.r), color: Style.white)
+                borderRadius: BorderRadius.circular(4.r),
+                color: Style.brandBlue950)
             : null,
-        labelColor: labelColor,
-        unselectedLabelColor: Style.dark,
-        unselectedLabelStyle: Style.interNormal(
+        labelColor: Style.brandBlue50,
+        unselectedLabelColor: Style.brandBlue950,
+        unselectedLabelStyle: Style.interBold(
           size: 14.sp,
         ),
         labelStyle: Style.interNormal(
@@ -52,7 +54,12 @@ class CustomTabBarUi extends StatelessWidget {
         tabs: tabs.map((Tab tab) {
           return Container(
             child: Row(
-              children: [Text(tab.text ?? "")],
+              children: [
+                Text(
+                  tab.text ?? "",
+                  //style:  Style.interNormal(color: Style.red),
+                )
+              ],
             ),
           );
         }).toList(),

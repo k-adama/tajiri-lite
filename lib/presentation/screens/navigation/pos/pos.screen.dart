@@ -68,7 +68,9 @@ class _PosScreenState extends State<PosScreen> {
                 child: FittedBox(
                   child: FloatingActionButton(
                     backgroundColor: Style.brandBlue950,
-                    onPressed: () {},
+                    onPressed: () {
+                      Get.toNamed(Routes.SALE_HISTORY);
+                    },
                     child: Image.asset(
                         'assets/images/icon-park-solid_transaction-order.png'),
                   ),
