@@ -1,11 +1,11 @@
 import 'package:get/route_manager.dart';
 import 'package:tajiri_waitress/presentation/controllers/auth/auth.binding.dart';
-import 'package:tajiri_waitress/presentation/controllers/navigation/navigation.binding.dart';
-import 'package:tajiri_waitress/presentation/controllers/navigation/pos/pos.binding.dart';
+import 'package:tajiri_waitress/presentation/controllers/home/home.binding.dart';
+import 'package:tajiri_waitress/presentation/controllers/pos/pos.binding.dart';
 import 'package:tajiri_waitress/presentation/controllers/splash/splash.binding.dart';
 import 'package:tajiri_waitress/presentation/screens/auth/login.screen.dart';
-import 'package:tajiri_waitress/presentation/screens/navigation/navigation.screen.dart';
-import 'package:tajiri_waitress/presentation/screens/navigation/pos/pos.screen.dart';
+import 'package:tajiri_waitress/presentation/screens/home/home.screen.dart';
+import 'package:tajiri_waitress/presentation/screens/pos/pos.screen.dart';
 import 'package:tajiri_waitress/presentation/screens/splash/splash.screen.dart';
 part 'presentation_path.route.dart';
 
@@ -25,9 +25,9 @@ class PresentationScreenRoute {
         page: () => const LoginScreen(),
         binding: AuthBinding()),
     GetPage(
-      name: _Paths.NAVIGATION,
-      page: () => const NavigationScreen(),
-      binding: NavigationBiding(),
+      name: _Paths.HOME,
+      page: () => const HomeScreen(),
+      binding: HomeBinding(),
     ),
     GetPage(
       name: _Paths.POS,

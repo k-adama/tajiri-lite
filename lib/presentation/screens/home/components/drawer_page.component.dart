@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:tajiri_waitress/app/config/theme/style.theme.dart';
-import 'package:tajiri_waitress/presentation/screens/navigation/components/drawer_page_header.component.dart';
+import 'package:tajiri_waitress/presentation/screens/home/components/drawer_page_header.component.dart';
 
 class DrawerPageComponent extends StatelessWidget {
   const DrawerPageComponent({super.key});

@@ -5,7 +5,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:tajiri_waitress/app/config/theme/style.theme.dart';
 import 'package:tajiri_waitress/presentation/routes/presentation_screen.route.dart';
-import 'package:tajiri_waitress/presentation/screens/navigation/components/navigation_menu.component.dart';
 import 'package:tajiri_waitress/presentation/screens/navigation/pos/components/main_appbar.component.dart';
 import 'package:tajiri_waitress/presentation/screens/navigation/pos/components/product_list.component.dart';
 import 'package:upgrader/upgrader.dart';
@@ -47,10 +46,10 @@ class _PosScreenState extends State<PosScreen> {
             Expanded(child: ProductsListComponent())
           ],
         ),
-        floatingActionButton: NavigationMenuComponent(
+       /* floatingActionButton: NavigationMenuComponent(
           isPos: true,
           onPressed: () {},
-        ),
+        ),*/
       ),
     );
   }
