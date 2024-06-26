@@ -48,8 +48,10 @@ class _GenderSelectionState extends State<TypeOfCookingSelectionComponent> {
             Text(
               widget.text,
               style: widget.isSelected
-                  ? Style.interBold(size: 14)
-                  : Style.interNormal(size: 12),
+                  ? Style.interBold(size: 14,
+                  color: Style.brandBlue950)
+                  : Style.interNormal(size: 12,
+                  color: Style.grey500),
             ),
             widget.isSelected
                 ? Image.asset('assets/images/lets-icons_check-fill.png',

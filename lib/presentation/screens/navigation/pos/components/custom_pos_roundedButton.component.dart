@@ -29,8 +29,9 @@ class customPosRoundedButtonComponent extends StatelessWidget {
             ),
           ],
         ),
+        padding: const EdgeInsets.only(left: 4),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             SvgPicture.asset("assets/svgs/new_order.svg"),
             5.horizontalSpace,
