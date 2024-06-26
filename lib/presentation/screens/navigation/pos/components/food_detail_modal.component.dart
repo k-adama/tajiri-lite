@@ -111,7 +111,7 @@ class _FoodDetailModalComponentState extends State<FoodDetailModalComponent> {
                             Text(
                               // "${posController.priceAddFood * posController.quantityAddFood}"
                               // .toString(),
-                              '1000 FCFA',
+                              '1000',
                               style: Style.interBold(
                                 size: 18,
                               ),

@@ -8,14 +8,26 @@ class SplashController extends GetxController {
   Future<void> getToken() async {
     final storage = LocalStorageService.instance;
 
+    if (storage == null) {
+      return;
+    }
     if (storage.get(AuthConstant.keyToken) == null) {
-      if (storage.get(AuthConstant.keyOnboarding) != null) {
-        Get.offAllNamed(Routes.LOGIN); //LOGIN
-      } else {
-        Get.offAllNamed(Routes.HOME);
-      }
+      Get.offAllNamed(Routes.LOGIN);
     } else {
       Get.offAllNamed(Routes.HOME);
     }
   }
+  /* Future<void> getToken() async {
+    final storage = LocalStorageService.instance;
+
+    if (storage.get(AuthConstant.keyToken) == null) {
+      if (storage.get(AuthConstant.keyOnboarding) != null) {
+        Get.offAllNamed(Routes.LOGIN); //LOGIN
+      } else {
+        Get.offAllNamed(Routes.LOGIN);
+      }
+    } else {
+      Get.offAllNamed(Routes.HOME);
+    }
+  }*/
 }
