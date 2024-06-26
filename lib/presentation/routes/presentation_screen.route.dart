@@ -5,7 +5,7 @@ import 'package:tajiri_waitress/presentation/controllers/pos/pos.binding.dart';
 import 'package:tajiri_waitress/presentation/controllers/splash/splash.binding.dart';
 import 'package:tajiri_waitress/presentation/screens/auth/login.screen.dart';
 import 'package:tajiri_waitress/presentation/screens/home/home.screen.dart';
-import 'package:tajiri_waitress/presentation/screens/pos/pos.screen.dart';
+import 'package:tajiri_waitress/presentation/screens/navigation/pos/pos.screen.dart';
 import 'package:tajiri_waitress/presentation/screens/splash/splash.screen.dart';
 part 'presentation_path.route.dart';
 

@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:tajiri_waitress/app/common/app_helpers.common.dart';
 import 'package:tajiri_waitress/app/config/theme/style.theme.dart';
 import 'package:tajiri_waitress/domain/entities/food_data.entity.dart';
+import 'package:tajiri_waitress/presentation/screens/navigation/pos/components/food_detail_modal.component.dart';
 import 'package:tajiri_waitress/presentation/screens/navigation/pos/components/small_add_button.component.dart';
 import 'package:tajiri_waitress/presentation/ui/widgets/images/common_image.dart';
 
@@ -53,8 +55,8 @@ class ProductGridItemComponent extends StatelessWidget {
             borderRadius: BorderRadius.circular(10.r),
             color: Style.white,
           ),
-          child: 
-          Column(
+          margin: const EdgeInsets.only(top: 14),
+          child: Column(
             children: [
               Container(
                 padding: const EdgeInsets.all(8),
@@ -74,8 +76,7 @@ class ProductGridItemComponent extends StatelessWidget {
                           children: [
                             Expanded(
                               child: Column(
-                                crossAxisAlignment:
-                                    CrossAxisAlignment.start,
+                                crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
                                     'product name', //product.translation?.title
@@ -134,7 +135,15 @@ class ProductGridItemComponent extends StatelessWidget {
                                       return;*/
                                     }
                                   : () {
-                                      showDialog(
+                                      AppHelpersCommon
+                                          .showCustomModalBottomSheet(
+                                        context: context,
+                                        modal: FoodDetailModalComponent(),
+                                        isDarkMode: false,
+                                        isDrag: true,
+                                        radius: 12,
+                                      );
+                                      /*showDialog(
                                         context: context,
                                         builder: (context) {
                                           return Text("Modal");
@@ -146,7 +155,7 @@ class ProductGridItemComponent extends StatelessWidget {
                                       removeCount: removeCount,
                                     );*/
                                         },
-                                      );
+                                      );*/
                                     },
                               width: 30,
                               height: 30,

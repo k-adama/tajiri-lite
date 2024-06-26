@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tajiri_waitress/app/config/theme/style.theme.dart';
 
@@ -21,7 +20,7 @@ class CategoryCardComponent extends StatelessWidget {
       onTap: onTap,
       child: Container(
         padding: const EdgeInsets.all(10),
-        width: 130,
+        width: 120,
         decoration: BoxDecoration(
           color: Style.brandBlue50,
           borderRadius: BorderRadius.circular(4),
@@ -46,7 +45,7 @@ class CategoryCardComponent extends StatelessWidget {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-            20.verticalSpace,
+           // 20.verticalSpace,
             Container(
               width: 26,
               height: 26,
@@ -58,8 +57,9 @@ class CategoryCardComponent extends StatelessWidget {
             // 40.verticalSpace,
             const Spacer(),
             Text(
-              "categorie name",
+              "Poisson",
               style: Style.interBold(size: 13.sp),
+              overflow: TextOverflow.ellipsis,
             ),
           ],
         ),

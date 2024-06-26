@@ -5,7 +5,7 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:get/instance_manager.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart' as refresh;
-import 'package:tajiri_waitress/presentation/controllers/navigation/pos/pos.controller.dart';
+import 'package:tajiri_waitress/presentation/controllers/pos/pos.controller.dart';
 import 'package:tajiri_waitress/presentation/screens/navigation/pos/components/product_grid_item.component.dart';
 
 class ProductsListComponent extends StatefulWidget {

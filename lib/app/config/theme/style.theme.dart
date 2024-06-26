@@ -23,8 +23,12 @@ class Style {
   static const Color brandBlue950 = Color(0xFF00001A);
   static const Color brandBlue50 = Color(0xFFE5E5FF);
   static const Color grey700 = Color(0xFF484951);
+   static const Color grey200 = Color(0xFFC9CACF);
   static const Color brandColor500 = Color(0xFF0000DD);
+  static const Color brandBlue100 = Color(0xFFCCCCFF);
   static const Color green = Color(0xFF71C761);
+
+  
 
   /// OLD COLOR
   static const Color white = Color(0xFFFFFFFF);
@@ -40,6 +44,8 @@ class Style {
   static Color shimmerBase = Colors.grey.shade300;
   static Color shimmerHighlight = Colors.grey.shade100;
   static const Color selectedItemsText = Color(0xFFA0A09C);
+  static const Color grey600 = Color(0xFF60626C);
+   static const Color brandColor50 = Color(0xFFE5E5FF);
 
   /// dark theme based colors
   static const Color shimmerBaseDark = Color.fromRGBO(117, 117, 117, 0.29);
