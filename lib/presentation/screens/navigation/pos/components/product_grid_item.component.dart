@@ -143,19 +143,6 @@ class ProductGridItemComponent extends StatelessWidget {
                                         isDrag: true,
                                         radius: 12,
                                       );
-                                      /*showDialog(
-                                        context: context,
-                                        builder: (context) {
-                                          return Text("Modal");
-                                          /* ProductDetailsModalComponent(
-                                      product: product,
-                                      key: Key("${product?.id}"),
-                                      addCart: addCart,
-                                      addCount: addCount,
-                                      removeCount: removeCount,
-                                    );*/
-                                        },
-                                      );*/
                                     },
                               width: 30,
                               height: 30,
