@@ -11,6 +11,7 @@ import 'package:uuid/uuid.dart';
 
 class PosController extends GetxController {
   final KIT_ID = "1c755978-ae56-47c6-b8e6-a5e3b03577ce";
+  RxString settleOrderId = "ON_PLACE".obs;
   var uuid = const Uuid();
   String? selectedOfCooking;
   bool isProductLoading = true;

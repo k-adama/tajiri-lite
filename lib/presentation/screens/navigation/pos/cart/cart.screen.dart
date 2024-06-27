@@ -7,6 +7,7 @@ import 'package:tajiri_waitress/app/config/theme/style.theme.dart';
 import 'package:tajiri_waitress/domain/entities/main_item.entity.dart';
 import 'package:tajiri_waitress/presentation/controllers/navigation/pos/pos.controller.dart';
 import 'package:tajiri_waitress/presentation/screens/navigation/pos/cart/components/orders_informations_display.component.dart';
+import 'package:tajiri_waitress/presentation/screens/navigation/pos/components/order_detail_confirm_modal.component.dart';
 import 'package:tajiri_waitress/presentation/ui/widgets/buttons/custom.button.dart';
 
 class CartScreen extends StatefulWidget {
@@ -109,7 +110,15 @@ class _CartScreenState extends State<CartScreen> {
                     isLoadingColor: Style.white,
                     haveBorder: false,
                     radius: 5,
-                    onPressed: () {},
+                    onPressed: () {
+                      AppHelpersCommon.showCustomModalBottomSheet(
+                        context: context,
+                        modal: OrderConfirmDetailModalComponent(),
+                        isDarkMode: false,
+                        isDrag: true,
+                        radius: 12,
+                      );
+                    },
                   ),
                 ),
               ),

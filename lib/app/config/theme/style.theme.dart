@@ -26,8 +26,10 @@ class Style {
   static const Color grey200 = Color(0xFFC9CACF);
   static const Color grey500 = Color(0xFF777986);
   static const Color grey50 = Color(0xFFF1F2F3);
+  static const Color grey950 = Color(0xFF0C0C0E);
   static const Color brandColor500 = Color(0xFF0000DD);
   static const Color brandBlue100 = Color(0xFFCCCCFF);
+  static const Color brandBlue200 = Color(0xFF9999FF);
   static const Color green = Color(0xFF71C761);
   static const Color yellowLigther = Color(0xFFFFE48C);
   static const Color hintColor = Color(0xFFBABABA);
