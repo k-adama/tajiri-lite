@@ -22,30 +22,27 @@ class CategoryCardComponent extends StatelessWidget {
         padding: const EdgeInsets.all(10),
         width: 120,
         decoration: BoxDecoration(
-          color: Style.brandBlue50,
+          gradient: isSelected
+              ? LinearGradient(
+                  colors: [
+                    Color(0xFF9999FF),
+                    Color(0xFF6666FF),
+                  ],
+                )
+              : null,
+          color: isSelected ? null : Style.brandBlue50,
           borderRadius: BorderRadius.circular(4),
           border: Border(
             bottom: BorderSide(
               color: isSelected ? Style.brandColor500 : Colors.transparent,
-              width: 2.0,
+              width: 3.0,
             ),
           ),
-
-          /* boxShadow: isSelected
-              ? [
-                  BoxShadow(
-                    color: Colors.grey.withOpacity(0.5), // Couleur de l'ombre
-                    spreadRadius: 2, // Distance de diffusion de l'ombre
-                    blurRadius: 5, // Flou de l'ombre
-                    offset: Offset(0, 3), // Position de l'ombre (x, y)
-                  ),
-                ]
-              : null,*/
         ),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
-           // 20.verticalSpace,
+            // 20.verticalSpace,
             Container(
               width: 26,
               height: 26,
