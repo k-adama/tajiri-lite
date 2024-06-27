@@ -29,15 +29,15 @@ class CustomTabBarUi extends StatelessWidget {
         color: backgroundColor,
         borderRadius: BorderRadius.circular(4.r),
       ),
-      padding: EdgeInsets.all(5),
+      padding: const EdgeInsets.all(5),
       child: TabBar(
         isScrollable: isScrollable,
         controller: tabController,
         indicatorColor: indicatorColorStyle,
         indicatorSize: isIndicator ? TabBarIndicatorSize.tab : null, //
         dividerHeight: 0,
-        labelPadding: isIndicator ? null : EdgeInsets.only(right: 40),
-        padding: isIndicator ? null : EdgeInsets.only(left: 10),
+        labelPadding: isIndicator ? null : const EdgeInsets.only(right: 40),
+        padding: isIndicator ? null : const EdgeInsets.only(left: 10),
         indicator: isIndicator
             ? BoxDecoration(
                 borderRadius: BorderRadius.circular(4.r),
@@ -52,15 +52,8 @@ class CustomTabBarUi extends StatelessWidget {
           size: 14.sp,
         ),
         tabs: tabs.map((Tab tab) {
-          return Container(
-            child: Row(
-              children: [
-                Text(
-                  tab.text ?? "",
-                  //style:  Style.interNormal(color: Style.red),
-                )
-              ],
-            ),
+          return Text(
+            tab.text ?? "",
           );
         }).toList(),
       ),

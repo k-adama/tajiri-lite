@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tajiri_waitress/domain/entities/orders_data.entity.dart';
 
 class AppConstants {
   AppConstants._();
@@ -6,6 +7,85 @@ class AppConstants {
   /// shared preferences keys
   static const String keyAppThemeMode = 'keyAppThemeMode';
   static const TYPE_QUERY_ONLY_PRODUCT = 'ONLY_PRODUCT';
+
+  static const String orderCooking = 'COOKING';
+  static const String orderCancelled = 'CANCELLED';
+  static const String orderReady = 'READY';
+  static const String orderNew = 'NEW';
+  static const String orderAccepted = 'ACCEPTED_BY_RESTAURANT';
+  static const String orderPaid = 'PAID';
+  static const String orderTakeByCourier = 'TAKEN_BY_COURIER';
+  static const String clientTypeRestaurant = 'RESTAURANT';
+
+  //..........................
+  static const String orderOnPLace = 'ON_PLACE';
+  static const String orderTakeAway = 'TAKE_AWAY';
+  static const String orderDelivered = 'DELIVERED';
+
+  static bool getStatusOrderInProgressOrDone(
+      OrdersDataEntity order, String status) {
+    bool checking = false;
+    switch (status) {
+      case "IN_PROGRESS":
+        if (order.status != "PAID" && order.status != "CANCELLED")
+          checking = true;
+        break;
+      case "DONE":
+        if (order.status == "PAID" || order.status == "CANCELLED")
+          checking = true;
+        break;
+    }
+
+    return checking;
+  }
+
+  static String getStatusInFrench(OrdersDataEntity order) {
+    String status = "";
+    switch (order.status) {
+      case orderCooking:
+        status = "En Cuisine";
+        break;
+      case orderCancelled:
+        status = "Annulée";
+        break;
+      case orderReady:
+        status = "Prête";
+        break;
+      case orderNew:
+        status = "Nouvelle";
+        break;
+      case orderAccepted:
+        status = "Acceptée";
+        break;
+      case orderPaid:
+        status = "Payée";
+        break;
+      case orderDelivered:
+        status = "Livrée";
+        break;
+      case orderTakeByCourier:
+        status = "En livraison";
+        break;
+    }
+
+    return status;
+  }
+
+  static String getOrderTypeInFrench(OrdersDataEntity order) {
+    String orderType = "";
+    switch (order.orderType) {
+      case orderOnPLace:
+        orderType = "Sur place";
+        break;
+      case orderTakeAway:
+        orderType = "A emporter";
+      case orderDelivered:
+        orderType = "A livrer";
+        break;
+    }
+
+    return orderType;
+  }
 }
 
 final tabs = [

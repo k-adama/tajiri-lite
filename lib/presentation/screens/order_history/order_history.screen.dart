@@ -1,10 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
+import 'package:tajiri_waitress/app/common/app_helpers.common.dart';
 import 'package:tajiri_waitress/app/config/constants/app.constant.dart';
 import 'package:tajiri_waitress/app/config/theme/style.theme.dart';
+import 'package:tajiri_waitress/domain/entities/user.entity.dart';
 import 'package:tajiri_waitress/presentation/controllers/order_history/order_history.controller.dart';
+import 'package:tajiri_waitress/presentation/screens/order_history/components/order_card_item.component.dart';
+import 'package:tajiri_waitress/presentation/screens/order_history/components/order_list_empty.component.dart';
 import 'package:tajiri_waitress/presentation/ui/custom_tab_bar.ui.dart';
+import 'package:tajiri_waitress/presentation/ui/loading.ui.dart';
 
 class OrderHistoryScreen extends StatefulWidget {
   const OrderHistoryScreen({super.key});
@@ -16,6 +21,7 @@ class OrderHistoryScreen extends StatefulWidget {
 class _OrderHistoryScreenState extends State<OrderHistoryScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController = TabController(length: 3, vsync: this);
+  final UserEntity? user = AppHelpersCommon.getUserInLocalStorage();
 
   @override
   void initState() {
@@ -38,7 +44,7 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen>
       ),
       backgroundColor: Style.bodyNewColor,
       body: GetBuilder<OrderHistoryController>(
-          builder: (saleHistoryController) => Column(
+          builder: (orderHistoryController) => Column(
                 children: [
                   Expanded(
                     child: Padding(
@@ -50,6 +56,69 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen>
                             tabController: _tabController,
                             tabs: tabs,
                           ),
+                            Expanded(
+                              child: TabBarView(
+                                controller: _tabController,
+                                children: [
+                                  orderHistoryController.isProductLoading == true
+                                      ? const LoadingUi()
+                                      : orderHistoryController.orders.isEmpty
+                                          ? const OrderListEmptyComponent()
+                                          : OrderCardItemComponent(
+                                              orders:orderHistoryController.orders,
+                                              isRestaurant :user != null &&
+                                                  user?.restaurantUser !=
+                                                      null &&
+                                                  user?.restaurantUser![0]
+                                                              .restaurant
+                                                          ?.type ==
+                                                      AppConstants
+                                                          .clientTypeRestaurant,
+                                              //widget.mainController,
+                                            ),
+                                  orderHistoryController.isProductLoading == true ?  const LoadingUi() : orderHistoryController.orders
+                                          .where((item) => AppConstants
+                                              .getStatusOrderInProgressOrDone(
+                                                  item, "IN_PROGRESS"))
+                                          .isEmpty
+                                      ? OrderListEmptyComponent()
+                                      : OrderCardItemComponent(
+                                          orders:orderHistoryController.orders
+                                              .where((item) => AppConstants
+                                                  .getStatusOrderInProgressOrDone(
+                                                      item, "IN_PROGRESS"))
+                                              .toList(),
+                                          isRestaurant :user != null &&
+                                              user?.restaurantUser!= null &&
+                                              user?.restaurantUser![0]
+                                                      .restaurant?.type ==
+                                                  AppConstants
+                                                      .clientTypeRestaurant,
+                                          //widget.mainController,
+                                        ),
+                                  orderHistoryController.isProductLoading == true ?  const LoadingUi() : orderHistoryController.orders
+                                          .where((item) => AppConstants
+                                              .getStatusOrderInProgressOrDone(
+                                                  item, "DONE"))
+                                          .isEmpty
+                                      ? OrderListEmptyComponent()
+                                      : OrderCardItemComponent(
+                                          orders: orderHistoryController.orders
+                                              .where((item) => AppConstants
+                                                  .getStatusOrderInProgressOrDone(
+                                                      item, "DONE"))
+                                              .toList(),
+                                          isRestaurant :user != null &&
+                                              user?.restaurantUser != null &&
+                                              user?.restaurantUser![0]
+                                                      .restaurant?.type ==
+                                                  AppConstants
+                                                      .clientTypeRestaurant,
+                                          //widget.mainController,
+                                        ),
+                                ],
+                              ),
+                            ),
                         ],
                       ),
                     ),

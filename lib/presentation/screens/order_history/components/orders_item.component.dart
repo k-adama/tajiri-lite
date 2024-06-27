@@ -1,0 +1,191 @@
+import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
+import 'package:get/get.dart';
+import 'package:tajiri_waitress/app/common/app_helpers.common.dart';
+import 'package:tajiri_waitress/app/common/utils.common.dart';
+import 'package:tajiri_waitress/app/config/constants/app.constant.dart';
+import 'package:tajiri_waitress/app/config/theme/style.theme.dart';
+import 'package:tajiri_waitress/app/extensions/string.extension.dart';
+import 'package:tajiri_waitress/domain/entities/orders_data.entity.dart';
+import 'package:tajiri_waitress/domain/entities/user.entity.dart';
+import 'package:tajiri_waitress/presentation/controllers/order_history/order_history.controller.dart';
+
+class OrdersItemComponent extends StatefulWidget {
+  OrdersDataEntity order;
+  OrdersItemComponent({super.key, required this.order});
+  @override
+  State<OrdersItemComponent> createState() => _OrdersItemComponentState();
+}
+
+class _OrdersItemComponentState extends State<OrdersItemComponent> {
+  final UserEntity? user = AppHelpersCommon.getUserInLocalStorage();
+  final OrderHistoryController orderController = Get.find();
+
+  bool isPaid = false;
+  @override
+  void initState() {
+    super.initState();
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+        padding: EdgeInsets.only(top: 12.r),
+        child: Container(
+          padding: orderController.isExpanded
+              ? null
+              : const EdgeInsets.symmetric(vertical: 6),
+          decoration: BoxDecoration(
+            color: Style.white,
+            borderRadius: BorderRadius.circular(10),
+          ),
+          child: ExpansionTile(
+            backgroundColor: Style.white,
+            trailing: const Row(
+              mainAxisSize: MainAxisSize.min,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                Icon(Icons.expand_more),
+                SizedBox(height: 40),
+              ],
+            ),
+            title: Column(
+              children: [
+                Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                  children: [
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        orderTypeOrOrderStatusComponent(
+                          AppConstants.getOrderTypeInFrench(widget.order),
+                          true,
+                        ),
+                        5.horizontalSpace,
+                        orderTypeOrOrderStatusComponent(
+                            AppConstants.getStatusInFrench(widget.order),
+                            false),
+                      ],
+                    ),
+                    10.verticalSpace,
+                    orderController.tableOrWaitessNoNullOrNotEmpty(widget.order)
+                        ? Text(
+                            orderController.tableOrWaitressName(
+                                widget.order),
+                            style: Style.interNormal(
+                              color: Style.grey500,
+                            ),
+                          )
+                        : const SizedBox(),
+                    8.verticalSpace,
+                    Text(
+                      "${widget.order.grandTotal}".currencyLong(),
+                      style: Style.interBold(
+                        size: 16.sp,
+                      ),
+                    ),
+                    8.verticalSpace,
+                  ],
+                ),
+              ],
+            ),
+            subtitle: orderController.isExpanded
+                ? null
+                : Row(
+                    children: [
+                      for (int i = 0; i < 2; i++)
+                        if (widget.order.orderDetails != null &&
+                            i < widget.order.orderDetails!.length)
+                          Flexible(
+                            child: Container(
+                              margin: const EdgeInsets.only(left: 2),
+                              child: Text(
+                                "${widget.order.orderDetails?[i].quantity ?? ''}x ${getNameFromOrderDetail(widget.order.orderDetails?[i])}",
+                                style: Style.interNormal(color: Style.black),
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                          )
+                    ],
+                  ),
+            onExpansionChanged: (value) {
+              setState(() {
+                orderController.isExpanded = value;
+              });
+            },
+            children: [
+              const Divider(
+                indent: 20,
+                endIndent: 20,
+              ),
+              Container(
+                  alignment: Alignment.topLeft,
+                  child: Wrap(
+                    spacing: 8.0,
+                    runSpacing: 8.0,
+                    children: widget.order.orderDetails?.map((orderDetail) {
+                          return Container(
+                            padding: const EdgeInsets.symmetric(
+                                horizontal: 10, vertical: 4),
+                            margin: const EdgeInsets.only(left: 10),
+                            decoration: BoxDecoration(
+                              color: Style.grey300,
+                              borderRadius: BorderRadius.circular(10),
+                            ),
+                            child: Text(
+                              "${getNameFromOrderDetail(orderDetail)} x ${orderDetail.quantity ?? ''}",
+                            ),
+                          );
+                        }).toList() ??
+                        [],
+                  )),
+              20.verticalSpace,
+              /*  Padding(
+                padding: const EdgeInsets.only(left: 10, right: 10),
+                child: OrderSaveOrPaidButtonComponent(
+                    order: widget.order, isPaid: isPaid),
+              ),*/
+              10.verticalSpace,
+            ],
+          ),
+        ));
+  }
+
+  Widget orderTypeOrOrderStatusComponent(String text, bool isImage) {
+    return Container(
+        decoration: BoxDecoration(
+            color: Style.grey50,
+            border: Border.all(
+              color: Style.grey100,
+              width: 1,
+            ),
+            borderRadius: BorderRadius.circular(20)),
+        child: Padding(
+          padding: EdgeInsets.symmetric(horizontal: 10.0.w, vertical: 6.w),
+          child: Center(
+            child: Row(
+              children: [
+                if (isImage) ...[
+                  if (widget.order.orderType == 'ON_PLACE')
+                    Image.asset(
+                        'assets/images/ic_baseline-table-restaurant.png'),
+                  if (widget.order.orderType == 'TAKE_AWAY')
+                    Image.asset('assets/images/Type_commande.png'),
+                  if (widget.order.orderType == 'DELIVERED')
+                    Image.asset('assets/images/mdi_delivery-dining.png'),
+                ] else
+                  Container(),
+                8.horizontalSpace,
+                Text(
+                  text,
+                  style: Style.interBold(size: 14, color: Style.brandBlue950),
+                ),
+              ],
+            ),
+          ),
+        ));
+  }
+}
