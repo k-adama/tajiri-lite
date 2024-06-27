@@ -45,7 +45,7 @@ class customPosRoundedButtonComponent extends StatelessWidget {
                 decoration: const BoxDecoration(
                     shape: BoxShape.circle, color: Style.brandBlue950),
                 child: Text(
-                  '1',
+                  text,
                   style: Style.interBold(
                     color: Style.white,
                   ),

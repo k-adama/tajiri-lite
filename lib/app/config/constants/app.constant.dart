@@ -5,6 +5,7 @@ class AppConstants {
 
   /// shared preferences keys
   static const String keyAppThemeMode = 'keyAppThemeMode';
+  static const TYPE_QUERY_ONLY_PRODUCT = 'ONLY_PRODUCT';
 }
 
 final tabs = [

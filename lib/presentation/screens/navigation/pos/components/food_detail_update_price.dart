@@ -2,12 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:tajiri_waitress/app/config/theme/style.theme.dart';
+import 'package:tajiri_waitress/domain/entities/food_data.entity.dart';
 import 'package:tajiri_waitress/presentation/controllers/navigation/pos/pos.controller.dart';
 import 'package:tajiri_waitress/presentation/screens/navigation/pos/components/add_or_remove_food_detail_modal_quantity.component.dart';
 import 'package:tajiri_waitress/presentation/screens/navigation/pos/components/food_detail_formField.component.dart';
 
 class FoodDetailUpdatePrice extends StatefulWidget {
-  const FoodDetailUpdatePrice({super.key});
+  final FoodDataEntity? product;
+  const FoodDetailUpdatePrice({
+    super.key,
+    this.product,
+  });
 
   @override
   State<FoodDetailUpdatePrice> createState() => _FoodDetailUpdatePriceState();
@@ -24,7 +29,7 @@ class _FoodDetailUpdatePriceState extends State<FoodDetailUpdatePrice> {
           crossAxisAlignment: CrossAxisAlignment.start,
           children: [
             Text(
-              "Côte de porc",
+              '${widget.product?.name}',
               style: Style.interBold(size: 20, color: Style.brandBlue950),
             ),
             Text(
@@ -36,13 +41,19 @@ class _FoodDetailUpdatePriceState extends State<FoodDetailUpdatePrice> {
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 FoodDetailFormField(
-                  hint: '15000',
-                  //widget.product?.price.toString(),
+                  hint: widget.product?.price.toString(),
                 ),
                 AddOrRemoveFoodDteailModalQauntityComponent(
-                  add: () {},
-                  remove: () {},
-                  text: '1',
+                  add: () {
+                    posController.setIncrementQuantityAddFood(widget.product);
+                  },
+                  remove: posController.quantityAddFood == 1
+                      ? () {}
+                      : () {
+                          posController
+                              .setDecrementQuantityAddFood(widget.product);
+                        },
+                  text: posController.quantityAddFood.toString(),
                 )
               ],
             ),

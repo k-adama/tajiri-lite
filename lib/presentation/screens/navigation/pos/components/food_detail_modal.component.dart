@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:tajiri_waitress/app/config/theme/style.theme.dart';
+import 'package:tajiri_waitress/domain/entities/food_data.entity.dart';
 import 'package:tajiri_waitress/presentation/controllers/navigation/pos/pos.controller.dart';
 import 'package:tajiri_waitress/presentation/screens/navigation/pos/components/dish_food.component.dart';
 import 'package:tajiri_waitress/presentation/screens/navigation/pos/components/food_detail_update_price.dart';
@@ -9,8 +10,20 @@ import 'package:tajiri_waitress/presentation/screens/navigation/pos/components/t
 import 'package:tajiri_waitress/presentation/ui/widgets/buttons/custom.button.dart';
 
 class FoodDetailModalComponent extends StatefulWidget {
+  final FoodDataEntity? product;
+  final VoidCallback addCart;
+  final VoidCallback addCount;
+  final VoidCallback removeCount;
+  final List<String?>? initSelectDish;
   final String? initTypeOfCooking;
-  const FoodDetailModalComponent({super.key, this.initTypeOfCooking});
+  const FoodDetailModalComponent(
+      {super.key,
+      this.product,
+      this.initSelectDish,
+      required this.addCart,
+      required this.addCount,
+      required this.removeCount,
+      this.initTypeOfCooking});
 
   @override
   State<FoodDetailModalComponent> createState() =>
@@ -45,8 +58,9 @@ class _FoodDetailModalComponentState extends State<FoodDetailModalComponent> {
                       borderRadius: BorderRadius.all(Radius.circular(40.r))),
                 ),
               ),
-             
-              FoodDetailUpdatePrice(),
+              FoodDetailUpdatePrice(
+                product: widget.product,
+              ),
               8.verticalSpace,
               const Padding(
                 padding: EdgeInsets.only(left: 12.0, right: 12.0),
@@ -97,7 +111,7 @@ class _FoodDetailModalComponentState extends State<FoodDetailModalComponent> {
                             radius: 5,
                             haveBorder: true,
                             borderColor: Style.brandColor500,
-                            onPressed: () {},
+                            onPressed: widget.addCart,
                           ),
                         ),
                         Column(
@@ -109,9 +123,8 @@ class _FoodDetailModalComponentState extends State<FoodDetailModalComponent> {
                               ),
                             ),
                             Text(
-                              // "${posController.priceAddFood * posController.quantityAddFood}"
-                              // .toString(),
-                              '1000',
+                              "${posController.priceAddFood * posController.quantityAddFood}"
+                                  .toString(),
                               style: Style.interBold(
                                 size: 18,
                               ),

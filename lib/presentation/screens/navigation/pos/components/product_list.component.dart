@@ -4,8 +4,12 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:get/instance_manager.dart';
+import 'package:get/route_manager.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart' as refresh;
+import 'package:tajiri_waitress/app/common/app_helpers.common.dart';
+import 'package:tajiri_waitress/domain/entities/food_data.entity.dart';
 import 'package:tajiri_waitress/presentation/controllers/navigation/pos/pos.controller.dart';
+import 'package:tajiri_waitress/presentation/screens/navigation/pos/components/food_detail_modal.component.dart';
 import 'package:tajiri_waitress/presentation/screens/navigation/pos/components/product_grid_item.component.dart';
 
 class ProductsListComponent extends StatefulWidget {
@@ -27,13 +31,21 @@ class _ProductsListComponentState extends State<ProductsListComponent> {
   }
 
   void _onRefresh() async {
-    // await posController.fetchFoods();
+    await posController.fetchFoods();
     _refreshController.refreshCompleted();
   }
 
   void _onLoading() async {
-    // await posController.fetchFoods();
+    await posController.fetchFoods();
     _refreshController.loadComplete();
+  }
+
+  addToCart(FoodDataEntity food) {
+    if (food.quantity == 0) {
+      return;
+    }
+
+    posController.addToCart(food);
   }
 
   @override
@@ -52,21 +64,43 @@ class _ProductsListComponentState extends State<ProductsListComponent> {
           controller: _refreshController,
           child: AutoHeightGridView(
             shrinkWrap: true,
-            itemCount: 10,
+            itemCount: posController.foods.length,
             crossAxisCount: 2,
             mainAxisSpacing: 10.r,
             builder: (context, index) {
-              //final element = posController.categoriesSupabase[index];
+              final food = posController.foods[index];
               return AnimationConfiguration.staggeredGrid(
-                columnCount: 10,
+                columnCount: 20,
                 position: index,
                 duration: const Duration(milliseconds: 375),
                 child: ScaleAnimation(
                   scale: 0.5,
                   child: FadeInAnimation(
                       child: ProductGridItemComponent(
-                    product: null,
-                    onTap: () {},
+                    key: Key("${food.id}"),
+                    product: food,
+                    onTap: () {
+                      AppHelpersCommon.showCustomModalBottomSheet(
+                        context: context,
+                        modal: FoodDetailModalComponent(
+                          key: Key("${food.id}"),
+                          product: food,
+                          addCart: () {
+                            addToCart(food);
+                            Get.close(0);
+                          },
+                          addCount: () {
+                            //addCount(food);
+                          },
+                          removeCount: () {
+                            //_posController.removeCount(food, null);
+                          },
+                        ),
+                        isDarkMode: false,
+                        isDrag: true,
+                        radius: 12,
+                      );
+                    },
                   )),
                 ),
               );

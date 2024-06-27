@@ -1,10 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:tajiri_waitress/app/common/app_helpers.common.dart';
 import 'package:tajiri_waitress/app/config/theme/style.theme.dart';
+import 'package:tajiri_waitress/app/mixpanel/mixpanel.dart';
 import 'package:tajiri_waitress/domain/entities/food_data.entity.dart';
-import 'package:tajiri_waitress/presentation/screens/navigation/pos/components/food_detail_modal.component.dart';
 import 'package:tajiri_waitress/presentation/screens/navigation/pos/components/small_add_button.component.dart';
 import 'package:tajiri_waitress/presentation/ui/widgets/images/common_image.dart';
 
@@ -39,14 +38,14 @@ class ProductGridItemComponent extends StatelessWidget {
         borderRadius: BorderRadius.circular(10.r),
         onTap: isOutOfStock
             ? () {
-                /* Mixpanel.instance
+                Mixpanel.instance
                     .track("POS Product Out Stock Cliked", properties: {
                   "Product name": product?.name,
                   "Product ID": product?.id,
                   "Category": product?.category?.name,
                   "Selling Price": product?.price
                 });
-                return;*/
+                return;
               }
             : onTap,
         child: Container(
@@ -65,7 +64,7 @@ class ProductGridItemComponent extends StatelessWidget {
                   children: [
                     CommonImage(
                       height: 130,
-                      imageUrl: '',
+                      imageUrl: product?.imageUrl,
                       radius: 0,
                     ),
                     8.verticalSpace,
@@ -79,7 +78,7 @@ class ProductGridItemComponent extends StatelessWidget {
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
                                   Text(
-                                    'product name', //product.translation?.title
+                                    '${product?.name}',
                                     maxLines: 1,
                                     overflow: TextOverflow.ellipsis,
                                     style: GoogleFonts.inter(
@@ -91,12 +90,11 @@ class ProductGridItemComponent extends StatelessWidget {
                                   ),
                                   6.verticalSpace,
                                   Text(
-                                    ' 10 en stock',
-                                    /* product?.quantity != 0
+                                    product?.quantity != 0
                                         ? product?.quantity != 0
                                             ? '${product?.quantity ?? product?.type}  en stock'
                                             : 'Rupture'
-                                        : 'Rupture',*/
+                                        : 'Rupture',
                                     style: Style.interRegular(
                                       size: 12,
                                       color: product?.quantity == 0
@@ -108,8 +106,7 @@ class ProductGridItemComponent extends StatelessWidget {
                                   ),
                                   6.verticalSpace,
                                   Text(
-                                    // '${product?.price} FCFA',
-                                    '1000 FCFA',
+                                    '${product?.price} FCFA',
                                     overflow: TextOverflow.ellipsis,
                                     style: Style.interNoSemi(
                                       size: 11,
@@ -120,33 +117,13 @@ class ProductGridItemComponent extends StatelessWidget {
                                 ],
                               ),
                             ),
-                            SmallAddButtonComponent(
-                              onTap: isOutOfStock
-                                  ? () {
-                                      /*  Mixpanel.instance.track(
-                                          "POS Product Out Stock Cliked",
-                                          properties: {
-                                            "Product name": product?.name,
-                                            "Product ID": product?.id,
-                                            "Category":
-                                                product?.category?.name,
-                                            "Selling Price": product?.price
-                                          });
-                                      return;*/
-                                    }
-                                  : () {
-                                      AppHelpersCommon
-                                          .showCustomModalBottomSheet(
-                                        context: context,
-                                        modal: FoodDetailModalComponent(),
-                                        isDarkMode: false,
-                                        isDrag: true,
-                                        radius: 12,
-                                      );
-                                    },
-                              width: 30,
-                              height: 30,
-                              color: Style.brandBlue950,
+                            IgnorePointer(
+                              child: SmallAddButtonComponent(
+                                onTap: () {},
+                                width: 30,
+                                height: 30,
+                                color: Style.brandBlue950,
+                              ),
                             )
                           ],
                         ),

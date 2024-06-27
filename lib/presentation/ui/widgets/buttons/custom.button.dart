@@ -78,13 +78,6 @@ class CustomButton extends StatelessWidget {
             : Row(
                 mainAxisAlignment: MainAxisAlignment.center,
                 children: [
-                  if (icon != null)
-                    Row(
-                      children: [
-                        icon!,
-                        10.horizontalSpace,
-                      ],
-                    ),
                   Text(
                     title,
                     style: Style.interNormal(
@@ -97,6 +90,13 @@ class CustomButton extends StatelessWidget {
                       letterSpacing: -14 * 0.01,
                     ).copyWith(fontWeight: FontWeight.w500),
                   ),
+                  if (icon != null)
+                    Row(
+                      children: [
+                        10.horizontalSpace,
+                        icon!,
+                      ],
+                    ),
                   if (imagePath.isNotEmpty) 10.horizontalSpace,
                   if (imagePath.isNotEmpty) SvgPicture.asset(imagePath)
                 ],
