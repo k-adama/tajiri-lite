@@ -3,7 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:tajiri_waitress/app/config/constants/app.constant.dart';
 import 'package:tajiri_waitress/app/config/theme/style.theme.dart';
-import 'package:tajiri_waitress/presentation/controllers/navigation/sale_hostory/sale_hstory.controller.dart';
+import 'package:tajiri_waitress/presentation/controllers/navigation/sale_history/sale_history.controller.dart';
 import 'package:tajiri_waitress/presentation/ui/custom_tab_bar.ui.dart';
 
 class SaleHistoryScreen extends StatefulWidget {

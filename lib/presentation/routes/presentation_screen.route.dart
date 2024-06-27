@@ -3,7 +3,7 @@ import 'package:tajiri_waitress/presentation/controllers/auth/auth.binding.dart'
 import 'package:tajiri_waitress/presentation/controllers/home/home.binding.dart';
 import 'package:tajiri_waitress/presentation/controllers/navigation/pos/cart/cart.binding.dart';
 import 'package:tajiri_waitress/presentation/controllers/navigation/pos/pos.binding.dart';
-import 'package:tajiri_waitress/presentation/controllers/navigation/sale_hostory/sale_history.binding.dart';
+import 'package:tajiri_waitress/presentation/controllers/navigation/sale_history/sale_history.binding.dart';
 import 'package:tajiri_waitress/presentation/controllers/splash/splash.binding.dart';
 import 'package:tajiri_waitress/presentation/screens/auth/login.screen.dart';
 import 'package:tajiri_waitress/presentation/screens/home/home.screen.dart';
