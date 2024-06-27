@@ -2,7 +2,6 @@ import 'package:auto_height_grid_view/auto_height_grid_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
-import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:get/instance_manager.dart';
 import 'package:get/route_manager.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart' as refresh;
@@ -50,62 +49,64 @@ class _ProductsListComponentState extends State<ProductsListComponent> {
 
   @override
   Widget build(BuildContext context) {
-    return GetBuilder<PosController>(
-      builder: (_posController) => AnimationLimiter(
-        child: refresh.SmartRefresher(
-          enablePullDown: true,
-          enablePullUp: false,
-          onLoading: () {
-            _onLoading();
+    return AnimationLimiter(
+      child: refresh.SmartRefresher(
+        enablePullDown: true,
+        enablePullUp: false,
+        onLoading: () {
+          _onLoading();
+        },
+        onRefresh: () {
+          _onRefresh();
+        },
+        controller: _refreshController,
+        child: AutoHeightGridView(
+          shrinkWrap: true,
+          itemCount: posController.foods.length,
+          crossAxisCount: 2,
+          mainAxisSpacing: 10.r,
+          builder: (context, index) {
+            final food = posController.foods[index];
+            return AnimationConfiguration.staggeredGrid(
+              columnCount: 20,
+              position: index,
+              duration: const Duration(milliseconds: 375),
+              child: ScaleAnimation(
+                scale: 0.5,
+                child: FadeInAnimation(
+                    child: ProductGridItemComponent(
+                  key: Key("${food.id}"),
+                  product: food,
+                  onTap: () {
+                    print(
+                        "================================> catégory : ${food.category?.name}");
+                    AppHelpersCommon.showCustomModalBottomSheet(
+                      context: context,
+                      modal: FoodDetailModalComponent(
+                        key: Key("${food.id}"),
+                        product: food,
+                        addCart: () {
+                          addToCart(food);
+                          Get.close(0);
+                        },
+                        addCount: () {
+                          //addCount(food);
+                        },
+                        removeCount: () {
+                          //_posController.removeCount(food, null);
+                        },
+                      ),
+                      isDarkMode: false,
+                      isDrag: true,
+                      radius: 12,
+                    );
+                    posController
+                        .handleAddModalFoodInCartItemInitialState(); //reset state
+                  },
+                )),
+              ),
+            );
           },
-          onRefresh: () {
-            _onRefresh();
-          },
-          controller: _refreshController,
-          child: AutoHeightGridView(
-            shrinkWrap: true,
-            itemCount: posController.foods.length,
-            crossAxisCount: 2,
-            mainAxisSpacing: 10.r,
-            builder: (context, index) {
-              final food = posController.foods[index];
-              return AnimationConfiguration.staggeredGrid(
-                columnCount: 20,
-                position: index,
-                duration: const Duration(milliseconds: 375),
-                child: ScaleAnimation(
-                  scale: 0.5,
-                  child: FadeInAnimation(
-                      child: ProductGridItemComponent(
-                    key: Key("${food.id}"),
-                    product: food,
-                    onTap: () {
-                      AppHelpersCommon.showCustomModalBottomSheet(
-                        context: context,
-                        modal: FoodDetailModalComponent(
-                          key: Key("${food.id}"),
-                          product: food,
-                          addCart: () {
-                            addToCart(food);
-                            Get.close(0);
-                          },
-                          addCount: () {
-                            //addCount(food);
-                          },
-                          removeCount: () {
-                            //_posController.removeCount(food, null);
-                          },
-                        ),
-                        isDarkMode: false,
-                        isDrag: true,
-                        radius: 12,
-                      );
-                    },
-                  )),
-                ),
-              );
-            },
-          ),
         ),
       ),
     );

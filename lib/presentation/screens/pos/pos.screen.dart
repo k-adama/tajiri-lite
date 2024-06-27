@@ -21,7 +21,7 @@ class _PosScreenState extends State<PosScreen> {
         appBar: AppBar(
           centerTitle: true,
           elevation: 0,
-          title: SelectWaitressComponent(),
+          title: const SelectWaitressComponent(),
           iconTheme: const IconThemeData(color: Style.secondaryColor),
           backgroundColor: Style.white,
           actions: <Widget>[
@@ -39,7 +39,7 @@ class _PosScreenState extends State<PosScreen> {
           padding: const EdgeInsets.only(left: 1),
           child: const Column(
             children: [
-              MainAppbarComponent(),
+              CategoryListComponent(),
               Expanded(child: ProductsListComponent())
             ],
           ),

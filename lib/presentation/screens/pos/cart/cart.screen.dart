@@ -4,7 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/instance_manager.dart';
 import 'package:tajiri_waitress/app/common/app_helpers.common.dart';
 import 'package:tajiri_waitress/app/config/theme/style.theme.dart';
-import 'package:tajiri_waitress/domain/entities/main_item.entity.dart';
+import 'package:tajiri_waitress/domain/entities/local_cart_enties/main_item.entity.dart';
 import 'package:tajiri_waitress/presentation/controllers/pos/pos.controller.dart';
 import 'package:tajiri_waitress/presentation/screens/pos/cart/components/orders_informations_display.component.dart';
 import 'package:tajiri_waitress/presentation/screens/pos/components/order_detail_confirm_modal.component.dart';
@@ -51,17 +51,19 @@ class _CartScreenState extends State<CartScreen> {
                   child: ListView.builder(
                       padding: EdgeInsets.symmetric(horizontal: 16.w),
                       shrinkWrap: true,
-                      itemCount: posController.cartItemList.length,
+                      itemCount: posController.selectbag.bagProducts.length,
                       itemBuilder: (context, index) {
-                        List<MainCartEntity> cartItemListSort = posController
-                            .getSortList(posController.cartItemList);
+                        List<MainCartEntity> cartItems =
+                            posController.selectbag.bagProducts;
 
-                        final cartItem = cartItemListSort[index];
+                        final cartItem = cartItems[index];
+
                         return OrdersInformationsDisplayComponent(
-                          add: () {},
-                          remove: () {},
                           cart: cartItem,
-                          delete: () {},
+                          delete: () {
+                            posController.removeItemInBag(cartItem);
+                            setState(() {});
+                          },
                         );
                       }),
                 ),

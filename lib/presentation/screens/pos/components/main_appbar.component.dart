@@ -5,14 +5,14 @@ import 'package:tajiri_waitress/app/config/theme/style.theme.dart';
 import 'package:tajiri_waitress/presentation/controllers/pos/pos.controller.dart';
 import 'package:tajiri_waitress/presentation/screens/pos/components/category_card.component.dart';
 
-class MainAppbarComponent extends StatefulWidget {
-  const MainAppbarComponent({super.key});
+class CategoryListComponent extends StatefulWidget {
+  const CategoryListComponent({super.key});
 
   @override
-  State<MainAppbarComponent> createState() => _MainAppbarComponentState();
+  State<CategoryListComponent> createState() => _CategoryListComponentState();
 }
 
-class _MainAppbarComponentState extends State<MainAppbarComponent> {
+class _CategoryListComponentState extends State<CategoryListComponent> {
   int selectedIndex = -1;
 
   @override

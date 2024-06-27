@@ -10,11 +10,11 @@ class SelectWaitressComponent extends StatefulWidget {
 }
 
 class _SelectWaitressComponentState extends State<SelectWaitressComponent> {
-  final List<String> servers = ['Serveur 1', 'Serveur 2'];
+  final List<String?> servers = ['Serveur 1', 'Serveur 2', null];
   String? selectedServer;
   @override
   Widget build(BuildContext context) {
-    return SelectDropDownButton<String>(
+    return SelectDropDownButton<String?>(
       containerColor: Colors.grey[300]!,
       value: selectedServer,
       hinText: 'Choix du serveur',
@@ -23,10 +23,13 @@ class _SelectWaitressComponentState extends State<SelectWaitressComponent> {
           selectedServer = newValue;
         });
       },
-      items: servers.map((String server) {
-        return DropdownMenuItem<String>(
+      items: servers.map((String? server) {
+        return DropdownMenuItem<String?>(
           value: server,
-          child: Text(server),
+          child: Container(
+            constraints: const BoxConstraints(maxWidth: 200),
+            child: Text(server ?? "Aucun serveur"),
+          ),
         );
       }).toList(),
     );

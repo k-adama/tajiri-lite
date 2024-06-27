@@ -2,17 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tajiri_waitress/app/config/theme/style.theme.dart';
 import 'package:tajiri_waitress/app/extensions/string.extension.dart';
-import 'package:tajiri_waitress/domain/entities/main_item.entity.dart';
+import 'package:tajiri_waitress/domain/entities/local_cart_enties/main_item.entity.dart';
+import 'package:tajiri_waitress/presentation/screens/pos/cart/components/display_side_dish_or_type_cooking.dart';
 
 class OrdersInformationsDisplayComponent extends StatelessWidget {
   final MainCartEntity? cart;
-  final VoidCallback? add;
-  final VoidCallback? remove;
   final VoidCallback? delete;
   const OrdersInformationsDisplayComponent({
     super.key,
-    this.add,
-    this.remove,
     this.cart,
     this.delete,
   });
@@ -36,15 +33,13 @@ class OrdersInformationsDisplayComponent extends StatelessWidget {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Text(
-                        "${cart?.name}",
-                        // "${cart?.name} ${(cart?.typeOfCooking?.isNotEmpty ?? false) ? '(${cart?.typeOfCooking})' : ''}",
+                        "${cart?.name} ${(cart?.typeOfCooking?.isNotEmpty ?? false) ? '(${cart?.typeOfCooking})' : ''}",
                         style: Style.interNormal(size: 13.sp),
                       ),
                       2.verticalSpace,
-                      /* cart!.sideDishes!.isEmpty
-                          ? const SizedBox()
-                          : DisplaySideDishOrTypeCooking(
-                              sideDishes: cart!.sideDishes),*/
+                      if (cart!.sideDishes!.isNotEmpty)
+                        DisplaySideDishOrTypeCooking(
+                            sideDishes: cart!.sideDishes),
                       2.verticalSpace,
                       Text(
                         "${cart?.price}".currencyLong(),
@@ -73,7 +68,38 @@ class OrdersInformationsDisplayComponent extends StatelessWidget {
                 ),
                 20.horizontalSpace,
                 InkWell(
-                  onTap: () {},
+                  onTap: () {
+                    // final res = navigationController.posController
+                    //     .fieldModalProductToUpdateProductAndReturnSelectId(
+                    //         context, cart?.itemId);
+                    // final selectDish = res["selectIdDish"];
+                    // final selectTypeOfCooking = res["typeCooking"];
+
+                    // showDialog(
+                    //   context: context,
+                    //   barrierDismissible: false,
+                    //   builder: (context) {
+                    //     return ProductDetailsModalComponent(
+                    //       initSelectDish: selectDish,
+                    //       initTypeOfCooking: selectTypeOfCooking,
+                    //       product:
+                    //           navigationController.posController.foodDataInCart,
+                    //       key: Key(
+                    //           "${navigationController.posController.foodDataInCart.id}"),
+                    //       addCart: () {
+                    //         navigationController.posController.updateCartItem(
+                    //             context,
+                    //             navigationController
+                    //                 .posController.foodDataInCart,
+                    //             cart?.itemId);
+                    //         Get.close(0);
+                    //       },
+                    //       addCount: () {},
+                    //       removeCount: () {},
+                    //     );
+                    //   },
+                    // );
+                  },
                   child: Container(
                     decoration: BoxDecoration(
                       border: Border.all(
@@ -104,9 +130,7 @@ class OrdersInformationsDisplayComponent extends StatelessWidget {
           Padding(
             padding: const EdgeInsets.only(left: 10, bottom: 10),
             child: InkWell(
-              onTap: () {
-                // delete!.call();
-              },
+              onTap: delete,
               child: Text(
                 "Supprimer",
                 style: Style.interBold(

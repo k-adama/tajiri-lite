@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tajiri_waitress/app/config/theme/style.theme.dart';
-import 'package:tajiri_waitress/presentation/screens/pos/components/add_or_remove_food_detail_modal_quantity.component.dart';
+import 'package:tajiri_waitress/presentation/screens/pos/components/fooddetail_update_quantity.component.dart';
 
 class SelectDishFoodComponent extends StatefulWidget {
   final String dishFoodName;
-  final String text;
+  final int qty;
   final VoidCallback add;
   final VoidCallback remove;
   const SelectDishFoodComponent({
@@ -13,7 +13,7 @@ class SelectDishFoodComponent extends StatefulWidget {
     required this.dishFoodName,
     required this.add,
     required this.remove,
-    required this.text,
+    required this.qty,
   });
 
   @override
@@ -47,10 +47,12 @@ class _SelectDishFoodComponentState extends State<SelectDishFoodComponent> {
               ],
             ),
           ),
-          AddOrRemoveFoodDteailModalQauntityComponent(
+          FoodDetailUpdateQuantityComponent(
+            sizeButton: 25,
+            iconsize: 16,
             add: widget.add,
             remove: widget.remove,
-            text: widget.text,
+            qty: widget.qty,
           ),
         ],
       ),

@@ -38,7 +38,7 @@ class _TypeOfCookingComponentState extends State<TypeOfCookingComponent> {
           padding: const EdgeInsets.only(left: 12.0),
           child: Text(
             "Type de cuisson",
-            style: Style.interBold(size: 20, color: Style.brandBlue950),
+            style: Style.interBold(size: 14, color: Style.brandBlue950),
           ),
         ),
         Padding(
@@ -50,11 +50,14 @@ class _TypeOfCookingComponentState extends State<TypeOfCookingComponent> {
         ),
         AutoHeightGridView(
           shrinkWrap: true,
-          itemCount: 4,
+          itemCount: posController.typesOfCooking.length,
           crossAxisCount: 2,
           mainAxisSpacing: 10.r,
           builder: (context, index) {
-            //final element ;
+            final typeOfCooking = posController.typesOfCooking[index];
+
+            final isSelect =
+                posController.selectedOfCooking == typeOfCooking.id;
             return AnimationConfiguration.staggeredGrid(
               columnCount: 4,
               position: index,
@@ -63,9 +66,10 @@ class _TypeOfCookingComponentState extends State<TypeOfCookingComponent> {
                 scale: 0.5,
                 child: FadeInAnimation(
                     child: TypeOfCookingSelectionComponent(
-                  text: 'Grillé',
-                  onTap: () => posController.setSelectTypeOfCooking('grillé'),
-                  isSelected: posController.selectedOfCooking == 'grillé',
+                  text: typeOfCooking.name ?? "_",
+                  onTap: () =>
+                      posController.setSelectTypeOfCooking(typeOfCooking.id),
+                  isSelected: isSelect,
                 )),
               ),
             );

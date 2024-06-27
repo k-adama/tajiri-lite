@@ -37,6 +37,7 @@ class SelectDropDownButton<T> extends StatelessWidget {
             ),
           ),
           items: items,
+          padding: const EdgeInsets.only(left: 8),
           hint: Container(
             margin: const EdgeInsets.only(left: 8),
             child: Text(hinText),
