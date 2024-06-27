@@ -3,10 +3,10 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:tajiri_waitress/app/config/theme/style.theme.dart';
 
-class customPosRoundedButtonComponent extends StatelessWidget {
+class CustomPosRoundedButtonComponent extends StatelessWidget {
   final Function()? onTap;
   final String text;
-  const customPosRoundedButtonComponent({
+  const CustomPosRoundedButtonComponent({
     super.key,
     this.onTap,
     required this.text,
@@ -29,7 +29,7 @@ class customPosRoundedButtonComponent extends StatelessWidget {
             ),
           ],
         ),
-        padding: const EdgeInsets.only(left: 4),
+        padding: const EdgeInsets.symmetric(horizontal: 4),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
@@ -39,7 +39,7 @@ class customPosRoundedButtonComponent extends StatelessWidget {
               'Voir le panier',
               style: Style.interBold(),
             ),
-            100.horizontalSpace,
+            const Spacer(),
             Container(
                 padding: const EdgeInsets.all(10),
                 decoration: const BoxDecoration(
@@ -50,7 +50,6 @@ class customPosRoundedButtonComponent extends StatelessWidget {
                     color: Style.white,
                   ),
                 )),
-            10.horizontalSpace,
           ],
         ),
       ),

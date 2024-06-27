@@ -19,7 +19,7 @@ class SeeCartButtonComponent extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Expanded(
-              child: customPosRoundedButtonComponent(
+              child: CustomPosRoundedButtonComponent(
                 onTap: () {
                   Get.toNamed(Routes.CART);
                 },
