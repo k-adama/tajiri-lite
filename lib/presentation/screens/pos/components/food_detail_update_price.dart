@@ -3,9 +3,9 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:tajiri_waitress/app/config/theme/style.theme.dart';
 import 'package:tajiri_waitress/domain/entities/food_data.entity.dart';
-import 'package:tajiri_waitress/presentation/controllers/navigation/pos/pos.controller.dart';
-import 'package:tajiri_waitress/presentation/screens/navigation/pos/components/add_or_remove_food_detail_modal_quantity.component.dart';
-import 'package:tajiri_waitress/presentation/screens/navigation/pos/components/food_detail_formField.component.dart';
+import 'package:tajiri_waitress/presentation/controllers/pos/pos.controller.dart';
+import 'package:tajiri_waitress/presentation/screens/pos/components/add_or_remove_food_detail_modal_quantity.component.dart';
+import 'package:tajiri_waitress/presentation/screens/pos/components/food_detail_formField.component.dart';
 
 class FoodDetailUpdatePrice extends StatefulWidget {
   final FoodDataEntity? product;

@@ -179,7 +179,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   child: FloatingActionButton(
                     backgroundColor: Style.brandBlue950,
                     onPressed: () {
-                      Get.toNamed(Routes.SALE_HISTORY);
+                      Get.toNamed(Routes.ORDER_HISTORY);
                     },
                     child: Image.asset(
                         'assets/images/icon-park-solid_transaction-order.png'),

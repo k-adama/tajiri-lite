@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
 import 'package:tajiri_waitress/app/config/theme/style.theme.dart';
-import 'package:tajiri_waitress/presentation/controllers/navigation/pos/pos.controller.dart';
+import 'package:tajiri_waitress/presentation/controllers/pos/pos.controller.dart';
 
 class FoodDetailFormField extends StatelessWidget {
   final String? hint;

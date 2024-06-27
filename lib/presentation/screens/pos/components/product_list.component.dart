@@ -8,9 +8,9 @@ import 'package:get/route_manager.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart' as refresh;
 import 'package:tajiri_waitress/app/common/app_helpers.common.dart';
 import 'package:tajiri_waitress/domain/entities/food_data.entity.dart';
-import 'package:tajiri_waitress/presentation/controllers/navigation/pos/pos.controller.dart';
-import 'package:tajiri_waitress/presentation/screens/navigation/pos/components/food_detail_modal.component.dart';
-import 'package:tajiri_waitress/presentation/screens/navigation/pos/components/product_grid_item.component.dart';
+import 'package:tajiri_waitress/presentation/controllers/pos/pos.controller.dart';
+import 'package:tajiri_waitress/presentation/screens/pos/components/food_detail_modal.component.dart';
+import 'package:tajiri_waitress/presentation/screens/pos/components/product_grid_item.component.dart';
 
 class ProductsListComponent extends StatefulWidget {
   const ProductsListComponent({super.key});

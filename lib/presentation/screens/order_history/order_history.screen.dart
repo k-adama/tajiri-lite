@@ -3,17 +3,17 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:tajiri_waitress/app/config/constants/app.constant.dart';
 import 'package:tajiri_waitress/app/config/theme/style.theme.dart';
-import 'package:tajiri_waitress/presentation/controllers/navigation/sale_hostory/sale_hstory.controller.dart';
+import 'package:tajiri_waitress/presentation/controllers/order_history/order_history.controller.dart';
 import 'package:tajiri_waitress/presentation/ui/custom_tab_bar.ui.dart';
 
-class SaleHistoryScreen extends StatefulWidget {
-  const SaleHistoryScreen({super.key});
+class OrderHistoryScreen extends StatefulWidget {
+  const OrderHistoryScreen({super.key});
 
   @override
-  State<SaleHistoryScreen> createState() => _SaleHistoryScreenState();
+  State<OrderHistoryScreen> createState() => _OrderHistoryScreenState();
 }
 
-class _SaleHistoryScreenState extends State<SaleHistoryScreen>
+class _OrderHistoryScreenState extends State<OrderHistoryScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController = TabController(length: 3, vsync: this);
 
@@ -37,7 +37,7 @@ class _SaleHistoryScreenState extends State<SaleHistoryScreen>
         backgroundColor: Style.white,
       ),
       backgroundColor: Style.bodyNewColor,
-      body: GetBuilder<SaleHistoryController>(
+      body: GetBuilder<OrderHistoryController>(
           builder: (saleHistoryController) => Column(
                 children: [
                   Expanded(

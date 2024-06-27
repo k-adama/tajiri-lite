@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tajiri_waitress/app/config/theme/style.theme.dart';
-import 'package:tajiri_waitress/presentation/screens/navigation/pos/components/confirm_order_display_information.component.dart';
-import 'package:tajiri_waitress/presentation/screens/navigation/pos/components/on_place_information.component.dart';
+import 'package:tajiri_waitress/presentation/screens/pos/components/confirm_order_display_information.component.dart';
+import 'package:tajiri_waitress/presentation/screens/pos/components/on_place_information.component.dart';
 import 'package:tajiri_waitress/presentation/ui/widgets/buttons/custom.button.dart';
 
 class OrderConfirmDetailModalComponent extends StatefulWidget {

@@ -17,19 +17,28 @@
         {
             "name": "tajiri-waitress",
             "request": "launch",
-            "type": "dart"
+            "type": "dart",
+            "toolArgs": [
+                "--dart-define-from-file=.env/dev.json"
+            ]
         },
         {
             "name": "tajiri-waitress (profile mode)",
             "request": "launch",
             "type": "dart",
-            "flutterMode": "profile"
+            "flutterMode": "profile",
+            "toolArgs": [
+                "--dart-define-from-file=.env/dev.json"
+            ]
         },
         {
             "name": "tajiri-waitress (release mode)",
             "request": "launch",
             "type": "dart",
-            "flutterMode": "release"
+            "flutterMode": "release",
+            "toolArgs": [
+                "--dart-define-from-file=.env/dev.json"
+            ]
         }
     ]
 }

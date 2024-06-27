@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:tajiri_waitress/app/config/theme/style.theme.dart';
-import 'package:tajiri_waitress/presentation/screens/navigation/pos/components/main_appbar.component.dart';
-import 'package:tajiri_waitress/presentation/screens/navigation/pos/components/product_list.component.dart';
-import 'package:tajiri_waitress/presentation/screens/navigation/pos/components/see_cart_button.component.dart';
-import 'package:tajiri_waitress/presentation/screens/navigation/pos/components/select_waitress.component.dart';
+import 'package:tajiri_waitress/presentation/screens/pos/components/main_appbar.component.dart';
+import 'package:tajiri_waitress/presentation/screens/pos/components/product_list.component.dart';
+import 'package:tajiri_waitress/presentation/screens/pos/components/see_cart_button.component.dart';
+import 'package:tajiri_waitress/presentation/screens/pos/components/select_waitress.component.dart';
 import 'package:upgrader/upgrader.dart';
 
 class PosScreen extends StatefulWidget {

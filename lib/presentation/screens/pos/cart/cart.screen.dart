@@ -5,9 +5,9 @@ import 'package:get/instance_manager.dart';
 import 'package:tajiri_waitress/app/common/app_helpers.common.dart';
 import 'package:tajiri_waitress/app/config/theme/style.theme.dart';
 import 'package:tajiri_waitress/domain/entities/main_item.entity.dart';
-import 'package:tajiri_waitress/presentation/controllers/navigation/pos/pos.controller.dart';
-import 'package:tajiri_waitress/presentation/screens/navigation/pos/cart/components/orders_informations_display.component.dart';
-import 'package:tajiri_waitress/presentation/screens/navigation/pos/components/order_detail_confirm_modal.component.dart';
+import 'package:tajiri_waitress/presentation/controllers/pos/pos.controller.dart';
+import 'package:tajiri_waitress/presentation/screens/pos/cart/components/orders_informations_display.component.dart';
+import 'package:tajiri_waitress/presentation/screens/pos/components/order_detail_confirm_modal.component.dart';
 import 'package:tajiri_waitress/presentation/ui/widgets/buttons/custom.button.dart';
 
 class CartScreen extends StatefulWidget {

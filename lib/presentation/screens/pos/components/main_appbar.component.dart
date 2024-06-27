@@ -2,8 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:tajiri_waitress/app/config/theme/style.theme.dart';
-import 'package:tajiri_waitress/presentation/controllers/navigation/pos/pos.controller.dart';
-import 'package:tajiri_waitress/presentation/screens/navigation/pos/components/category_card.component.dart';
+import 'package:tajiri_waitress/presentation/controllers/pos/pos.controller.dart';
+import 'package:tajiri_waitress/presentation/screens/pos/components/category_card.component.dart';
 
 class MainAppbarComponent extends StatefulWidget {
   const MainAppbarComponent({super.key});
@@ -23,13 +23,8 @@ class _MainAppbarComponentState extends State<MainAppbarComponent> {
         // height: 100,
         padding: EdgeInsets.symmetric(horizontal: 8.r, vertical: 15.r),
         decoration: const BoxDecoration(
-          color: Style.white,
-          border: Border(
-            bottom: BorderSide(width: 1,
-            color: Style.grey100)
-          )
-        
-        ),
+            color: Style.white,
+            border: Border(bottom: BorderSide(width: 1, color: Style.grey100))),
         height: 130,
         child: ListView.builder(
           shrinkWrap: true,
@@ -43,11 +38,11 @@ class _MainAppbarComponentState extends State<MainAppbarComponent> {
               child: CategoryCardComponent(
                 onTap: () {
                   setState(() {
-                   if (selectedIndex == index) {
-                  selectedIndex = -1; // Désélectionne l'élément
-                } else {
-                  selectedIndex = index; // Sélectionne le nouvel élément
-                }
+                    if (selectedIndex == index) {
+                      selectedIndex = -1; // Désélectionne l'élément
+                    } else {
+                      selectedIndex = index; // Sélectionne le nouvel élément
+                    }
                   });
                 },
                 // colors: [],

@@ -4,8 +4,8 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:get/instance_manager.dart';
 import 'package:tajiri_waitress/app/config/theme/style.theme.dart';
-import 'package:tajiri_waitress/presentation/controllers/navigation/pos/pos.controller.dart';
-import 'package:tajiri_waitress/presentation/screens/navigation/pos/components/select_type_of_cooking.component.dart';
+import 'package:tajiri_waitress/presentation/controllers/pos/pos.controller.dart';
+import 'package:tajiri_waitress/presentation/screens/pos/components/select_type_of_cooking.component.dart';
 
 class TypeOfCookingComponent extends StatefulWidget {
   final String? initTypeOfCooking;
@@ -38,16 +38,14 @@ class _TypeOfCookingComponentState extends State<TypeOfCookingComponent> {
           padding: const EdgeInsets.only(left: 12.0),
           child: Text(
             "Type de cuisson",
-            style: Style.interBold(size: 20,
-                    color: Style.brandBlue950),
+            style: Style.interBold(size: 20, color: Style.brandBlue950),
           ),
         ),
         Padding(
-         padding: const EdgeInsets.only(left: 12.0),
+          padding: const EdgeInsets.only(left: 12.0),
           child: Text(
             "Veuillez sélectionner une cuisson",
-            style: Style.interNormal(size: 10,
-            color: Style.grey500),
+            style: Style.interNormal(size: 10, color: Style.grey500),
           ),
         ),
         AutoHeightGridView(
