@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/get.dart';
 import 'package:get/instance_manager.dart';
 import 'package:tajiri_waitress/app/common/app_helpers.common.dart';
 import 'package:tajiri_waitress/app/config/theme/style.theme.dart';
@@ -95,7 +96,9 @@ class _CartScreenState extends State<CartScreen> {
               color: Style.brandColor500,
             ),
             isUnderline: true,
-            onPressed: () {},
+            onPressed: () {
+              Get.back();
+            },
           ),
           16.verticalSpace,
           Row(

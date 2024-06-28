@@ -62,6 +62,7 @@ class PosController extends GetxController {
   }
 
   Future<void> fetchFoods() async {
+    print("-----------FETCH FOOD-----------");
     final connected = await AppConnectivityService.connectivity();
     if (connected) {
       isProductLoading = true;
