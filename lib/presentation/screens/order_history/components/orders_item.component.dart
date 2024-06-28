@@ -150,7 +150,7 @@ class _OrdersItemComponentState extends State<OrdersItemComponent> {
                   haveBorder: false,
                   radius: 5,
                   onPressed: () {
-                    print(widget.order.waitressId);
+                 
                   },
                   isUnderline: true,
                 ),
@@ -177,12 +177,14 @@ class _OrdersItemComponentState extends State<OrdersItemComponent> {
               children: [
                 if (haveImage) ...[
                   if (widget.order.orderType == 'ON_PLACE')
-                    Image.asset(
-                        'assets/images/ic_baseline-table-restaurant.png'),
+                    imageContainer(Image.asset(
+                        'assets/images/ic_baseline-table-restaurant.png')),
                   if (widget.order.orderType == 'TAKE_AWAY')
-                    Image.asset('assets/images/Type_commande.png'),
+                    imageContainer(
+                        Image.asset('assets/images/take_away_icon.png')),
                   if (widget.order.orderType == 'DELIVERED')
-                    Image.asset('assets/images/mdi_delivery-dining.png'),
+                    imageContainer(
+                        Image.asset('assets/images/mdi_delivery-dinin.png')),
                 ] else
                   Container(),
                 haveImage ? 8.horizontalSpace : 0.horizontalSpace,
@@ -194,5 +196,17 @@ class _OrdersItemComponentState extends State<OrdersItemComponent> {
             ),
           ),
         ));
+  }
+
+  Widget imageContainer(Image image) {
+    return Container(
+      width: 20,
+      height: 20,
+      decoration: BoxDecoration(
+          color: Style.brandBlue950, borderRadius: BorderRadius.circular(10)),
+      child: Center(
+        child: image,
+      ),
+    );
   }
 }

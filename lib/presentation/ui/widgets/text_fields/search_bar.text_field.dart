@@ -50,9 +50,9 @@ class _SearchBarTextFieldState extends State<SearchBarTextField> {
             Expanded(
               child: Container(
                 decoration: BoxDecoration(
-                  color: Style.white,
-                  borderRadius: BorderRadius.circular(8.r),
-                ),
+                    color: Style.grey50,
+                    borderRadius: BorderRadius.circular(8.r),
+                    border: Border.all(color: Style.grey100)),
                 child: TextField(
                   controller: widget.searchController,
                   onChanged: (text) {
@@ -87,7 +87,7 @@ class _SearchBarTextFieldState extends State<SearchBarTextField> {
                             child: Icon(
                               Icons.search,
                               color: Style.titleDark,
-                              size: 30,
+                              size: 25,
                             ),
                           ),
                     border: InputBorder.none,

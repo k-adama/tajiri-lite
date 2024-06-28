@@ -1,9 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/route_manager.dart';
+import 'package:tajiri_waitress/app/common/app_helpers.common.dart';
 import 'package:tajiri_waitress/app/config/theme/style.theme.dart';
 import 'package:tajiri_waitress/presentation/screens/pos/components/confirm_order_display_information.component.dart';
 import 'package:tajiri_waitress/presentation/screens/pos/components/on_place_information.component.dart';
 import 'package:tajiri_waitress/presentation/ui/widgets/buttons/custom.button.dart';
+import 'package:tajiri_waitress/presentation/ui/widgets/dialogs/successfull.dialog.dart';
 
 class OrderConfirmDetailModalComponent extends StatefulWidget {
   const OrderConfirmDetailModalComponent({super.key});
@@ -66,7 +69,48 @@ class _OrderConfirmDetailModalComponentState
                   isLoadingColor: Style.white,
                   haveBorder: false,
                   radius: 5,
-                  onPressed: () {},
+                  onPressed: () {
+                    AppHelpersCommon.showAlertDialog(
+                      context: context,
+                      canPop: false,
+                      child: SuccessfullDialog(
+                        content: 'La commande \n a été envoyée à la caisse.',
+                        redirect: () {},
+                        asset: "assets/svgs/confirmOrderIcon.svg",
+                        button: CustomButton(
+                          isUnderline: true,
+                          textColor: Style.brandColor500,
+                          background: Style.brandBlue50,
+                          underLineColor: Style.brandColor500,
+                          title: 'Prendre une nouvelle commande',
+                          onPressed: () {},
+                        ),
+                        closePressed: () {
+                          Get.close(1);
+                        },
+                      ),
+                      /* SuccessfullDialog(
+                        haveButton: false,
+                        isCustomerAdded: false,
+                        //title: "Enregistrement effectué",
+                        content: "Consulter l'élément dans l'historique",
+                        svgPicture: "assets/svgs/confirmOrderIcon.svg",
+                        redirect: () {
+                          Get.close(1);
+                        },
+                        button: CustomButton(
+                          isUnderline: true,
+                          haveBorder: true,
+                          textColor: Style.brandBlue950,
+                          background: Style.red,
+                          underLineColor: Style.brandColor500,
+                          title: 'jhjfjhfjhfhjfhj',
+                          isLoadingColor: Style.brandColor500,
+                          onPressed: () {},
+                        ),
+                      ),*/
+                    );
+                  },
                 ),
               ),
               50.verticalSpace,

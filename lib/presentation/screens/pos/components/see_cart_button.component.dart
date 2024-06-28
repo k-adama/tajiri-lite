@@ -9,7 +9,6 @@ import 'package:tajiri_waitress/presentation/screens/pos/components/custom_pos_r
 
 class SeeCartButtonComponent extends StatelessWidget {
   const SeeCartButtonComponent({super.key});
-
   @override
   Widget build(BuildContext context) {
     return GetBuilder<PosController>(
