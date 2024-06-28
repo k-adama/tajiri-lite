@@ -50,6 +50,7 @@ class CustomPosRoundedButtonComponent extends StatelessWidget {
                     color: Style.white,
                   ),
                 )),
+            5.horizontalSpace,
           ],
         ),
       ),

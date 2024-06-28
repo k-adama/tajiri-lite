@@ -35,6 +35,8 @@ class Style {
   static const Color hintColor = Color(0xFFBABABA);
   static const Color dontHaveAccBtnBack = Color(0xFFF8F8F8);
   static const Color brandColorBlue100 = Color(0xFFCCCCFF);
+  static const Color titleDark = Color(0xFF0B0B0B);
+  static const Color lighter = Color(0xFFF2F7FF);
 
   /// OLD COLOR
   static const Color white = Color(0xFFFFFFFF);
