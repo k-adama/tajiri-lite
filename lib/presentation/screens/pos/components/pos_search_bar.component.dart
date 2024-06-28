@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tajiri_waitress/app/config/theme/style.theme.dart';
 import 'package:tajiri_waitress/presentation/controllers/pos/pos.controller.dart';
 import 'package:tajiri_waitress/presentation/ui/widgets/text_fields/search_bar.text_field.dart';
 
@@ -34,11 +35,16 @@ class _PosSearchState extends State<PosSearchComponent> {
 
   @override
   Widget build(BuildContext context) {
-    return SearchBarTextField(
-      searchController: searchController,
-      hintText: "Rechercher un plat, une boisson ...",
-      focusNode: searchFocusNode,
-      onSearch: (text) {},
+    return Container(
+      decoration: const BoxDecoration(
+        color: Style.white,
+      ),
+      child: SearchBarTextField(
+        searchController: searchController,
+        hintText: "Rechercher un plat, une boisson ...",
+        focusNode: searchFocusNode,
+        onSearch: (text) {},
+      ),
     );
   }
 }

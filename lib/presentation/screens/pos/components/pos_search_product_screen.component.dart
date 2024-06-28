@@ -18,27 +18,24 @@ class _PosSearchProductScreenState extends State<PosSearchProductScreen> {
       appBar: AppBar(
         centerTitle: true,
         elevation: 0,
-        title: Text(
+       /* title: Text(
           "Recherche produit",
           style: Style.interBold(
             size: 20,
             color: Style.brandBlue950,
           ),
-        ),
+        ),*/
         iconTheme: const IconThemeData(color: Style.secondaryColor),
         backgroundColor: Style.white,
       ),
       backgroundColor: Style.bodyNewColor,
       body: GetBuilder<PosController>(
-        builder: (posController) => Padding(
-          padding: const EdgeInsets.all(8.0),
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              PosSearchComponent(posController: posController),
-            ],
-          ),
+        builder: (posController) => Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            PosSearchComponent(posController: posController),
+          ],
         ),
       ),
     );
