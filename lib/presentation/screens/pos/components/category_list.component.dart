@@ -13,8 +13,6 @@ class CategoryListComponent extends StatefulWidget {
 }
 
 class _CategoryListComponentState extends State<CategoryListComponent> {
-  int selectedIndex = -1;
-
   @override
   Widget build(BuildContext context) {
     return GetBuilder<PosController>(
@@ -25,28 +23,21 @@ class _CategoryListComponentState extends State<CategoryListComponent> {
         decoration: const BoxDecoration(
             color: Style.white,
             border: Border(bottom: BorderSide(width: 1, color: Style.grey100))),
-        height: 130,
+        height: 115,
         child: ListView.builder(
           shrinkWrap: true,
-          // controller: categoryController,
           scrollDirection: Axis.horizontal,
-          itemCount: 10,
+          itemCount: posController.categories.length,
           itemBuilder: (context, index) {
-            //final categorie = posController.categories[index];
+            final category = posController.categories[index];
             return Padding(
               padding: const EdgeInsets.only(right: 8.0),
               child: CategoryCardComponent(
                 onTap: () {
-                  setState(() {
-                    if (selectedIndex == index) {
-                      selectedIndex = -1; // Désélectionne l'élément
-                    } else {
-                      selectedIndex = index; // Sélectionne le nouvel élément
-                    }
-                  });
+                  posController.handleFilter(category.id!, category.name!);
                 },
-                // colors: [],
-                isSelected: selectedIndex == index,
+                category: category,
+                isSelected: category.id == posController.categoryId.value,
               ),
             );
           },

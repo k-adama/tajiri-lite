@@ -60,6 +60,12 @@ class Style {
   static const Color shimmerBaseDark = Color.fromRGBO(117, 117, 117, 0.29);
   static const Color bodyNewColor = Color(0xFFEFF0F7);
 
+  /// gradiant
+  static const List<Color> gradientEntreDessert = [
+    Color(0xff9999FF),
+    Color(0xff6666FF),
+  ];
+
   /// font style
 
   static interBold(

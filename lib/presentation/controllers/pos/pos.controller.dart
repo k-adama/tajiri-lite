@@ -4,6 +4,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:tajiri_waitress/app/common/app_helpers.common.dart';
 import 'package:tajiri_waitress/app/config/constants/app.constant.dart';
 import 'package:tajiri_waitress/app/data/products/products.repository.dart';
+import 'package:tajiri_waitress/app/mixpanel/mixpanel.dart';
 import 'package:tajiri_waitress/app/services/app_connectivity.service.dart';
 import 'package:tajiri_waitress/domain/entities/category.entity.dart';
 import 'package:tajiri_waitress/domain/entities/food_data.entity.dart';
@@ -33,7 +34,8 @@ class PosController extends GetxController {
   // cart
   RxInt selectedBagIndex =
       0.obs; // toujours le seul pannier selectionné par default ici
-  RxList<BagDataEntity> bags = <BagDataEntity>[].obs;
+  static final initialBag = BagDataEntity(index: 0, bagProducts: []);
+  RxList<BagDataEntity> bags = <BagDataEntity>[initialBag].obs;
 
   int totalAmount = 0;
   final ProductsRepository _productsRepository = ProductsRepository();
@@ -44,10 +46,10 @@ class PosController extends GetxController {
   final user = AppHelpersCommon.getUserInLocalStorage();
 
   BagDataEntity get selectbag => bags[selectedBagIndex.value];
+  final selectbagProductsLength = 0.obs;
 
   @override
   void onReady() async {
-    addANewBag();
     await Future.wait([
       fetchFoods(),
       fetchTypeOfCookingFromSupabase(),
@@ -107,7 +109,7 @@ class PosController extends GetxController {
           );
           categories.assignAll(newCategories);
           // filter with the selection category (by default the first)
-          // handleFilter("all", categorieSupabaseSelected?.name);
+          handleFilter("all", "Tout");
 
           List<FoodVariantCategoryEntity> newFoodVariantCategories = [];
 
@@ -137,6 +139,85 @@ class PosController extends GetxController {
       );
       isProductLoading = false;
       update();
+    }
+  }
+
+  void setCategoryId(String id) {
+    categoryId.value = id;
+    update();
+  }
+
+  void handleFilter(String? categoryId, String? categoryName) {
+    if (categoryId == null) {
+      return;
+    }
+    setCategoryId(categoryId);
+    if (categoryId == 'all') {
+      foods.assignAll(foodsInit);
+      update();
+      try {
+        Mixpanel.instance.track("POS Category Filter", properties: {
+          "Category Name": categoryName,
+          "Number of Search Results": foods.length,
+          "Number of Out of Stock":
+              foods.where((food) => food.quantity == 0).length,
+          "Number of products with variants": foods
+              .where((food) =>
+                  food.foodVariantCategory != null &&
+                  food.foodVariantCategory!.isNotEmpty)
+              .length
+        });
+      } catch (e) {
+        print("Mixpanel error: $e");
+      }
+
+      return;
+    }
+
+    if (categoryId == KIT_ID) {
+      final transformedList = bundlePacks.map((bundle) {
+        return {
+          ...bundle,
+          'type': 'bundle',
+        };
+      }).toList();
+      final foodData =
+          transformedList.map((item) => FoodDataEntity.fromJson(item)).toList();
+      foods.assignAll(foodData);
+      update();
+
+      try {
+        Mixpanel.instance.track("POS Category Filter", properties: {
+          "Category Name": categoryName,
+          "Number of Search Results": transformedList.length,
+          "Number of Out of Stock": 0,
+          "Number of products with variants": 0
+        });
+      } catch (e) {
+        print("mixpanel error: $e");
+      }
+      return;
+    }
+
+    // Filter foods whose mainCategoryId key is equal to the ID of the selected category
+    final newData =
+        foodsInit.where((item) => item.categoryId == categoryId).toList();
+    foods.assignAll(newData);
+    update();
+    try {
+      Mixpanel.instance.track("POS Category Filter", properties: {
+        "Category Name": categoryName,
+        "Number of Search Results": newData.length,
+        "Number of Out of Stock":
+            newData.where((food) => food.quantity == 0).length,
+        "Number of products with variants": newData
+            .where((food) =>
+                food.foodVariantCategory != null &&
+                food.foodVariantCategory!.isNotEmpty)
+            .length
+      });
+    } catch (e) {
+      print("Mixpanel error: $e");
     }
   }
 
@@ -194,6 +275,7 @@ class PosController extends GetxController {
       selectedOfCooking,
     ));
     handleAddModalFoodInCartItemInitialState(); // reset the state
+    selectbagProductsLength.value = selectbag.bagProducts.length;
     update();
   }
 
@@ -243,7 +325,7 @@ class PosController extends GetxController {
   void setDecrementSideDish(SideDishFoodEntity sideDishFood,
       {bool? removeDish = false}) {
     var existingEntryIndex = sideDishAndQuantity.indexWhere(
-      (entry) => entry.sideDish?.id == sideDishFood?.sideDish!.id,
+      (entry) => entry.sideDish?.id == sideDishFood.sideDish!.id,
     );
     if (existingEntryIndex != -1) {
       if (removeDish == true) {
@@ -328,6 +410,7 @@ class PosController extends GetxController {
       bags[selectedBagIndex.value] = selectbag;
 
       calculateBagProductTotal(); // Recalculer le total après la suppression de l'item
+      selectbagProductsLength.value = selectbag.bagProducts.length;
       update();
     }
   }
@@ -359,10 +442,8 @@ class PosController extends GetxController {
 
   double calculateBagProductTotal() {
     if (selectedBagIndex.value < bags.length) {
-      var selectedBag = bags[selectedBagIndex.value];
       double total = 0.0;
-
-      for (var item in selectedBag.bagProducts) {
+      for (var item in selectbag.bagProducts) {
         total += (item.price ?? 0) * (item.quantity ?? 0);
       }
 

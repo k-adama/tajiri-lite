@@ -134,6 +134,7 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen>
       floatingActionButton: Container(
         padding: const EdgeInsets.symmetric(horizontal: 20),
         child: CustomRoundedButton(
+          title: 'Nouvelle Commande',
           onTap: () {
             Get.toNamed(Routes.POS);
           },

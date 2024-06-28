@@ -3,6 +3,8 @@ import 'package:tajiri_waitress/app/config/theme/style.theme.dart';
 
 class SelectDropDownButton<T> extends StatelessWidget {
   final Color containerColor;
+  final Color? borderColor;
+
   final T? value;
   final String hinText;
   final void Function(T?)? onChanged;
@@ -15,6 +17,7 @@ class SelectDropDownButton<T> extends StatelessWidget {
     required this.onChanged,
     required this.hinText,
     this.items,
+    this.borderColor,
   });
 
   @override
@@ -24,17 +27,16 @@ class SelectDropDownButton<T> extends StatelessWidget {
       decoration: BoxDecoration(
         borderRadius: const BorderRadius.all(Radius.circular(20)),
         color: containerColor,
+        border: borderColor != null ? Border.all(color: borderColor!) : null,
       ),
+      padding: const EdgeInsets.symmetric(horizontal: 12),
       child: DropdownButtonHideUnderline(
         child: DropdownButton<T>(
           value: value,
           borderRadius: BorderRadius.circular(24),
-          icon: const Padding(
-            padding: EdgeInsets.only(right: 8.0),
-            child: Icon(
-              Icons.arrow_drop_down,
-              color: Style.black,
-            ),
+          icon: const Icon(
+            Icons.arrow_drop_down,
+            color: Style.black,
           ),
           items: items,
           padding: const EdgeInsets.only(left: 8),

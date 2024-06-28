@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tajiri_waitress/app/config/theme/style.theme.dart';
 import 'package:tajiri_waitress/presentation/ui/widgets/buttons/select_dropdown.button.dart';
 
 class SelectWaitressComponent extends StatefulWidget {
@@ -15,7 +16,8 @@ class _SelectWaitressComponentState extends State<SelectWaitressComponent> {
   @override
   Widget build(BuildContext context) {
     return SelectDropDownButton<String?>(
-      containerColor: Colors.grey[300]!,
+      containerColor: Style.grey50,
+      borderColor: Style.grey100,
       value: selectedServer,
       hinText: 'Choix du serveur',
       onChanged: (String? newValue) {

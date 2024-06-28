@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:tajiri_waitress/app/config/theme/style.theme.dart';
@@ -164,13 +165,42 @@ class _HomeScreenState extends State<HomeScreen> {
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              Expanded(
-                child: CustomRoundedButton(
-                  onTap: () {
-                    Get.toNamed(Routes.POS);
-                  },
-                ),
-              ),
+              Obx(() {
+                final selectBagProductsLength =
+                    homeController.posController.selectbagProductsLength.value;
+                return Expanded(
+                  child: selectBagProductsLength == 0
+                      ? CustomRoundedButton(
+                          title: 'Nouvelle Commande',
+                          asset:
+                              SvgPicture.asset("assets/svgs/edit-pen-fill.svg"),
+                          onTap: () {
+                            Get.toNamed(Routes.POS);
+                          },
+                        )
+                      : CustomRoundedButton(
+                          title: 'Commande en cours',
+                          asset: Container(
+                            width: 25,
+                            padding: const EdgeInsets.all(5),
+                            decoration: const BoxDecoration(
+                                shape: BoxShape.circle,
+                                color: Style.brandBlue950),
+                            child: Center(
+                              child: Text(
+                                selectBagProductsLength.toString(),
+                                style: Style.interBold(
+                                  color: Style.yellowLigther,
+                                ),
+                              ),
+                            ),
+                          ),
+                          onTap: () {
+                            Get.toNamed(Routes.POS);
+                          },
+                        ),
+                );
+              }),
               10.horizontalSpace,
               SizedBox(
                 width: 48,

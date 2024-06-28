@@ -32,7 +32,6 @@ class _OrderConfirmDetailModalComponentState
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              20.verticalSpace,
               Center(
                 child: Container(
                   height: 4.h,
@@ -50,10 +49,7 @@ class _OrderConfirmDetailModalComponentState
                   color: Style.brandBlue950,
                 ),
               ),
-              const Divider(
-                thickness: 2,
-                color: Style.grey100,
-              ),
+              const Divider(thickness: 1, color: Style.grey100),
               16.verticalSpace,
               const ConfirmOrderDisplayInformationComponent(
                 title: "Information de livraison",

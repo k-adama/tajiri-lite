@@ -5,6 +5,7 @@ import 'package:get/get.dart';
 import 'package:get/instance_manager.dart';
 import 'package:tajiri_waitress/app/common/app_helpers.common.dart';
 import 'package:tajiri_waitress/app/config/theme/style.theme.dart';
+import 'package:tajiri_waitress/app/extensions/string.extension.dart';
 import 'package:tajiri_waitress/domain/entities/local_cart_enties/main_item.entity.dart';
 import 'package:tajiri_waitress/presentation/controllers/pos/pos.controller.dart';
 import 'package:tajiri_waitress/presentation/screens/pos/cart/components/orders_informations_display.component.dart';
@@ -147,7 +148,7 @@ class _CartScreenState extends State<CartScreen> {
                           "Total (En FCFA)",
                         ),
                         Text(
-                          "130000",
+                          "${posController.calculateBagProductTotal().toInt()}",
                           style: Style.interBold(color: Style.brandBlue950),
                         ),
                       ],
