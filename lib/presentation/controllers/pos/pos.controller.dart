@@ -2,7 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:tajiri_waitress/app/common/app_helpers.common.dart';
+import 'package:tajiri_waitress/app/common/utils.common.dart';
 import 'package:tajiri_waitress/app/config/constants/app.constant.dart';
+import 'package:tajiri_waitress/app/config/theme/style.theme.dart';
 import 'package:tajiri_waitress/app/data/products/products.repository.dart';
 import 'package:tajiri_waitress/app/mixpanel/mixpanel.dart';
 import 'package:tajiri_waitress/app/services/app_connectivity.service.dart';
@@ -10,8 +12,13 @@ import 'package:tajiri_waitress/domain/entities/category.entity.dart';
 import 'package:tajiri_waitress/domain/entities/food_data.entity.dart';
 import 'package:tajiri_waitress/domain/entities/food_variant_categorie.entity.dart';
 import 'package:tajiri_waitress/domain/entities/local_cart_enties/main_item.entity.dart';
+import 'package:tajiri_waitress/domain/entities/orders_data.entity.dart';
 import 'package:tajiri_waitress/domain/entities/side_dish.entity.dart';
+import 'package:tajiri_waitress/domain/entities/table.entity.dart';
 import 'package:tajiri_waitress/domain/entities/type_of_cooking_entity.data.dart';
+import 'package:tajiri_waitress/domain/entities/waitress.entity.dart';
+import 'package:tajiri_waitress/presentation/ui/widgets/buttons/custom.button.dart';
+import 'package:tajiri_waitress/presentation/ui/widgets/dialogs/successfull.dialog.dart';
 import 'package:uuid/uuid.dart';
 
 import '../../../domain/entities/local_cart_enties/bag_data.entity.dart';
@@ -46,9 +53,21 @@ class PosController extends GetxController {
   FoodDataEntity foodDataInCart = FoodDataEntity();
 
   final user = AppHelpersCommon.getUserInLocalStorage();
+  OrdersDataEntity newOrder = OrdersDataEntity();
+  RxString orderNotes = "".obs;
+  RxString paymentMethodId = "d8b8d45d-da79-478f-9d5f-693b33d654e6".obs;
 
   BagDataEntity get selectbag => bags[selectedBagIndex.value];
   final selectbagProductsLength = 0.obs;
+
+  final waitress = List<WaitressEntity>.empty().obs;
+  Rx<WaitressEntity?> selectedWaitress = Rx<WaitressEntity?>(null);
+  Rx<TableEntity?> selectedTable = Rx<TableEntity?>(null);
+
+  bool createOrderLoading = false;
+  dynamic placeOrder;
+  String? waitressCurrentId;
+  String? tableCurrentId;
 
   @override
   void onReady() async {
@@ -527,6 +546,189 @@ class PosController extends GetxController {
           "----------delete products list-------${selectedBag.deleteProducts}");
     }
   }
+
+  // MAKE ORDER
+  Future<void> handleCreateOrder(BuildContext context) async {
+    try {
+      await saveOrder(context);
+    } catch (error) {
+      print(error);
+    }
+  }
+
+  saveOrder(BuildContext context) async {
+    const status = "NEW";
+    setPlaceOrder(status);
+
+    createOrderLoading = true;
+    update();
+
+    print(placeOrder);
+
+    final idOrderToUpdate = bags[selectedBagIndex.value].idOrderToUpdate;
+
+    // print("==================>idOrderToUpdate $idOrderToUpdate");
+
+    // final response = idOrderToUpdate != null
+    //     ? await _productsRepository.updateOrder(placeOrder, idOrderToUpdate)
+    //     : await _productsRepository.createOrder(placeOrder);
+
+    // response.when(success: (data) {
+    //   // fot printReceipt  final BagDataEntity takeBagBeforeClear = bags[selectedBagIndex.value];
+    //   newOrder = data!;
+    //   createOrderLoading = false;
+    //   try {
+    //     Mixpanel.instance.track("Checkout (Send Order to DB)", properties: {
+    //       "CustomerEntity type": newOrder.customer == null ? 'GUEST' : 'SAVED',
+    //       "Order Status": status,
+    //       "Payment method": "",
+    //       "Status": "Success",
+    //       "Products": newOrder.orderDetails?.map((item) {
+    //         final int foodPrice =
+    //             item.food != null ? item.food?.price : item.bundle['price'];
+    //         return {
+    //           'Product Name': getNameFromOrderDetail(item),
+    //           'Price': item.price,
+    //           'Quantity': item.quantity,
+    //           'IsVariant': item.price != foodPrice ? true : false
+    //         };
+    //       }).toList()
+    //     });
+    //   } catch (e) {
+    //     print("Mixpanel error $e");
+    //   }
+
+    //   if (bags.length == 1) {
+    //     bags[selectedBagIndex.value] = BagDataEntity(index: 0, bagProducts: []);
+    //     // Vider le panier sans le supprimer
+    //   } else {
+    //     List<BagDataEntity> newBags = [];
+    //     bags.removeAt(selectedBagIndex.value);
+    //     for (int i = 0; i < bags.length; i++) {
+    //       newBags
+    //           .add(BagDataEntity(index: i, bagProducts: bags[i].bagProducts));
+    //     }
+    //     // LocalStorageService.instance.setBags(newBags);
+
+    //     bags.assignAll(newBags);
+    //   }
+    //   const int selectedIndex = 0;
+
+    //   selectedBagIndex.value = selectedIndex;
+    //   update();
+    //   print("+++++++++PARAMS $placeOrder");
+
+    //   // final printerController =
+    //   //     Get.find<NavigationController>().printerController;
+    //   AppHelpersCommon.showAlertDialog(
+    //     context: context,
+    //     canPop: false,
+    //     child: SuccessfullDialog(
+    //       content: 'La commande \n a été envoyée à la caisse.',
+    //       redirect: () {},
+    //       asset: "assets/svgs/confirmOrderIcon.svg",
+    //       button: CustomButton(
+    //         isUnderline: true,
+    //         textColor: Style.brandColor500,
+    //         background: Style.brandBlue50,
+    //         underLineColor: Style.brandColor500,
+    //         title: 'Prendre une nouvelle commande',
+    //         onPressed: () {
+    //           Get.close(3);
+    //         },
+    //       ),
+    //       closePressed: () {
+    //         Get.close(3);
+    //       },
+    //     ),
+    //   );
+
+    //   handleInitialState();
+    // }, failure: (failure, statusCode) {
+    //   createOrderLoading = false;
+    //   update();
+    //   try {
+    //     Mixpanel.instance.track("Checkout (Send Order to DB)", properties: {
+    //       "CustomerEntity type": newOrder.customer == null ? 'GUEST' : 'SAVED',
+    //       "Order Status": status,
+    //       "Payment method": "",
+    //       "Status": "Failure",
+    //       "Products": newOrder.orderDetails?.map((item) {
+    //         final int foodPrice =
+    //             item.food != null ? item.food?.price : item.bundle['price'];
+    //         return {
+    //           'Product Name': getNameFromOrderDetail(item),
+    //           'Price': item.price,
+    //           'Quantity': item.quantity,
+    //           'IsVariant': item.price != foodPrice ? true : false
+    //         };
+    //       }).toList()
+    //     });
+    //   } catch (e) {
+    //     print("Mixpanel error : $e");
+    //   }
+    // });
+  }
+
+  void handleInitialState() {
+    orderNotes.value = "";
+    selectedTable = TableEntity().obs;
+    selectedWaitress = WaitressEntity().obs;
+    update();
+  }
+
+  void setPlaceOrder(String status) {
+    final user = AppHelpersCommon.getUserInLocalStorage();
+    final restaurantId = user?.role?.restaurantId;
+
+    String customeType =
+        "GUEST"; //(customerNameSelect.value == "") ? "GUEST" : "SAVED";
+    String? customerIdValue;
+    //(customerId.value == "") ? null : customerId.value;
+
+    final itemFoods = selectbag.bagProducts.map((item) {
+      return {
+        'foodId': item.id,
+        'price': item.price,
+        'typeOfCooking': item.typeOfCooking,
+        'quantity': item.quantity,
+        'extras': item.sideDishes?.map((dish) {
+          return {"foodId": dish.sideDish?.id, "quantity": dish.quantity};
+        }).toList()
+      };
+    }).toList();
+
+    final totalCartValue = calculateBagProductTotal();
+    final Map<String, dynamic> params = {
+      'subTotal': totalCartValue,
+      'grandTotal': totalCartValue,
+      'customerType': customeType,
+      'status': status,
+      'customerId': customerIdValue,
+      'items': itemFoods,
+      'orderType': bags[selectedBagIndex.value].settleOrderId,
+      'orderNotes': orderNotes.value,
+      'restaurantId': restaurantId,
+      'createdId': user?.id,
+      'couponCode': "", // couponCode,
+      'discountAmount': 0,
+      'paymentMethodId': paymentMethodId.value,
+      'pinCode': "",
+      'address': "",
+      'tax': 0,
+    };
+    final waitressFromBagSelected = bags[selectedBagIndex.value].waitressId;
+
+    if (checkListingType(user) == ListingType.waitress) {
+      params['waitressId'] = waitressFromBagSelected ?? waitressCurrentId;
+    } else if (checkListingType(user) == ListingType.table) {
+      params['tableId'] = selectedTable.value?.id ?? tableCurrentId;
+    }
+    placeOrder = params;
+    update();
+  }
+
+  //
 
   bool productCanMarkedUpdate(MainCartEntity product) {
     return product.status != CartItemStatus.isNew;
