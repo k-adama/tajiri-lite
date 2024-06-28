@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:tajiri_waitress/app/config/theme/style.theme.dart';
+import 'package:tajiri_waitress/presentation/routes/presentation_screen.route.dart';
 import 'package:tajiri_waitress/presentation/screens/pos/components/main_appbar.component.dart';
 import 'package:tajiri_waitress/presentation/screens/pos/components/product_list.component.dart';
 import 'package:tajiri_waitress/presentation/screens/pos/components/see_cart_button.component.dart';
@@ -30,7 +32,9 @@ class _PosScreenState extends State<PosScreen> {
                 Icons.search,
                 color: Style.brandBlue950,
               ),
-              onPressed: () {},
+              onPressed: () {
+                Get.toNamed(Routes.SEARCH_PRODUCT);
+              },
             ),
           ],
         ),

@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:tajiri_waitress/app/common/app_helpers.common.dart';
 import 'package:tajiri_waitress/app/common/utils.common.dart';
@@ -11,10 +9,11 @@ import 'package:tajiri_waitress/app/extensions/string.extension.dart';
 import 'package:tajiri_waitress/domain/entities/orders_data.entity.dart';
 import 'package:tajiri_waitress/domain/entities/user.entity.dart';
 import 'package:tajiri_waitress/presentation/controllers/order_history/order_history.controller.dart';
+import 'package:tajiri_waitress/presentation/ui/widgets/buttons/custom.button.dart';
 
 class OrdersItemComponent extends StatefulWidget {
-  OrdersDataEntity order;
-  OrdersItemComponent({super.key, required this.order});
+  final OrdersDataEntity order;
+  const OrdersItemComponent({super.key, required this.order});
   @override
   State<OrdersItemComponent> createState() => _OrdersItemComponentState();
 }
@@ -32,7 +31,7 @@ class _OrdersItemComponentState extends State<OrdersItemComponent> {
   @override
   Widget build(BuildContext context) {
     return Padding(
-        padding: EdgeInsets.only(top: 12.r),
+        padding: EdgeInsets.only(top: 8.r),
         child: Container(
           padding: orderController.isExpanded
               ? null
@@ -43,53 +42,50 @@ class _OrdersItemComponentState extends State<OrdersItemComponent> {
           ),
           child: ExpansionTile(
             backgroundColor: Style.white,
-            trailing: const Row(
-              mainAxisSize: MainAxisSize.min,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Icon(Icons.expand_more),
-                SizedBox(height: 40),
-              ],
+            trailing: const Icon(
+              Icons.expand_more,
+              color: Style.brandBlue950,
             ),
             title: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
               children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.end,
-                      children: [
-                        orderTypeOrOrderStatusComponent(
-                          AppConstants.getOrderTypeInFrench(widget.order),
-                          true,
-                        ),
-                        5.horizontalSpace,
-                        orderTypeOrOrderStatusComponent(
-                            AppConstants.getStatusInFrench(widget.order),
-                            false),
-                      ],
-                    ),
-                    10.verticalSpace,
-                    orderController.tableOrWaitessNoNullOrNotEmpty(widget.order)
-                        ? Text(
-                            orderController.tableOrWaitressName(
-                                widget.order),
-                            style: Style.interNormal(
-                              color: Style.grey500,
-                            ),
-                          )
-                        : const SizedBox(),
-                    8.verticalSpace,
-                    Text(
-                      "${widget.order.grandTotal}".currencyLong(),
-                      style: Style.interBold(
-                        size: 16.sp,
+                Padding(
+                  padding: const EdgeInsets.only(top: 4.0),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.end,
+                    children: [
+                      orderTypeOrOrderStatusComponent(
+                        AppConstants.getOrderTypeInFrench(widget.order),
+                        true,
                       ),
-                    ),
-                    8.verticalSpace,
-                  ],
+                      10.horizontalSpace,
+                      orderTypeOrOrderStatusComponent(
+                          AppConstants.getStatusInFrench(widget.order), false),
+                    ],
+                  ),
                 ),
+                10.verticalSpace,
+                orderController.tableOrWaitessNoNullOrNotEmpty(widget.order)
+                    ? Text(
+                        orderController.tableOrWaitressName(widget.order),
+                        style: Style.interNormal(
+                          color: Style.grey500,
+                        ),
+                      )
+                    : Text(
+                        "${widget.order.createdUser?.firstname ?? ""} ${widget.order.createdUser?.lastname ?? ""}",
+                        style: Style.interNormal(
+                          color: Style.grey500,
+                        ),
+                      ),
+                8.verticalSpace,
+                Text(
+                  "${widget.order.grandTotal}".currencyLong(),
+                  style: Style.interBold(
+                    size: 16.sp,
+                  ),
+                ),
+                8.verticalSpace,
               ],
             ),
             subtitle: orderController.isExpanded
@@ -132,29 +128,40 @@ class _OrdersItemComponentState extends State<OrdersItemComponent> {
                                 horizontal: 10, vertical: 4),
                             margin: const EdgeInsets.only(left: 10),
                             decoration: BoxDecoration(
-                              color: Style.grey300,
+                              color: Style.brandColor50,
                               borderRadius: BorderRadius.circular(10),
                             ),
                             child: Text(
-                              "${getNameFromOrderDetail(orderDetail)} x ${orderDetail.quantity ?? ''}",
-                            ),
+                                "${getNameFromOrderDetail(orderDetail)} x ${orderDetail.quantity ?? ''}",
+                                style: Style.interNormal(
+                                  color: Style.brandBlue950,
+                                )),
                           );
                         }).toList() ??
                         [],
                   )),
               20.verticalSpace,
-              /*  Padding(
+              Padding(
                 padding: const EdgeInsets.only(left: 10, right: 10),
-                child: OrderSaveOrPaidButtonComponent(
-                    order: widget.order, isPaid: isPaid),
-              ),*/
+                child: CustomButton(
+                  background: Style.brandColor50,
+                  title: "Modifier la commande",
+                  textColor: Style.brandColor500,
+                  haveBorder: false,
+                  radius: 5,
+                  onPressed: () {
+                    print(widget.order.waitressId);
+                  },
+                  isUnderline: true,
+                ),
+              ),
               10.verticalSpace,
             ],
           ),
         ));
   }
 
-  Widget orderTypeOrOrderStatusComponent(String text, bool isImage) {
+  Widget orderTypeOrOrderStatusComponent(String text, bool haveImage) {
     return Container(
         decoration: BoxDecoration(
             color: Style.grey50,
@@ -168,7 +175,7 @@ class _OrdersItemComponentState extends State<OrdersItemComponent> {
           child: Center(
             child: Row(
               children: [
-                if (isImage) ...[
+                if (haveImage) ...[
                   if (widget.order.orderType == 'ON_PLACE')
                     Image.asset(
                         'assets/images/ic_baseline-table-restaurant.png'),
@@ -178,7 +185,7 @@ class _OrdersItemComponentState extends State<OrdersItemComponent> {
                     Image.asset('assets/images/mdi_delivery-dining.png'),
                 ] else
                   Container(),
-                8.horizontalSpace,
+                haveImage ? 8.horizontalSpace : 0.horizontalSpace,
                 Text(
                   text,
                   style: Style.interBold(size: 14, color: Style.brandBlue950),

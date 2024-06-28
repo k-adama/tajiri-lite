@@ -80,25 +80,12 @@ class OrderHistoryController extends GetxController {
       return orderItem.waitressId != null ? true : false;
     }
   }
-    String tableOrWaitressName(OrdersDataEntity orderItem) {
 
+  String tableOrWaitressName(OrdersDataEntity orderItem) {
     if (checkListingType(user) == ListingType.waitress) {
       return orderItem.waitressId != null ? orderItem.waitress?.name ?? "" : "";
     } else {
       return orderItem.tableId != null ? orderItem.table?.name ?? "" : "";
     }
   }
-  /*
-        final createdUserName =
-      "${orderItem.createdUser?.firstname ?? ""} ${orderItem.createdUser?.lastname ?? ""}";
-        final createdUserOrtableName =
-      orderItem.tableId != null ? "${orderItem.table?.name ?? ""} " : createdUserName;
-  
-  if (checkListingType(user) == ListingType.waitress) {
-      return orderItem.waitressId != null
-          ? orderItem.waitress?.name ?? createdUserOrtableName
-          : createdUserOrtableName;
-    } else {
-      return createdUserOrtableName;
-    }*/
 }

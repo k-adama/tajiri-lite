@@ -8,6 +8,7 @@ import 'package:tajiri_waitress/presentation/controllers/splash/splash.binding.d
 import 'package:tajiri_waitress/presentation/screens/auth/login.screen.dart';
 import 'package:tajiri_waitress/presentation/screens/home/home.screen.dart';
 import 'package:tajiri_waitress/presentation/screens/pos/cart/cart.screen.dart';
+import 'package:tajiri_waitress/presentation/screens/pos/components/pos_search_product_screen.component.dart';
 import 'package:tajiri_waitress/presentation/screens/pos/pos.screen.dart';
 import 'package:tajiri_waitress/presentation/screens/order_history/order_history.screen.dart';
 import 'package:tajiri_waitress/presentation/screens/splash/splash.screen.dart';
@@ -47,6 +48,11 @@ class PresentationScreenRoute {
       name: _Paths.CART,
       page: () => const CartScreen(),
       binding: CartBinding(),
+    ),
+    GetPage(
+      name: _Paths.SEARCH_PRODUCT,
+      page: () => const PosSearchProductScreen(),
+      binding: PosBinding(),
     ),
   ];
 }
