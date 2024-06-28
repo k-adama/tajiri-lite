@@ -1,11 +1,8 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
-import 'package:get/instance_manager.dart';
 import 'package:tajiri_waitress/app/common/app_helpers.common.dart';
 import 'package:tajiri_waitress/app/config/theme/style.theme.dart';
-import 'package:tajiri_waitress/app/extensions/string.extension.dart';
 import 'package:tajiri_waitress/domain/entities/local_cart_enties/main_item.entity.dart';
 import 'package:tajiri_waitress/presentation/controllers/pos/pos.controller.dart';
 import 'package:tajiri_waitress/presentation/screens/pos/cart/components/orders_informations_display.component.dart';
@@ -20,12 +17,10 @@ class CartScreen extends StatefulWidget {
 }
 
 class _CartScreenState extends State<CartScreen> {
-  final PosController posController = Get.find();
   final user = AppHelpersCommon.getUserInLocalStorage();
 
   @override
   Widget build(BuildContext context) {
-    final screenSize = MediaQuery.of(context).size;
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
@@ -41,40 +36,37 @@ class _CartScreenState extends State<CartScreen> {
         backgroundColor: Style.white,
       ),
       backgroundColor: Style.bodyNewColor,
-      body: Stack(
-        children: [
-          Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Expanded(
-                child: Scrollbar(
-                  controller: ScrollController(),
-                  child: ListView.builder(
-                      padding: EdgeInsets.symmetric(horizontal: 16.w),
-                      shrinkWrap: true,
-                      itemCount: posController.selectbag.bagProducts.length,
-                      itemBuilder: (context, index) {
-                        List<MainCartEntity> cartItems =
-                            posController.selectbag.bagProducts;
+      body: GetBuilder<PosController>(builder: (posController) {
+        return Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Expanded(
+              child: Scrollbar(
+                controller: ScrollController(),
+                child: ListView.builder(
+                    padding: EdgeInsets.symmetric(horizontal: 16.w),
+                    shrinkWrap: true,
+                    itemCount: posController.selectbag.bagProducts.length,
+                    itemBuilder: (context, index) {
+                      List<MainCartEntity> cartItems =
+                          posController.selectbag.bagProducts;
 
-                        final cartItem = cartItems[index];
+                      final cartItem = cartItems[index];
 
-                        return OrdersInformationsDisplayComponent(
-                          cart: cartItem,
-                          delete: () {
-                            posController.removeItemInBag(cartItem);
-                            setState(() {});
-                          },
-                        );
-                      }),
-                ),
+                      return OrdersInformationsDisplayComponent(
+                        cart: cartItem,
+                        delete: () {
+                          posController.removeItemInBag(cartItem);
+                        },
+                      );
+                    }),
               ),
-              bottomWidget(context, posController),
-            ],
-          ),
-        ],
-      ),
+            ),
+            bottomWidget(context, posController),
+          ],
+        );
+      }),
     );
   }
 

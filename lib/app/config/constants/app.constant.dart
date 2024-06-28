@@ -94,22 +94,26 @@ final tabs = [
   const Tab(text: "Payée"),
 ];
 
+const onPlaceSvg = "assets/svgs/onplace.svg";
+const takeAwaySvg = "assets/svgs/take_away_icon.svg";
+const deliveredSvg = "assets/svgs/ic_round-delivery-dining.svg";
+
 const List<Map<String, dynamic>> SETTLE_ORDERS = [
   {
     'name': 'Sur place',
     'id': 'ON_PLACE',
     'icon':
-        "assets/svgs/onplace.svg", // Assuming OnPlace is a Dart class or a variable holding an icon
+        onPlaceSvg, // Assuming OnPlace is a Dart class or a variable holding an icon
   },
   {
     'name': 'À emporter',
     'id': 'TAKE_AWAY',
     'icon':
-        "assets/svgs/take_away_icon.svg", // Assuming TakeAway is a Dart class or a variable holding an icon
+        takeAwaySvg, // Assuming TakeAway is a Dart class or a variable holding an icon
   },
   {
     'name': 'À livrer',
     'id': 'DELIVERED',
-    'icon': 'assets/svgs/ic_round-delivery-dining.svg',
+    'icon': deliveredSvg,
   },
 ];

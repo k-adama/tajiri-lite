@@ -47,7 +47,7 @@ class CustomPosRoundedButtonComponent extends StatelessWidget {
                 child: Text(
                   text,
                   style: Style.interBold(
-                    color: Style.white,
+                    color: Style.yellowLigther,
                   ),
                 )),
             5.horizontalSpace,

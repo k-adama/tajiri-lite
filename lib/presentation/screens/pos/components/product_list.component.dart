@@ -3,8 +3,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:get/get.dart';
-import 'package:get/instance_manager.dart';
-import 'package:get/route_manager.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart' as refresh;
 import 'package:tajiri_waitress/app/common/app_helpers.common.dart';
 import 'package:tajiri_waitress/app/config/theme/style.theme.dart';
@@ -83,10 +81,12 @@ class _ProductsListComponentState extends State<ProductsListComponent> {
                             child: ProductGridItemComponent(
                           key: Key("${food.id}"),
                           product: food,
-                          onTap: () {
+                          onTap: () async {
                             print(
                                 "================================> catégory : ${food.category?.name}");
-                            AppHelpersCommon.showCustomModalBottomSheet(
+                            posController.setPriceAddFood(food.price!);
+                            final result = await AppHelpersCommon
+                                .showCustomModalBottomSheet(
                               context: context,
                               modal: FoodDetailModalComponent(
                                 key: Key("${food.id}"),

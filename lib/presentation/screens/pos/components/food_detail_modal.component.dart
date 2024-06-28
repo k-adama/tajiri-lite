@@ -16,6 +16,7 @@ class FoodDetailModalComponent extends StatefulWidget {
   final VoidCallback removeCount;
   final List<String?>? initSelectDish;
   final String? initTypeOfCooking;
+  final bool? isUpdateModal;
   const FoodDetailModalComponent(
       {super.key,
       this.product,
@@ -23,6 +24,7 @@ class FoodDetailModalComponent extends StatefulWidget {
       required this.addCart,
       required this.addCount,
       required this.removeCount,
+      this.isUpdateModal = false,
       this.initTypeOfCooking});
 
   @override
@@ -109,7 +111,9 @@ class _FoodDetailModalComponentState extends State<FoodDetailModalComponent> {
                             child: CustomButton(
                               background: Style.brandColor500,
                               textColor: Style.white,
-                              title: "Ajouter au panier",
+                              title: widget.isUpdateModal == true
+                                  ? "Mettre à jour le panier"
+                                  : "Ajouter au panier",
                               radius: 5,
                               haveBorder: true,
                               borderColor: Style.brandColor500,

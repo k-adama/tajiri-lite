@@ -19,11 +19,6 @@ class OrderHistoryController extends GetxController {
   final UserEntity? user = AppHelpersCommon.getUserInLocalStorage();
 
   @override
-  void onInit() {
-    super.onInit();
-  }
-
-  @override
   void onReady() {
     Future.wait([
       fetchOrders(),

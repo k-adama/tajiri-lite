@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:get/get.dart';
 import 'package:tajiri_waitress/app/common/app_helpers.common.dart';
 import 'package:tajiri_waitress/app/common/utils.common.dart';
@@ -40,129 +41,132 @@ class _OrdersItemComponentState extends State<OrdersItemComponent> {
             color: Style.white,
             borderRadius: BorderRadius.circular(10),
           ),
-          child: ExpansionTile(
-            backgroundColor: Style.white,
-            trailing: const Icon(
-              Icons.expand_more,
-              color: Style.brandBlue950,
-            ),
-            title: Column(
-              crossAxisAlignment: CrossAxisAlignment.start,
+          child: Theme(
+            data: Theme.of(context).copyWith(dividerColor: Colors.transparent),
+            child: ExpansionTile(
+              backgroundColor: Style.white,
+              shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10)),
+              collapsedIconColor: Style.black,
+              iconColor: Style.black,
+              title: Column(
+                crossAxisAlignment: CrossAxisAlignment.start,
+                children: [
+                  Padding(
+                    padding: const EdgeInsets.only(top: 4.0),
+                    child: Row(
+                      mainAxisAlignment: MainAxisAlignment.end,
+                      children: [
+                        orderTypeOrOrderStatusComponent(
+                          AppConstants.getOrderTypeInFrench(widget.order),
+                          orderType: widget.order.orderType,
+                        ),
+                        10.horizontalSpace,
+                        orderTypeOrOrderStatusComponent(
+                            AppConstants.getStatusInFrench(widget.order)),
+                      ],
+                    ),
+                  ),
+                  10.verticalSpace,
+                  orderController.tableOrWaitessNoNullOrNotEmpty(widget.order)
+                      ? Text(
+                          orderController.tableOrWaitressName(widget.order),
+                          style: Style.interNormal(
+                            color: Style.grey500,
+                          ),
+                        )
+                      : Text(
+                          "${widget.order.createdUser?.firstname ?? ""} ${widget.order.createdUser?.lastname ?? ""}",
+                          style: Style.interNormal(
+                            color: Style.grey500,
+                          ),
+                        ),
+                  8.verticalSpace,
+                  Text(
+                    "${widget.order.grandTotal}".currencyLong(),
+                    style: Style.interBold(
+                      size: 16.sp,
+                    ),
+                  ),
+                  8.verticalSpace,
+                ],
+              ),
+              subtitle: orderController.isExpanded
+                  ? null
+                  : Row(
+                      children: [
+                        for (int i = 0; i < 2; i++)
+                          if (widget.order.orderDetails != null &&
+                              i < widget.order.orderDetails!.length)
+                            Flexible(
+                              child: Container(
+                                margin: const EdgeInsets.only(left: 2),
+                                child: Text(
+                                  "${widget.order.orderDetails?[i].quantity ?? ''}x ${getNameFromOrderDetail(widget.order.orderDetails?[i])}",
+                                  style: Style.interNormal(color: Style.black),
+                                  overflow: TextOverflow.ellipsis,
+                                ),
+                              ),
+                            )
+                      ],
+                    ),
+              onExpansionChanged: (value) {
+                setState(() {
+                  orderController.isExpanded = value;
+                });
+              },
               children: [
+                const Divider(
+                  indent: 20,
+                  endIndent: 20,
+                ),
+                Container(
+                    alignment: Alignment.topLeft,
+                    child: Wrap(
+                      spacing: 8.0,
+                      runSpacing: 8.0,
+                      children: widget.order.orderDetails?.map((orderDetail) {
+                            return Container(
+                              padding: const EdgeInsets.symmetric(
+                                  horizontal: 10, vertical: 4),
+                              margin: const EdgeInsets.only(left: 10),
+                              decoration: BoxDecoration(
+                                color: Style.brandColor50,
+                                borderRadius: BorderRadius.circular(10),
+                              ),
+                              child: Text(
+                                  "${getNameFromOrderDetail(orderDetail)} x ${orderDetail.quantity ?? ''}",
+                                  style: Style.interNormal(
+                                    color: Style.brandBlue950,
+                                  )),
+                            );
+                          }).toList() ??
+                          [],
+                    )),
+                20.verticalSpace,
                 Padding(
-                  padding: const EdgeInsets.only(top: 4.0),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      orderTypeOrOrderStatusComponent(
-                        AppConstants.getOrderTypeInFrench(widget.order),
-                        true,
-                      ),
-                      10.horizontalSpace,
-                      orderTypeOrOrderStatusComponent(
-                          AppConstants.getStatusInFrench(widget.order), false),
-                    ],
+                  padding: const EdgeInsets.only(left: 10, right: 10),
+                  child: CustomButton(
+                    background: Style.brandColor50,
+                    title: "Modifier la commande",
+                    textColor: Style.brandColor500,
+                    haveBorder: false,
+                    radius: 5,
+                    onPressed: () {},
+                    isUnderline: true,
                   ),
                 ),
                 10.verticalSpace,
-                orderController.tableOrWaitessNoNullOrNotEmpty(widget.order)
-                    ? Text(
-                        orderController.tableOrWaitressName(widget.order),
-                        style: Style.interNormal(
-                          color: Style.grey500,
-                        ),
-                      )
-                    : Text(
-                        "${widget.order.createdUser?.firstname ?? ""} ${widget.order.createdUser?.lastname ?? ""}",
-                        style: Style.interNormal(
-                          color: Style.grey500,
-                        ),
-                      ),
-                8.verticalSpace,
-                Text(
-                  "${widget.order.grandTotal}".currencyLong(),
-                  style: Style.interBold(
-                    size: 16.sp,
-                  ),
-                ),
-                8.verticalSpace,
               ],
             ),
-            subtitle: orderController.isExpanded
-                ? null
-                : Row(
-                    children: [
-                      for (int i = 0; i < 2; i++)
-                        if (widget.order.orderDetails != null &&
-                            i < widget.order.orderDetails!.length)
-                          Flexible(
-                            child: Container(
-                              margin: const EdgeInsets.only(left: 2),
-                              child: Text(
-                                "${widget.order.orderDetails?[i].quantity ?? ''}x ${getNameFromOrderDetail(widget.order.orderDetails?[i])}",
-                                style: Style.interNormal(color: Style.black),
-                                overflow: TextOverflow.ellipsis,
-                              ),
-                            ),
-                          )
-                    ],
-                  ),
-            onExpansionChanged: (value) {
-              setState(() {
-                orderController.isExpanded = value;
-              });
-            },
-            children: [
-              const Divider(
-                indent: 20,
-                endIndent: 20,
-              ),
-              Container(
-                  alignment: Alignment.topLeft,
-                  child: Wrap(
-                    spacing: 8.0,
-                    runSpacing: 8.0,
-                    children: widget.order.orderDetails?.map((orderDetail) {
-                          return Container(
-                            padding: const EdgeInsets.symmetric(
-                                horizontal: 10, vertical: 4),
-                            margin: const EdgeInsets.only(left: 10),
-                            decoration: BoxDecoration(
-                              color: Style.brandColor50,
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                            child: Text(
-                                "${getNameFromOrderDetail(orderDetail)} x ${orderDetail.quantity ?? ''}",
-                                style: Style.interNormal(
-                                  color: Style.brandBlue950,
-                                )),
-                          );
-                        }).toList() ??
-                        [],
-                  )),
-              20.verticalSpace,
-              Padding(
-                padding: const EdgeInsets.only(left: 10, right: 10),
-                child: CustomButton(
-                  background: Style.brandColor50,
-                  title: "Modifier la commande",
-                  textColor: Style.brandColor500,
-                  haveBorder: false,
-                  radius: 5,
-                  onPressed: () {
-                 
-                  },
-                  isUnderline: true,
-                ),
-              ),
-              10.verticalSpace,
-            ],
           ),
         ));
   }
 
-  Widget orderTypeOrOrderStatusComponent(String text, bool haveImage) {
+  Widget orderTypeOrOrderStatusComponent(String text, {String? orderType}) {
     return Container(
+        height: 35,
+        padding: const EdgeInsets.symmetric(horizontal: 10),
         decoration: BoxDecoration(
             color: Style.grey50,
             border: Border.all(
@@ -170,42 +174,51 @@ class _OrdersItemComponentState extends State<OrdersItemComponent> {
               width: 1,
             ),
             borderRadius: BorderRadius.circular(20)),
-        child: Padding(
-          padding: EdgeInsets.symmetric(horizontal: 10.0.w, vertical: 6.w),
-          child: Center(
-            child: Row(
-              children: [
-                if (haveImage) ...[
-                  if (widget.order.orderType == 'ON_PLACE')
-                    imageContainer(Image.asset(
-                        'assets/images/ic_baseline-table-restaurant.png')),
-                  if (widget.order.orderType == 'TAKE_AWAY')
-                    imageContainer(
-                        Image.asset('assets/images/take_away_icon.png')),
-                  if (widget.order.orderType == 'DELIVERED')
-                    imageContainer(
-                        Image.asset('assets/images/mdi_delivery-dinin.png')),
-                ] else
-                  Container(),
-                haveImage ? 8.horizontalSpace : 0.horizontalSpace,
-                Text(
-                  text,
-                  style: Style.interBold(size: 14, color: Style.brandBlue950),
-                ),
+        child: Center(
+          child: Row(
+            children: [
+              if (orderType != null) ...[
+                if (orderType == 'ON_PLACE')
+                  imageContainer(
+                    SvgPicture.asset(
+                      onPlaceSvg,
+                      width: 10,
+                      height: 10,
+                      color: Colors.white,
+                    ),
+                  ),
+                if (orderType == 'TAKE_AWAY')
+                  imageContainer(SvgPicture.asset(
+                    takeAwaySvg,
+                    color: Colors.white,
+                  )),
+                if (orderType == 'DELIVERED')
+                  imageContainer(SvgPicture.asset(
+                    deliveredSvg,
+                    color: Colors.white,
+                  )),
               ],
-            ),
+              orderType != null ? 8.horizontalSpace : 0.horizontalSpace,
+              Text(
+                text,
+                style: Style.interBold(size: 14, color: Style.brandBlue950),
+              ),
+            ],
           ),
         ));
   }
 
-  Widget imageContainer(Image image) {
+  Widget imageContainer(Widget asset) {
     return Container(
-      width: 20,
-      height: 20,
-      decoration: BoxDecoration(
-          color: Style.brandBlue950, borderRadius: BorderRadius.circular(10)),
+      width: 22,
+      height: 22,
+      padding: const EdgeInsets.all(3),
+      decoration: const BoxDecoration(
+        color: Style.brandBlue950,
+        shape: BoxShape.circle,
+      ),
       child: Center(
-        child: image,
+        child: asset,
       ),
     );
   }

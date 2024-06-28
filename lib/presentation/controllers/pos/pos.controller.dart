@@ -43,6 +43,8 @@ class PosController extends GetxController {
   List<SideDishAndQuantityEntity> sideDishAndQuantity = [];
   List<TypeOfCookingEntityData> typesOfCooking = [];
 
+  FoodDataEntity foodDataInCart = FoodDataEntity();
+
   final user = AppHelpersCommon.getUserInLocalStorage();
 
   BagDataEntity get selectbag => bags[selectedBagIndex.value];
@@ -221,6 +223,48 @@ class PosController extends GetxController {
     }
   }
 
+  Map<String, dynamic> fieldModalProductToUpdateProductAndReturnSelectId(
+      BuildContext context, String? itemId) {
+    List<String?> selectIdDish = [];
+    // filter cart by itemId to find existing product index
+    var existingProductIndex =
+        selectbag.bagProducts.indexWhere((item) => item.itemId == itemId);
+
+    //
+    final selectBagProducts = selectbag.bagProducts[existingProductIndex];
+    quantityAddFood = selectBagProducts.quantity!;
+    setPriceAddFood(selectBagProducts.price!);
+
+    setFoodDataInCart(selectBagProducts.foodDataEntity!);
+
+    setSelectTypeOfCooking(
+        selectBagProducts.typeOfCookingId ?? ""); //update typeOfCooking
+
+    for (int i = 0; i < selectBagProducts.sideDishes!.length; i++) {
+      SideDishEntity? sideDish = selectBagProducts.sideDishes![i].sideDish;
+      int quantity = selectBagProducts.sideDishes![i].quantity!;
+
+      selectIdDish.add(sideDish?.id); // add for return selectDishId
+      if (quantity == 1) {
+        setIncrementSideDish(
+            SideDishFoodEntity(sideDish: sideDish)); // update sideDish
+      } else {
+        for (int j = 0; j < quantity; j++) {
+          setIncrementSideDish(
+            SideDishFoodEntity(
+              sideDish: sideDish,
+            ),
+          );
+        }
+      }
+    }
+    update();
+    return {
+      "selectIdDish": selectIdDish,
+      "typeCooking": selectBagProducts.typeOfCookingId
+    };
+  }
+
   void setSelectTypeOfCooking(String? typOfCooking) {
     selectedOfCooking = typOfCooking;
     update();
@@ -277,6 +321,54 @@ class PosController extends GetxController {
     handleAddModalFoodInCartItemInitialState(); // reset the state
     selectbagProductsLength.value = selectbag.bagProducts.length;
     update();
+  }
+
+  updateCartItem(
+      BuildContext context, FoodDataEntity foodDataEntity, String? itemId) {
+    var existingProductIndex =
+        selectbag.bagProducts.indexWhere((item) => item.itemId == itemId);
+    selectbag.bagProducts.removeAt(existingProductIndex);
+    addProductToSelectedBag(foodDataInCart, existingProductIndex);
+    update();
+  }
+
+  void addProductToSelectedBag(FoodDataEntity food, int indexRemoveProduct) {
+    MainCartEntity product = createMainCartItemFromFood(
+      food,
+      quantityAddFood,
+      priceAddFood.value,
+      sideDishAndQuantity,
+      selectedOfCooking,
+    );
+    setSelectTypeOfCooking("");
+    try {
+      Mixpanel.instance.track("Added to Cart", properties: {
+        "Product name": food.name,
+        "Product ID": food.id,
+        "Category": food.category?.name,
+        "Selling Price": food.price,
+        "Quantity": quantityAddFood,
+        "Stock Availability": food.quantity,
+        "IsVariant": false
+      });
+    } catch (e) {
+      print("Mixpanel error : $e");
+    }
+
+    // verifier si la quantité peut etre augmentée (en fonction du stock de fooddata) en prenant en compte le type bundle (les type bundle n'ont pas de quantité definis donc ont une quantité  null)
+    final currentItem = selectbag.bagProducts
+        .firstWhereOrNull((element) => element.id == food.id);
+    if (food.quantity != null && currentItem?.quantity == food.quantity) return;
+
+    if (selectedBagIndex.value < bags.length) {
+      product.quantity = quantityAddFood;
+      selectbag.bagProducts.insert(indexRemoveProduct, product);
+
+      // Met à jour le panier sélectionné dans la liste des paniers
+      bags[selectedBagIndex.value] = selectbag;
+      handleAddModalFoodInCartItemInitialState();
+      update();
+    }
   }
 
   MainCartEntity createMainCartItemFromFood(
@@ -344,10 +436,10 @@ class PosController extends GetxController {
   }
 
   int getSideDishAddQuantity(String? id) {
-    final side = sideDishAndQuantity.firstWhere(
-        (item) => item.sideDish?.id == id,
-        orElse: () => SideDishAndQuantityEntity());
-    return side.quantity ?? 0;
+    final side = sideDishAndQuantity.firstWhereOrNull(
+      (item) => item.sideDish?.id == id,
+    );
+    return side?.quantity ?? 0;
   }
 
   List<SideDishAndQuantityEntity> filterSideDishAddQuantity(
@@ -450,5 +542,10 @@ class PosController extends GetxController {
       return total;
     }
     return 0;
+  }
+
+  setFoodDataInCart(FoodDataEntity foodDataEntity) {
+    foodDataInCart = foodDataEntity;
+    update();
   }
 }
