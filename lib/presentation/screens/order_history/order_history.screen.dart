@@ -76,7 +76,6 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen>
                                                         .restaurant?.type ==
                                                     AppConstants
                                                         .clientTypeRestaurant,
-                                            //widget.mainController,
                                           ),
                                 orderHistoryController.isProductLoading == true
                                     ? const LoadingUi()
@@ -85,7 +84,7 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen>
                                                 .getStatusOrderInProgressOrDone(
                                                     item, "IN_PROGRESS"))
                                             .isEmpty
-                                        ? OrderListEmptyComponent()
+                                        ? const OrderListEmptyComponent()
                                         : OrderCardItemComponent(
                                             orders: orderHistoryController
                                                 .orders
@@ -99,7 +98,6 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen>
                                                         .restaurant?.type ==
                                                     AppConstants
                                                         .clientTypeRestaurant,
-                                            //widget.mainController,
                                           ),
                                 orderHistoryController.isProductLoading == true
                                     ? const LoadingUi()
@@ -108,7 +106,7 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen>
                                                 .getStatusOrderInProgressOrDone(
                                                     item, "DONE"))
                                             .isEmpty
-                                        ? OrderListEmptyComponent()
+                                        ? const OrderListEmptyComponent()
                                         : OrderCardItemComponent(
                                             orders: orderHistoryController
                                                 .orders
@@ -122,7 +120,6 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen>
                                                         .restaurant?.type ==
                                                     AppConstants
                                                         .clientTypeRestaurant,
-                                            //widget.mainController,
                                           ),
                               ],
                             ),
