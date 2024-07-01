@@ -60,7 +60,7 @@ class _HomeScreenState extends State<HomeScreen> {
               "Tableau de bord",
               style: Style.interBold(size: 20, color: Style.brandBlue950),
             ),
-            iconTheme: const IconThemeData(color: Style.secondaryColor),
+            iconTheme: const IconThemeData(color: Style.brandBlue950),
             backgroundColor: Style.white,
           ),
         ),

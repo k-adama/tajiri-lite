@@ -42,7 +42,7 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen>
           "Historique de commande",
           style: Style.interBold(size: 20, color: Style.brandBlue950),
         ),
-        iconTheme: const IconThemeData(color: Style.secondaryColor),
+        iconTheme: const IconThemeData(color: Style.brandBlue950),
         backgroundColor: Style.white,
       ),
       backgroundColor: Style.bodyNewColor,

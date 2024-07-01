@@ -36,7 +36,7 @@ class _CartScreenState extends State<CartScreen> {
             color: Style.brandBlue950,
           ),
         ),
-        iconTheme: const IconThemeData(color: Style.secondaryColor),
+        iconTheme: const IconThemeData(color: Style.brandBlue950),
         backgroundColor: Style.white,
       ),
       backgroundColor: Style.bodyNewColor,

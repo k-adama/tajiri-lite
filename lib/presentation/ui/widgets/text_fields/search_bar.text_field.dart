@@ -44,7 +44,7 @@ class _SearchBarTextFieldState extends State<SearchBarTextField> {
     return Container(
       padding: const EdgeInsets.all(8.0),
       child: SizedBox(
-        height: 55.0,
+        height: 48.0,
         child: Row(
           children: [
             Expanded(
@@ -54,14 +54,16 @@ class _SearchBarTextFieldState extends State<SearchBarTextField> {
                     borderRadius: BorderRadius.circular(8.r),
                     border: Border.all(color: Style.grey100)),
                 child: TextField(
-                  controller: widget.searchController,
+                  // controller: widget.searchController,
                   onChanged: (text) {
                     widget.onSearch(text);
                   },
                   focusNode: widget.focusNode,
+                  enableSuggestions: false,
+                  textAlignVertical: TextAlignVertical.center,
                   decoration: InputDecoration(
-                    contentPadding:
-                        const EdgeInsets.symmetric(vertical: 20, horizontal: 8),
+                    contentPadding: EdgeInsets.zero,
+                    isDense: true,
                     hintText: isSearchFocused ||
                             widget.searchController.text.isNotEmpty
                         ? ""
@@ -79,17 +81,14 @@ class _SearchBarTextFieldState extends State<SearchBarTextField> {
                             ),
                           )
                         : null,
-                    prefixIcon: isSearchFocused ||
-                            widget.searchController.text.isNotEmpty
-                        ? null
-                        : const Padding(
-                            padding: EdgeInsets.all(10.0),
-                            child: Icon(
-                              Icons.search,
-                              color: Style.titleDark,
-                              size: 25,
-                            ),
-                          ),
+                    prefixIcon: const Padding(
+                      padding: EdgeInsets.all(10.0),
+                      child: Icon(
+                        Icons.search,
+                        color: Style.titleDark,
+                        size: 25,
+                      ),
+                    ),
                     border: InputBorder.none,
                     focusedBorder: OutlineInputBorder(
                       borderRadius: BorderRadius.circular(8.r),
