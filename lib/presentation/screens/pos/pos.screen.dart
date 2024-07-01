@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
+import 'package:get/route_manager.dart';
 import 'package:tajiri_waitress/app/config/theme/style.theme.dart';
 import 'package:tajiri_waitress/presentation/routes/presentation_screen.route.dart';
 import 'package:tajiri_waitress/presentation/screens/pos/components/category_list.component.dart';
@@ -24,7 +24,7 @@ class _PosScreenState extends State<PosScreen> {
           centerTitle: true,
           elevation: 0,
           title: const SelectWaitressComponent(),
-          iconTheme: const IconThemeData(color: Style.secondaryColor),
+          iconTheme: const IconThemeData(color: Style.brandBlue950),
           backgroundColor: Style.white,
           actions: <Widget>[
             IconButton(
