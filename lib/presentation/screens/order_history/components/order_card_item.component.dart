@@ -9,7 +9,7 @@ import 'package:tajiri_waitress/presentation/screens/order_history/components/or
 class OrderCardItemComponent extends StatefulWidget {
   final List<OrdersDataEntity> orders;
   final bool isRestaurant;
-  OrderCardItemComponent(
+  const OrderCardItemComponent(
       {super.key, required this.orders, required this.isRestaurant});
 
   @override
@@ -20,7 +20,7 @@ class _OrderCardItemComponentState extends State<OrderCardItemComponent> {
   final OrderHistoryController _ordersController = Get.find();
   final RefreshController _controller = RefreshController();
   void _onRefresh() async {
-     _ordersController.fetchOrders();
+    _ordersController.fetchOrders();
   }
 
   void _onLoading() async {

@@ -111,7 +111,14 @@ class _CartScreenState extends State<CartScreen> {
                     onPressed: () {
                       AppHelpersCommon.showCustomModalBottomSheet(
                         context: context,
-                        modal: OrderConfirmDetailModalComponent(),
+                        modal: Obx(() {
+                          return OrderConfirmDetailModalComponent(
+                            isLoading: posController.createOrderLoading.value,
+                            confirmOrder: () {
+                              posController.handleCreateOrder(context);
+                            },
+                          );
+                        }),
                         isDarkMode: false,
                         isDrag: true,
                         radius: 12,

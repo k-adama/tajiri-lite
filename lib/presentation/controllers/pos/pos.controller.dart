@@ -25,7 +25,6 @@ import '../../../domain/entities/local_cart_enties/bag_data.entity.dart';
 
 class PosController extends GetxController {
   final KIT_ID = "1c755978-ae56-47c6-b8e6-a5e3b03577ce";
-  RxString settleOrderId = "ON_PLACE".obs;
   var uuid = const Uuid();
   String? selectedOfCooking;
   bool isProductLoading = true;
@@ -64,7 +63,7 @@ class PosController extends GetxController {
   Rx<WaitressEntity?> selectedWaitress = Rx<WaitressEntity?>(null);
   Rx<TableEntity?> selectedTable = Rx<TableEntity?>(null);
 
-  bool createOrderLoading = false;
+  final createOrderLoading = false.obs;
   dynamic placeOrder;
   String? waitressCurrentId;
   String? tableCurrentId;
@@ -559,115 +558,112 @@ class PosController extends GetxController {
   saveOrder(BuildContext context) async {
     const status = "NEW";
     setPlaceOrder(status);
+    print(placeOrder);
 
-    createOrderLoading = true;
+    createOrderLoading.value = true;
     update();
 
     print(placeOrder);
 
     final idOrderToUpdate = bags[selectedBagIndex.value].idOrderToUpdate;
 
-    // print("==================>idOrderToUpdate $idOrderToUpdate");
+    print("==================>idOrderToUpdate $idOrderToUpdate");
 
-    // final response = idOrderToUpdate != null
-    //     ? await _productsRepository.updateOrder(placeOrder, idOrderToUpdate)
-    //     : await _productsRepository.createOrder(placeOrder);
+    final response = idOrderToUpdate != null
+        ? await _productsRepository.updateOrder(placeOrder, idOrderToUpdate)
+        : await _productsRepository.createOrder(placeOrder);
 
-    // response.when(success: (data) {
-    //   // fot printReceipt  final BagDataEntity takeBagBeforeClear = bags[selectedBagIndex.value];
-    //   newOrder = data!;
-    //   createOrderLoading = false;
-    //   try {
-    //     Mixpanel.instance.track("Checkout (Send Order to DB)", properties: {
-    //       "CustomerEntity type": newOrder.customer == null ? 'GUEST' : 'SAVED',
-    //       "Order Status": status,
-    //       "Payment method": "",
-    //       "Status": "Success",
-    //       "Products": newOrder.orderDetails?.map((item) {
-    //         final int foodPrice =
-    //             item.food != null ? item.food?.price : item.bundle['price'];
-    //         return {
-    //           'Product Name': getNameFromOrderDetail(item),
-    //           'Price': item.price,
-    //           'Quantity': item.quantity,
-    //           'IsVariant': item.price != foodPrice ? true : false
-    //         };
-    //       }).toList()
-    //     });
-    //   } catch (e) {
-    //     print("Mixpanel error $e");
-    //   }
+    response.when(success: (data) {
+      newOrder = data!;
+      createOrderLoading.value = false;
+      try {
+        Mixpanel.instance.track("Checkout (Send Order to DB)", properties: {
+          "CustomerEntity type": newOrder.customer == null ? 'GUEST' : 'SAVED',
+          "Order Status": status,
+          "Payment method": "",
+          "Status": "Success",
+          "Products": newOrder.orderDetails?.map((item) {
+            final int foodPrice =
+                item.food != null ? item.food?.price : item.bundle['price'];
+            return {
+              'Product Name': getNameFromOrderDetail(item),
+              'Price': item.price,
+              'Quantity': item.quantity,
+              'IsVariant': item.price != foodPrice ? true : false
+            };
+          }).toList()
+        });
+      } catch (e) {
+        print("Mixpanel error $e");
+      }
 
-    //   if (bags.length == 1) {
-    //     bags[selectedBagIndex.value] = BagDataEntity(index: 0, bagProducts: []);
-    //     // Vider le panier sans le supprimer
-    //   } else {
-    //     List<BagDataEntity> newBags = [];
-    //     bags.removeAt(selectedBagIndex.value);
-    //     for (int i = 0; i < bags.length; i++) {
-    //       newBags
-    //           .add(BagDataEntity(index: i, bagProducts: bags[i].bagProducts));
-    //     }
-    //     // LocalStorageService.instance.setBags(newBags);
+      if (bags.length == 1) {
+        bags[selectedBagIndex.value] = BagDataEntity(index: 0, bagProducts: []);
+        // Vider le panier sans le supprimer
+      } else {
+        List<BagDataEntity> newBags = [];
+        bags.removeAt(selectedBagIndex.value);
+        for (int i = 0; i < bags.length; i++) {
+          newBags
+              .add(BagDataEntity(index: i, bagProducts: bags[i].bagProducts));
+        }
 
-    //     bags.assignAll(newBags);
-    //   }
-    //   const int selectedIndex = 0;
+        bags.assignAll(newBags);
+      }
+      const int selectedIndex = 0;
 
-    //   selectedBagIndex.value = selectedIndex;
-    //   update();
-    //   print("+++++++++PARAMS $placeOrder");
+      selectedBagIndex.value = selectedIndex;
+      update();
+      print("+++++++++PARAMS $placeOrder");
 
-    //   // final printerController =
-    //   //     Get.find<NavigationController>().printerController;
-    //   AppHelpersCommon.showAlertDialog(
-    //     context: context,
-    //     canPop: false,
-    //     child: SuccessfullDialog(
-    //       content: 'La commande \n a été envoyée à la caisse.',
-    //       redirect: () {},
-    //       asset: "assets/svgs/confirmOrderIcon.svg",
-    //       button: CustomButton(
-    //         isUnderline: true,
-    //         textColor: Style.brandColor500,
-    //         background: Style.brandBlue50,
-    //         underLineColor: Style.brandColor500,
-    //         title: 'Prendre une nouvelle commande',
-    //         onPressed: () {
-    //           Get.close(3);
-    //         },
-    //       ),
-    //       closePressed: () {
-    //         Get.close(3);
-    //       },
-    //     ),
-    //   );
+      AppHelpersCommon.showAlertDialog(
+        context: context,
+        canPop: false,
+        child: SuccessfullDialog(
+          content: 'La commande \n a été envoyée à la caisse.',
+          redirect: () {},
+          asset: "assets/svgs/confirmOrderIcon.svg",
+          button: CustomButton(
+            isUnderline: true,
+            textColor: Style.brandColor500,
+            background: Style.brandBlue50,
+            underLineColor: Style.brandColor500,
+            title: 'Prendre une nouvelle commande',
+            onPressed: () {
+              Get.close(3);
+            },
+          ),
+          closePressed: () {
+            Get.close(3);
+          },
+        ),
+      );
 
-    //   handleInitialState();
-    // }, failure: (failure, statusCode) {
-    //   createOrderLoading = false;
-    //   update();
-    //   try {
-    //     Mixpanel.instance.track("Checkout (Send Order to DB)", properties: {
-    //       "CustomerEntity type": newOrder.customer == null ? 'GUEST' : 'SAVED',
-    //       "Order Status": status,
-    //       "Payment method": "",
-    //       "Status": "Failure",
-    //       "Products": newOrder.orderDetails?.map((item) {
-    //         final int foodPrice =
-    //             item.food != null ? item.food?.price : item.bundle['price'];
-    //         return {
-    //           'Product Name': getNameFromOrderDetail(item),
-    //           'Price': item.price,
-    //           'Quantity': item.quantity,
-    //           'IsVariant': item.price != foodPrice ? true : false
-    //         };
-    //       }).toList()
-    //     });
-    //   } catch (e) {
-    //     print("Mixpanel error : $e");
-    //   }
-    // });
+      handleInitialState();
+    }, failure: (failure, statusCode) {
+      createOrderLoading.value = false;
+      update();
+      try {
+        Mixpanel.instance.track("Checkout (Send Order to DB)", properties: {
+          "CustomerEntity type": newOrder.customer == null ? 'GUEST' : 'SAVED',
+          "Order Status": status,
+          "Payment method": "",
+          "Status": "Failure",
+          "Products": newOrder.orderDetails?.map((item) {
+            final int foodPrice =
+                item.food != null ? item.food?.price : item.bundle['price'];
+            return {
+              'Product Name': getNameFromOrderDetail(item),
+              'Price': item.price,
+              'Quantity': item.quantity,
+              'IsVariant': item.price != foodPrice ? true : false
+            };
+          }).toList()
+        });
+      } catch (e) {
+        print("Mixpanel error : $e");
+      }
+    });
   }
 
   void handleInitialState() {

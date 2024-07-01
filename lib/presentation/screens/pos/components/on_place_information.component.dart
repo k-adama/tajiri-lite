@@ -26,11 +26,16 @@ class _OnPlaceInformationComponentState
       children: [
         ...SETTLE_ORDERS.map((e) {
           return Obx(() {
-            final isSelect = posController.settleOrderId.value == e["id"];
+            final isSelect = posController
+                    .bags[posController.selectedBagIndex.value].settleOrderId ==
+                e["id"];
 
             return InkWell(
               onTap: () {
-                posController.settleOrderId.value = e["id"];
+                setState(() {
+                  posController.bags[posController.selectedBagIndex.value]
+                      .settleOrderId = e["id"];
+                });
               },
               child: AnimationButtonEffect(
                 child: Padding(
