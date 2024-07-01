@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
-import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/route_manager.dart';
 import 'package:tajiri_waitress/app/config/theme/style.theme.dart';
-import 'package:tajiri_waitress/presentation/screens/home/components/navigation_menu.component.dart';
+import 'package:tajiri_waitress/presentation/routes/presentation_screen.route.dart';
+import 'package:tajiri_waitress/presentation/screens/pos/components/category_list.component.dart';
+import 'package:tajiri_waitress/presentation/screens/pos/components/product_list.component.dart';
+import 'package:tajiri_waitress/presentation/screens/pos/components/see_cart_button.component.dart';
+import 'package:tajiri_waitress/presentation/screens/pos/components/select_waitress.component.dart';
 import 'package:upgrader/upgrader.dart';
 
 class PosScreen extends StatefulWidget {
@@ -20,34 +23,33 @@ class _PosScreenState extends State<PosScreen> {
         appBar: AppBar(
           centerTitle: true,
           elevation: 0,
-          title: Text(
-            "POS",
-            style: Style.interBold(size: 20, color: Style.brandBlue950),
-          ),
-          iconTheme: const IconThemeData(color: Style.secondaryColor),
+          title: const SelectWaitressComponent(),
+          iconTheme: const IconThemeData(color: Style.brandBlue950),
           backgroundColor: Style.white,
+          actions: <Widget>[
+            IconButton(
+              icon: const Icon(
+                Icons.search,
+                color: Style.brandBlue950,
+              ),
+              onPressed: () {
+                Get.toNamed(Routes.SEARCH_PRODUCT);
+              },
+            ),
+          ],
         ),
         backgroundColor: Style.bodyNewColor,
-        body: const Center(
-          child: Text("POS"),
-        ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-        floatingActionButton: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Row(
+        body: Container(
+          padding: const EdgeInsets.only(left: 1),
+          child: const Column(
             children: [
-              const Expanded(child: PosButtonComponent()),
-              10.horizontalSpace,
-              FloatingActionButton(
-                backgroundColor: Style.brandBlue950,
-                onPressed: () {},
-                child: Image.asset(
-                  'assets/images/icon-park-solid_transaction-order.png',
-                ),
-              ),
+              CategoryListComponent(),
+              Expanded(child: ProductsListComponent())
             ],
           ),
         ),
+        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+        floatingActionButton: const SeeCartButtonComponent(),
       ),
     );
   }

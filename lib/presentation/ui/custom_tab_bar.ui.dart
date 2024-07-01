@@ -15,7 +15,7 @@ class CustomTabBarUi extends StatelessWidget {
       {super.key,
       required this.tabController,
       required this.tabs,
-      this.backgroundColor = Style.light,
+      this.backgroundColor = Style.white,
       this.labelColor = Style.black,
       this.indicatorColorStyle = Style.black,
       this.isIndicator = true,
@@ -24,36 +24,36 @@ class CustomTabBarUi extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 40.h,
+      height: 50.h,
       decoration: BoxDecoration(
         color: backgroundColor,
-        borderRadius: BorderRadius.circular(10.r),
+        borderRadius: BorderRadius.circular(4.r),
       ),
+      padding: const EdgeInsets.all(5),
       child: TabBar(
         isScrollable: isScrollable,
         controller: tabController,
         indicatorColor: indicatorColorStyle,
         indicatorSize: isIndicator ? TabBarIndicatorSize.tab : null, //
         dividerHeight: 0,
-        labelPadding: isIndicator ? null : EdgeInsets.only(right: 40),
-        padding: isIndicator ? null : EdgeInsets.only(left: 10),
+        labelPadding: isIndicator ? null : const EdgeInsets.only(right: 40),
+        padding: isIndicator ? null : const EdgeInsets.only(left: 10),
         indicator: isIndicator
             ? BoxDecoration(
-                borderRadius: BorderRadius.circular(10.r), color: Style.white)
+                borderRadius: BorderRadius.circular(4.r),
+                color: Style.brandBlue950)
             : null,
-        labelColor: labelColor,
-        unselectedLabelColor: Style.dark,
-        unselectedLabelStyle: Style.interNormal(
+        labelColor: Style.brandBlue50,
+        unselectedLabelColor: Style.brandBlue950,
+        unselectedLabelStyle: Style.interBold(
           size: 14.sp,
         ),
         labelStyle: Style.interNormal(
           size: 14.sp,
         ),
         tabs: tabs.map((Tab tab) {
-          return Container(
-            child: Row(
-              children: [Text(tab.text ?? "")],
-            ),
+          return Text(
+            tab.text ?? "",
           );
         }).toList(),
       ),

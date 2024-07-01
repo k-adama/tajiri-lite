@@ -4,7 +4,15 @@ import 'package:tajiri_waitress/app/config/theme/style.theme.dart';
 
 class CustomRoundedButton extends StatelessWidget {
   final Function()? onTap;
-  const CustomRoundedButton({super.key, this.onTap});
+  final String title;
+  final Widget? asset;
+
+  const CustomRoundedButton({
+    super.key,
+    this.onTap,
+    required this.title,
+    this.asset,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -27,11 +35,13 @@ class CustomRoundedButton extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
-              'Nouvelle Commande',
+              title,
               style: Style.interBold(),
             ),
-            10.horizontalSpace,
-            Image.asset('assets/images/mage_edit-pen-fill.png'),
+            if (asset != null) ...[
+              10.horizontalSpace,
+              asset!,
+            ],
           ],
         ),
       ),

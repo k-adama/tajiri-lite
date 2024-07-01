@@ -1,3 +1,4 @@
+import 'package:tajiri_waitress/domain/entities/category.entity.dart';
 import 'package:tajiri_waitress/domain/entities/food_variant_categorie.entity.dart';
 
 class FoodDataEntity {
@@ -17,7 +18,7 @@ class FoodDataEntity {
     String? mainCategoryId,
     // List<SideDishFoodEntity>? sideDishFood,
     // List<StockDataEntity>? Stock,
-    // CategoryEntity? category,
+     CategoryEntity? category,
     List<FoodVariantCategoryEntity>? foodVariantCategory,
   }) {
     _id = id;
@@ -31,7 +32,7 @@ class FoodDataEntity {
     _imageUrl = imageUrl;
     _createdAt = createdAt;
     _updatedAt = updatedAt;
-    //_category = category;
+    _category = category;
     _type = type;
 
     //_sideDishFood = sideDishFood;
@@ -67,9 +68,9 @@ class FoodDataEntity {
 
     _createdAt = json['createdAt'];
     _updatedAt = json['updatedAt'];
-    /* _category = json['category'] != null
+     _category = json['category'] != null
         ? CategoryEntity.fromJson(json['category'])
-        : null;*/
+        : null;
 
     /* if (json['Stock'] != null) {
       _Stock = [];
@@ -103,7 +104,7 @@ class FoodDataEntity {
 
   int? _quantity;
   //List<StockDataEntity>? _Stock;
-  //CategoryEntity? _category;
+  CategoryEntity? _category;
   List<FoodVariantCategoryEntity>? _foodVariantCategory;
 
   FoodDataEntity copyWith({
@@ -123,7 +124,7 @@ class FoodDataEntity {
     // List<SideDishFoodEntity>? sideDishFood,
     String? brasseur,
     //List<StockDataEntity>? Stock,
-    // CategoryEntity? category,
+     CategoryEntity? category,
     List<FoodVariantCategoryEntity>? foodVariantCategory,
   }) =>
       FoodDataEntity(
@@ -142,7 +143,7 @@ class FoodDataEntity {
         // sideDishFood: sideDishFood ?? _sideDishFood,
         createdAt: createdAt ?? _createdAt,
         updatedAt: updatedAt ?? _updatedAt,
-        //category: category ?? _category,
+        category: category ?? _category,
         foodVariantCategory: foodVariantCategory ?? _foodVariantCategory,
       );
 
@@ -172,7 +173,7 @@ class FoodDataEntity {
   int? get quantity => _quantity;
   //List<StockDataEntity>? get Stock => _Stock;
 
-  //CategoryEntity? get category => _category;
+  CategoryEntity? get category => _category;
   List<FoodVariantCategoryEntity>? get foodVariantCategory =>
       _foodVariantCategory;
 
@@ -200,10 +201,10 @@ class FoodDataEntity {
     map['updatedAt'] = _updatedAt;
     /*if (_Stock != null) {
       map['Stock'] = _Stock?.map((v) => v.toJson()).toList();
-    }
+    }*/
     if (_category != null) {
       map['category'] = _category?.toJson();
-    }*/
+    }
 
     if (_foodVariantCategory != null) {
       map['foodVariantCategory'] =

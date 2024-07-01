@@ -1,5 +1,3 @@
-
-
 import 'package:tajiri_waitress/domain/entities/food_data.entity.dart';
 
 class OrderDetailsEntity {
@@ -13,7 +11,7 @@ class OrderDetailsEntity {
     String? createdAt,
     String? updatedAt,
     String? typeOfCooking,
-   // List<OrderDetailExtraEntity>? orderDetailExtra,
+    // List<OrderDetailExtraEntity>? orderDetailExtra,
     FoodDataEntity? food,
     dynamic bundle,
   }) {
@@ -41,7 +39,7 @@ class OrderDetailsEntity {
     _typeOfCooking = json['typeOfCooking'];
     _createdAt = json['createdAt'];
     _updatedAt = json['updatedAt'];
-   /* if (json['orderDetailExtra'] != null) {
+    /* if (json['orderDetailExtra'] != null) {
       _orderDetailExtra = [];
       /*json['orderDetailExtra'].forEach((v) {
         _orderDetailExtra?.add(OrderDetailExtraEntity.fromJson(v));
@@ -62,7 +60,7 @@ class OrderDetailsEntity {
   String? _typeOfCooking;
   //List<OrderDetailExtraEntity>? _orderDetailExtra;
   FoodDataEntity? _food;
-  dynamic? _bundle;
+  dynamic _bundle;
 
   String? get id => _id;
   String? get foodId => _foodId;
@@ -89,7 +87,7 @@ class OrderDetailsEntity {
     String? updatedAt,
     //List<OrderDetailExtraEntity>? orderDetailExtra,
     FoodDataEntity? food,
-    dynamic? bundle,
+    dynamic bundle,
   }) =>
       OrderDetailsEntity(
         id: id ?? _id,
@@ -117,7 +115,7 @@ class OrderDetailsEntity {
     map['createdAt'] = _createdAt;
     map['updatedAt'] = _updatedAt;
     map['typeOfCooking'] = typeOfCooking;
-   /* if (_orderDetailExtra != null) {
+    /* if (_orderDetailExtra != null) {
       map['orderDetailExtra'] =
           _orderDetailExtra?.map((v) => v.toJson()).toList();
     }*/
@@ -175,7 +173,7 @@ class OrderDetailsEntity {
     _food = value;
   }
 
-  set bundle(dynamic? value) {
+  set bundle(dynamic value) {
     _bundle = value;
   }
 }
