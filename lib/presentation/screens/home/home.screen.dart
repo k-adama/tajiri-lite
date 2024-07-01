@@ -6,10 +6,11 @@ import 'package:pull_to_refresh/pull_to_refresh.dart';
 import 'package:tajiri_waitress/app/config/theme/style.theme.dart';
 import 'package:tajiri_waitress/presentation/controllers/home/home.controller.dart';
 import 'package:tajiri_waitress/presentation/routes/presentation_screen.route.dart';
-import 'package:tajiri_waitress/presentation/screens/home/components/best_sale.component.dart';
 import 'package:tajiri_waitress/presentation/screens/home/components/cart_item_row.component.dart';
 import 'package:tajiri_waitress/presentation/screens/home/components/chart_bar.component.dart';
 import 'package:tajiri_waitress/presentation/screens/home/components/drawer_page.component.dart';
+import 'package:tajiri_waitress/presentation/screens/home/components/means_of_payment_by_sale.component.dart';
+import 'package:tajiri_waitress/presentation/screens/home/components/my_orders.component.dart';
 import 'package:tajiri_waitress/presentation/screens/home/components/sale_by_category.component..dart';
 import 'package:tajiri_waitress/presentation/screens/home/components/select_periode_dropdown.component.dart';
 import 'package:tajiri_waitress/presentation/ui/widgets/buttons/custom.rounded.button.dart';
@@ -122,35 +123,41 @@ class _HomeScreenState extends State<HomeScreen> {
                   Padding(
                     padding: const EdgeInsets.only(left: 14.0),
                     child: Text(
-                      "Ventes/catégorie",
+                      "Mes commandes",
                       style: Style.interBold(),
+                    ),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(left: 4.0, right: 4),
+                    child: MyOrdersComponent(
+                      orders: homeController.orders,
                     ),
                   ),
                   8.verticalSpace,
                   Padding(
+                    padding: const EdgeInsets.only(left: 14.0),
+                    child: Text(
+                      "Ventes/Moyen de paiement",
+                      style: Style.interBold(),
+                    ),
+                  ),
+                  Padding(
                     padding: const EdgeInsets.only(left: 4.0, right: 4),
-                    child: SaleByCategoriyComponent(
+                    child: MeansOfPaymentBySaleComponent(
                       orders: homeController.orders,
                     ),
                   ),
-                  14.verticalSpace,
-                  const Padding(
-                    padding: EdgeInsets.only(left: 16.0, right: 6),
-                    child: BestSaleComponent(
-                      /* orders: dashboardController.getDishOrDrinkOrders(
-                            dashboardController.orders, DISHESID),*/
-                      saleHeaderTitle: 'Meilleures ventes cuisine',
+                  Padding(
+                    padding: const EdgeInsets.only(left: 14.0),
+                    child: Text(
+                      "Ventes/catégorie",
+                      style: Style.interBold(),
                     ),
                   ),
-                  24.verticalSpace,
-                  const Padding(
-                    padding: EdgeInsets.only(left: 16.0, right: 6),
-                    child: BestSaleComponent(
-                      /* orders: dashboardController
-                                          .getDishOrDrinkOrders(
-                                              dashboardController.orders,
-                                              DRINKSID),*/
-                      saleHeaderTitle: 'Meilleures ventes bar',
+                  Padding(
+                    padding: const EdgeInsets.only(left: 4.0, right: 4),
+                    child: SaleByCategoriyComponent(
+                      orders: homeController.orders,
                     ),
                   ),
                   20.verticalSpace,
