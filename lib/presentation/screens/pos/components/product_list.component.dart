@@ -106,6 +106,7 @@ class _ProductsListComponentState extends State<ProductsListComponent> {
                               isDrag: true,
                               radius: 12,
                             );
+                            print(result);
                             posController
                                 .handleAddModalFoodInCartItemInitialState(); //reset state
                           },

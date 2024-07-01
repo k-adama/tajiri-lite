@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
-import 'package:flutter_svg/flutter_svg.dart';
 import 'package:tajiri_waitress/app/config/theme/style.theme.dart';
 
 class TypeOfCookingSelectionComponent extends StatefulWidget {
@@ -48,14 +47,13 @@ class _GenderSelectionState extends State<TypeOfCookingSelectionComponent> {
             Text(
               widget.text,
               style: widget.isSelected
-                  ? Style.interBold(size: 14,
-                  color: Style.brandBlue950)
-                  : Style.interNormal(size: 12,
-                  color: Style.grey500),
+                  ? Style.interBold(size: 14, color: Style.brandBlue950)
+                  : Style.interNormal(size: 12, color: Style.grey500),
             ),
             widget.isSelected
-                ? Image.asset('assets/images/lets-icons_check-fill.png',
-                   )
+                ? Image.asset(
+                    'assets/images/lets-icons_check-fill.png',
+                  )
                 : const SizedBox(),
           ],
         ),

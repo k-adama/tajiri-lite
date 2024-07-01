@@ -85,7 +85,7 @@ class _OrdersItemComponentState extends State<OrdersItemComponent> {
                   Text(
                     "${widget.order.grandTotal}".currencyLong(),
                     style: Style.interBold(
-                      size: 16.sp,
+                      size: 18.sp,
                     ),
                   ),
                   8.verticalSpace,
@@ -131,7 +131,7 @@ class _OrdersItemComponentState extends State<OrdersItemComponent> {
                                   horizontal: 10, vertical: 4),
                               margin: const EdgeInsets.only(left: 10),
                               decoration: BoxDecoration(
-                                color: Style.brandColor50,
+                                color: Style.brandBlue50.withOpacity(.5),
                                 borderRadius: BorderRadius.circular(10),
                               ),
                               child: Text(
@@ -147,7 +147,7 @@ class _OrdersItemComponentState extends State<OrdersItemComponent> {
                 Padding(
                   padding: const EdgeInsets.only(left: 10, right: 10),
                   child: CustomButton(
-                    background: Style.brandColor50,
+                    background: Style.brandBlue50,
                     title: "Modifier la commande",
                     textColor: Style.brandColor500,
                     haveBorder: false,

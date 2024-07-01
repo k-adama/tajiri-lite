@@ -102,7 +102,7 @@ class OrdersInformationsDisplayComponent extends StatelessWidget {
                         isDrag: true,
                         radius: 12,
                       );
-
+                      print(result);
                       posController.handleAddModalFoodInCartItemInitialState();
                     },
                     child: Container(

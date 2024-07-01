@@ -54,7 +54,7 @@ class Style {
   static const Color selectedItemsText = Color(0xFFA0A09C);
   static const Color grey600 = Color(0xFF60626C);
   static const Color grey300 = Color(0xFFAEAFB7);
-  static const Color brandColor50 = Color(0xFFE5E5FF);
+  // static const Color brandColor50 = Color(0xFFE5E5FF);
 
   /// dark theme based colors
   static const Color shimmerBaseDark = Color.fromRGBO(117, 117, 117, 0.29);

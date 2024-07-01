@@ -135,7 +135,7 @@ class ProductGridItemComponent extends StatelessWidget {
               Container(
                 height: 8,
                 decoration: BoxDecoration(
-                  color: borderColor ?? Style.brandColor50,
+                  color: borderColor ?? Style.brandBlue50,
                   borderRadius: BorderRadius.vertical(
                     bottom: Radius.circular(10.r),
                   ),

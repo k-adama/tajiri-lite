@@ -79,7 +79,7 @@ class _CartScreenState extends State<CartScreen> {
       child: Column(
         children: [
           CustomButton(
-            background: Style.brandColor50,
+            background: Style.brandBlue50,
             title: "Ajouter un produit",
             textColor: Style.brandColor500,
             haveBorder: false,

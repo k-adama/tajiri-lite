@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/instance_manager.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:tajiri_waitress/app/config/constants/app.constant.dart';
 import 'package:tajiri_waitress/domain/entities/orders_data.entity.dart';
 import 'package:tajiri_waitress/presentation/controllers/order_history/order_history.controller.dart';
 import 'package:tajiri_waitress/presentation/screens/order_history/components/orders_item.component.dart';
@@ -36,14 +35,10 @@ class _OrderCardItemComponentState extends State<OrderCardItemComponent> {
       onRefresh: _onRefresh,
       onLoading: _onLoading,
       child: ListView.builder(
+          padding: const EdgeInsets.only(bottom: 100),
           itemCount: widget.orders.length,
           itemBuilder: (BuildContext context, index) {
             OrdersDataEntity orderData = widget.orders[index];
-            bool isNew = orderData.status == AppConstants.orderAccepted ||
-                orderData.status == AppConstants.orderNew ||
-                orderData.status == AppConstants.orderCooking ||
-                orderData.status == AppConstants.orderReady &&
-                    widget.isRestaurant;
             return OrdersItemComponent(
               order: orderData,
             );

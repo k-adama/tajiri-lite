@@ -5,7 +5,6 @@ import 'package:tajiri_waitress/app/services/network_exceptions.service.dart';
 class OrdersRepository {
   HttpService server = HttpService();
 
-  @override
   Future<ApiResultService<dynamic>> getOrders(
       String? startDate, String? endDate, String? ownerId) async {
     final queryParameters = {
