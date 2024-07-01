@@ -114,7 +114,7 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen>
                   title: 'Nouvelle Commande',
                   asset: SvgPicture.asset("assets/svgs/edit-pen-fill.svg"),
                   onTap: () {
-                    Get.toNamed(Routes.POS);
+                    Get.toNamed(Routes.POS, arguments: true);
                   },
                 )
               : CustomRoundedButton(
@@ -134,7 +134,7 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen>
                     ),
                   ),
                   onTap: () {
-                    Get.toNamed(Routes.POS);
+                    Get.toNamed(Routes.POS, arguments: true);
                   },
                 );
         }),
@@ -165,7 +165,7 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen>
       return const OrderListEmptyComponent();
     }
 
-    return OrderCardItemComponent(
+    return OrdersListItemComponent(
       orders: filteredOrders,
       isRestaurant: _isRestaurantUser(user),
     );

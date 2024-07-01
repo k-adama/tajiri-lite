@@ -104,6 +104,7 @@ class _CartScreenState extends State<CartScreen> {
                   child: CustomButton(
                     background: Style.brandColor500,
                     title: "Envoyer à la caisse",
+                    isGrised: posController.selectbag.bagProducts.isEmpty,
                     textColor: Style.white,
                     isLoadingColor: Style.white,
                     haveBorder: false,

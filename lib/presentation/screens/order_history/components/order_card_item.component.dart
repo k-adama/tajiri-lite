@@ -5,17 +5,18 @@ import 'package:tajiri_waitress/domain/entities/orders_data.entity.dart';
 import 'package:tajiri_waitress/presentation/controllers/order_history/order_history.controller.dart';
 import 'package:tajiri_waitress/presentation/screens/order_history/components/orders_item.component.dart';
 
-class OrderCardItemComponent extends StatefulWidget {
+class OrdersListItemComponent extends StatefulWidget {
   final List<OrdersDataEntity> orders;
   final bool isRestaurant;
-  const OrderCardItemComponent(
+  const OrdersListItemComponent(
       {super.key, required this.orders, required this.isRestaurant});
 
   @override
-  State<OrderCardItemComponent> createState() => _OrderCardItemComponentState();
+  State<OrdersListItemComponent> createState() =>
+      _OrdersListItemComponentState();
 }
 
-class _OrderCardItemComponentState extends State<OrderCardItemComponent> {
+class _OrdersListItemComponentState extends State<OrdersListItemComponent> {
   final OrderHistoryController _ordersController = Get.find();
   final RefreshController _controller = RefreshController();
   void _onRefresh() async {

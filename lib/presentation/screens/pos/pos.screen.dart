@@ -16,6 +16,7 @@ class PosScreen extends StatefulWidget {
 }
 
 class _PosScreenState extends State<PosScreen> {
+  final backScreenIsOrderHistory = Get.arguments;
   @override
   Widget build(BuildContext context) {
     return UpgradeAlert(
@@ -23,7 +24,7 @@ class _PosScreenState extends State<PosScreen> {
         appBar: AppBar(
           centerTitle: true,
           elevation: 0,
-          title: const SelectWaitressComponent(),
+          title: const SelectTableComponent(),
           iconTheme: const IconThemeData(color: Style.brandBlue950),
           backgroundColor: Style.white,
           actions: <Widget>[
@@ -49,7 +50,9 @@ class _PosScreenState extends State<PosScreen> {
           ),
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-        floatingActionButton: const SeeCartButtonComponent(),
+        floatingActionButton: SeeCartButtonComponent(
+          backScreenIsOrderHistory: backScreenIsOrderHistory == true,
+        ),
       ),
     );
   }

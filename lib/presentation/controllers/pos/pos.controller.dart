@@ -465,8 +465,8 @@ class PosController extends GetxController {
     return sideDishAndQuantity.where((item) => item.quantity != 0).toList();
   }
 
-  String quantityProduct() {
-    return "${selectbag.bagProducts.length}";
+  int quantityProduct() {
+    return selectbag.bagProducts.length;
   }
 
   Future<void> fetchTypeOfCookingFromSupabase() async {
@@ -546,6 +546,82 @@ class PosController extends GetxController {
     }
   }
 
+  void addItemsFromOrderToCart(OrdersDataEntity order) {
+    // supprimer le seul pannier et creer un nouveau
+    bags.clear();
+    addANewBagFromOrder(order);
+    for (var orderDetail in order.orderDetails!) {
+      print(
+          "========order detail==${orderDetail.food?.name}===${orderDetail.orderDetailExtra} ");
+      FoodDataEntity food = orderDetail.food ?? orderDetail.bundle;
+      List<SideDishAndQuantityEntity> sideDishList =
+          orderDetail.orderDetailExtra!.map((item) {
+        return SideDishAndQuantityEntity(
+          sideDish: SideDishEntity(
+            id: item.food?.id,
+            name: item.food?.name,
+            price: null,
+          ),
+          quantity: item.quantity,
+        );
+      }).toList();
+
+      // mettre CartItemStatus a none le status pour pouvoir update
+      addProductToSelectedBagByMAinItem(createMainCartItemFromFood(
+          food,
+          orderDetail.quantity!,
+          orderDetail.price!,
+          sideDishList,
+          orderDetail.typeOfCooking,
+          status: CartItemStatus.none));
+    }
+    selectbagProductsLength.value = selectbag.bagProducts.length;
+  }
+
+  void addANewBagFromOrder(OrdersDataEntity order) {
+    BagDataEntity newBag = BagDataEntity(
+        index: bags.length,
+        bagProducts: [],
+        idOrderToUpdate: order.id,
+        waitressId: order.waitressId,
+        settleOrderId: order.orderType);
+
+    bags.add(newBag);
+    selectedBagIndex.value = bags.length - 1; //setSelectedBagIndex
+    ();
+  }
+
+  void addProductToSelectedBagByMAinItem(MainCartEntity product) {
+    //==================
+    if (selectedBagIndex.value < bags.length) {
+      var existingProductIndex = selectbag.bagProducts
+          .indexWhere((item) => item.itemId == product.itemId);
+
+      if (existingProductIndex != -1) {
+        // verifier si la quantité peut etre augmentée (en fonction du stock de fooddata)
+        final selectBagProducts = selectbag.bagProducts[existingProductIndex];
+
+        // Si le produit existe déjà, incrémente la quantité
+
+        selectBagProducts.quantity = (selectBagProducts.quantity ?? 0) + 1;
+
+        // si c'est une modification on marque la commande comme mise à jour
+        if (selectbag.idOrderToUpdate != null) {
+          if (selectBagProducts.status != CartItemStatus.isNew) {
+            print("update==========product");
+            selectBagProducts.status = CartItemStatus.updated;
+          }
+        }
+      } else {
+        selectbag.bagProducts.add(product);
+      }
+
+      // Met à jour le panier sélectionné dans la liste des paniers
+      bags[selectedBagIndex.value] = selectbag;
+      update();
+    }
+  }
+
   // MAKE ORDER
   Future<void> handleCreateOrder(BuildContext context) async {
     try {
@@ -610,6 +686,7 @@ class PosController extends GetxController {
 
         bags.assignAll(newBags);
       }
+      selectbagProductsLength.value = selectbag.bagProducts.length;
       const int selectedIndex = 0;
 
       selectedBagIndex.value = selectedIndex;
@@ -715,9 +792,11 @@ class PosController extends GetxController {
     };
     final waitressFromBagSelected = bags[selectedBagIndex.value].waitressId;
 
-    if (checkListingType(user) == ListingType.waitress) {
-      params['waitressId'] = waitressFromBagSelected ?? waitressCurrentId;
-    } else if (checkListingType(user) == ListingType.table) {
+    // if (checkListingType(user) == ListingType.waitress) {
+    //   params['waitressId'] = waitressFromBagSelected ?? waitressCurrentId;
+    // }   ici on envoie pas le waitresId car on considere que le user qui crée la commande est le waitres
+    // else
+    if (checkListingType(user) == ListingType.table) {
       params['tableId'] = selectedTable.value?.id ?? tableCurrentId;
     }
     placeOrder = params;

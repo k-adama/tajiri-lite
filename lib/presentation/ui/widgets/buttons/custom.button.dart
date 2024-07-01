@@ -81,7 +81,7 @@ class CustomButton extends StatelessWidget {
                   Text(
                     title,
                     style: Style.interNormal(
-                      size: 15,
+                      size: 14,
                       color: isGrised == true
                           ? Style.selectedItemsText
                           : textColor,

@@ -12,7 +12,8 @@ import 'package:tajiri_waitress/presentation/screens/pos/components/food_detail_
 import 'package:tajiri_waitress/presentation/screens/pos/components/product_grid_item.component.dart';
 
 class ProductsListComponent extends StatefulWidget {
-  const ProductsListComponent({super.key});
+  final List<FoodDataEntity>? foodList;
+  const ProductsListComponent({super.key, this.foodList});
 
   @override
   State<ProductsListComponent> createState() => _ProductsListComponentState();
@@ -66,11 +67,13 @@ class _ProductsListComponentState extends State<ProductsListComponent> {
                 controller: _refreshController,
                 child: AutoHeightGridView(
                   shrinkWrap: true,
-                  itemCount: posController.foods.length,
+                  itemCount:
+                      widget.foodList?.length ?? posController.foods.length,
                   crossAxisCount: 2,
                   mainAxisSpacing: 10.r,
                   builder: (context, index) {
-                    final food = posController.foods[index];
+                    final food =
+                        widget.foodList?[index] ?? posController.foods[index];
                     return AnimationConfiguration.staggeredGrid(
                       columnCount: 20,
                       position: index,
