@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:tajiri_waitress/app/config/theme/style.theme.dart';
 import 'package:tajiri_waitress/domain/entities/food_data.entity.dart';
 import 'package:tajiri_waitress/presentation/controllers/pos/pos.controller.dart';
 import 'package:tajiri_waitress/presentation/routes/presentation_screen.route.dart';
 import 'package:tajiri_waitress/presentation/screens/pos/components/custom_pos_roundedButton.component.dart';
+import 'package:tajiri_waitress/presentation/screens/pos/components/empty_product.component.dart';
 import 'package:tajiri_waitress/presentation/screens/pos/components/product_list.component.dart';
 import 'package:tajiri_waitress/presentation/ui/widgets/text_fields/search_bar.text_field.dart';
 
@@ -28,7 +28,6 @@ class _PosSearchProductScreenState extends State<PosSearchProductScreen> {
   void initState() {
     super.initState();
     searchFoods = posController.foodsInit;
-    print(searchFoods);
     searchFocusNode.addListener(() {
       setState(() {
         isSearchFocused = searchFocusNode.hasFocus;
@@ -79,9 +78,11 @@ class _PosSearchProductScreenState extends State<PosSearchProductScreen> {
               ),
             ),
             Expanded(
-                child: ProductsListComponent(
-              foodList: searchFoods,
-            ))
+                child: searchController.text.trim().isEmpty
+                    ? const EmptyProductComponent()
+                    : ProductsListComponent(
+                        foodList: searchFoods,
+                      ))
           ],
         ),
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
