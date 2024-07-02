@@ -10,7 +10,6 @@ import 'package:tajiri_waitress/domain/entities/user.entity.dart';
 
 class OrderHistoryController extends GetxController {
   bool isProductLoading = true;
-  bool isExpanded = false;
   DateTime? startRangeDate;
   DateTime? endRangeDate;
   final OrdersRepository _ordersRepository = OrdersRepository();

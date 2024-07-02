@@ -9,7 +9,9 @@ import 'package:tajiri_waitress/app/config/theme/style.theme.dart';
 import 'package:tajiri_waitress/app/extensions/string.extension.dart';
 import 'package:tajiri_waitress/domain/entities/orders_data.entity.dart';
 import 'package:tajiri_waitress/domain/entities/user.entity.dart';
+import 'package:tajiri_waitress/presentation/controllers/home/home.controller.dart';
 import 'package:tajiri_waitress/presentation/controllers/order_history/order_history.controller.dart';
+import 'package:tajiri_waitress/presentation/routes/presentation_screen.route.dart';
 import 'package:tajiri_waitress/presentation/ui/widgets/buttons/custom.button.dart';
 
 class OrdersItemComponent extends StatefulWidget {
@@ -22,6 +24,8 @@ class OrdersItemComponent extends StatefulWidget {
 class _OrdersItemComponentState extends State<OrdersItemComponent> {
   final UserEntity? user = AppHelpersCommon.getUserInLocalStorage();
   final OrderHistoryController orderController = Get.find();
+  final homeController = Get.find<HomeController>();
+  bool isExpanded = false;
 
   bool isPaid = false;
   @override
@@ -34,9 +38,7 @@ class _OrdersItemComponentState extends State<OrdersItemComponent> {
     return Padding(
         padding: EdgeInsets.only(top: 8.r),
         child: Container(
-          padding: orderController.isExpanded
-              ? null
-              : const EdgeInsets.symmetric(vertical: 6),
+          padding: isExpanded ? null : const EdgeInsets.symmetric(vertical: 6),
           decoration: BoxDecoration(
             color: Style.white,
             borderRadius: BorderRadius.circular(10),
@@ -91,7 +93,7 @@ class _OrdersItemComponentState extends State<OrdersItemComponent> {
                   8.verticalSpace,
                 ],
               ),
-              subtitle: orderController.isExpanded
+              subtitle: isExpanded
                   ? null
                   : Row(
                       children: [
@@ -112,7 +114,7 @@ class _OrdersItemComponentState extends State<OrdersItemComponent> {
                     ),
               onExpansionChanged: (value) {
                 setState(() {
-                  orderController.isExpanded = value;
+                  isExpanded = value;
                 });
               },
               children: [
@@ -152,7 +154,11 @@ class _OrdersItemComponentState extends State<OrdersItemComponent> {
                     textColor: Style.brandColor500,
                     haveBorder: false,
                     radius: 5,
-                    onPressed: () {},
+                    onPressed: () {
+                      homeController.posController
+                          .addItemsFromOrderToCart(widget.order);
+                      Get.toNamed(Routes.POS, arguments: true);
+                    },
                     isUnderline: true,
                   ),
                 ),

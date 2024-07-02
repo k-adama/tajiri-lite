@@ -2,35 +2,34 @@ import 'package:flutter/material.dart';
 import 'package:tajiri_waitress/app/config/theme/style.theme.dart';
 import 'package:tajiri_waitress/presentation/ui/widgets/buttons/select_dropdown.button.dart';
 
-class SelectWaitressComponent extends StatefulWidget {
-  const SelectWaitressComponent({super.key});
+class SelectTableComponent extends StatefulWidget {
+  const SelectTableComponent({super.key});
 
   @override
-  State<SelectWaitressComponent> createState() =>
-      _SelectWaitressComponentState();
+  State<SelectTableComponent> createState() => _SelectTableComponentState();
 }
 
-class _SelectWaitressComponentState extends State<SelectWaitressComponent> {
-  final List<String?> servers = ['Serveur 1', 'Serveur 2', null];
-  String? selectedServer;
+class _SelectTableComponentState extends State<SelectTableComponent> {
+  final List<String?> tables = ['Table 1', 'Table 2', null];
+  String? selectedTable;
   @override
   Widget build(BuildContext context) {
     return SelectDropDownButton<String?>(
       containerColor: Style.grey50,
       borderColor: Style.grey100,
-      value: selectedServer,
-      hinText: 'Choix du serveur',
+      value: selectedTable,
+      hinText: 'Choix de la table',
       onChanged: (String? newValue) {
         setState(() {
-          selectedServer = newValue;
+          selectedTable = newValue;
         });
       },
-      items: servers.map((String? server) {
+      items: tables.map((String? server) {
         return DropdownMenuItem<String?>(
           value: server,
           child: Container(
             constraints: const BoxConstraints(maxWidth: 200),
-            child: Text(server ?? "Aucun serveur"),
+            child: Text(server ?? "Aucune table"),
           ),
         );
       }).toList(),

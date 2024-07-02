@@ -1,4 +1,5 @@
 import 'package:tajiri_waitress/domain/entities/food_data.entity.dart';
+import 'package:tajiri_waitress/domain/entities/order_detail_extra.entity.dart';
 
 class OrderDetailsEntity {
   OrderDetailsEntity({
@@ -11,7 +12,7 @@ class OrderDetailsEntity {
     String? createdAt,
     String? updatedAt,
     String? typeOfCooking,
-    // List<OrderDetailExtraEntity>? orderDetailExtra,
+    List<OrderDetailExtraEntity>? orderDetailExtra,
     FoodDataEntity? food,
     dynamic bundle,
   }) {
@@ -24,7 +25,7 @@ class OrderDetailsEntity {
     _createdAt = createdAt;
     _updatedAt = updatedAt;
     _typeOfCooking = typeOfCooking;
-    //_orderDetailExtra = orderDetailExtra;
+    _orderDetailExtra = orderDetailExtra;
     _food = food;
     _bundle = bundle;
   }
@@ -39,12 +40,12 @@ class OrderDetailsEntity {
     _typeOfCooking = json['typeOfCooking'];
     _createdAt = json['createdAt'];
     _updatedAt = json['updatedAt'];
-    /* if (json['orderDetailExtra'] != null) {
+    if (json['orderDetailExtra'] != null) {
       _orderDetailExtra = [];
-      /*json['orderDetailExtra'].forEach((v) {
+      json['orderDetailExtra'].forEach((v) {
         _orderDetailExtra?.add(OrderDetailExtraEntity.fromJson(v));
-      });*/
-    }*/
+      });
+    }
     _food = json['food'] != null ? FoodDataEntity.fromJson(json['food']) : null;
     _bundle = json['bundle'];
   }
@@ -58,7 +59,7 @@ class OrderDetailsEntity {
   String? _createdAt;
   String? _updatedAt;
   String? _typeOfCooking;
-  //List<OrderDetailExtraEntity>? _orderDetailExtra;
+  List<OrderDetailExtraEntity>? _orderDetailExtra;
   FoodDataEntity? _food;
   dynamic _bundle;
 
@@ -71,7 +72,7 @@ class OrderDetailsEntity {
   String? get createdAt => _createdAt;
   String? get updatedAt => _updatedAt;
   String? get typeOfCooking => _typeOfCooking;
-  //List<OrderDetailExtraEntity>? get orderDetailExtra => _orderDetailExtra;
+  List<OrderDetailExtraEntity>? get orderDetailExtra => _orderDetailExtra;
   FoodDataEntity? get food => _food;
   dynamic get bundle => _bundle;
 
@@ -85,7 +86,7 @@ class OrderDetailsEntity {
     String? createdAt,
     String? typeOfCooking,
     String? updatedAt,
-    //List<OrderDetailExtraEntity>? orderDetailExtra,
+    List<OrderDetailExtraEntity>? orderDetailExtra,
     FoodDataEntity? food,
     dynamic bundle,
   }) =>
@@ -115,10 +116,10 @@ class OrderDetailsEntity {
     map['createdAt'] = _createdAt;
     map['updatedAt'] = _updatedAt;
     map['typeOfCooking'] = typeOfCooking;
-    /* if (_orderDetailExtra != null) {
+    if (_orderDetailExtra != null) {
       map['orderDetailExtra'] =
           _orderDetailExtra?.map((v) => v.toJson()).toList();
-    }*/
+    }
     if (_food != null) {
       map['food'] = _food?.toJson();
     }
@@ -164,10 +165,9 @@ class OrderDetailsEntity {
     _updatedAt = value;
   }
 
-  /*set orderDetailExtra(List<OrderDetailExtraEntity>? value) {
+  set orderDetailExtra(List<OrderDetailExtraEntity>? value) {
     _orderDetailExtra = value;
   }
-  */
 
   set food(FoodDataEntity? value) {
     _food = value;

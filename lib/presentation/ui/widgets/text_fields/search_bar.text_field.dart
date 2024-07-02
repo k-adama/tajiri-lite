@@ -54,7 +54,7 @@ class _SearchBarTextFieldState extends State<SearchBarTextField> {
                     borderRadius: BorderRadius.circular(8.r),
                     border: Border.all(color: Style.grey100)),
                 child: TextField(
-                  // controller: widget.searchController,
+                  controller: widget.searchController,
                   onChanged: (text) {
                     widget.onSearch(text);
                   },

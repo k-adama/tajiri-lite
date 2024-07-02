@@ -8,7 +8,9 @@ import 'package:tajiri_waitress/presentation/routes/presentation_screen.route.da
 import 'package:tajiri_waitress/presentation/screens/pos/components/custom_pos_roundedButton.component.dart';
 
 class SeeCartButtonComponent extends StatelessWidget {
-  const SeeCartButtonComponent({super.key});
+  final bool backScreenIsOrderHistory;
+  const SeeCartButtonComponent(
+      {super.key, required this.backScreenIsOrderHistory});
   @override
   Widget build(BuildContext context) {
     return GetBuilder<PosController>(
@@ -22,7 +24,7 @@ class SeeCartButtonComponent extends StatelessWidget {
                 onTap: () {
                   Get.toNamed(Routes.CART);
                 },
-                text: posController.quantityProduct(),
+                text: posController.quantityProduct().toString(),
               ),
             ),
             10.horizontalSpace,
@@ -33,7 +35,11 @@ class SeeCartButtonComponent extends StatelessWidget {
                 child: FloatingActionButton(
                   backgroundColor: Style.brandBlue950,
                   onPressed: () {
-                    Get.toNamed(Routes.ORDER_HISTORY);
+                    if (backScreenIsOrderHistory) {
+                      Get.back();
+                    } else {
+                      Get.toNamed(Routes.ORDER_HISTORY);
+                    }
                   },
                   child: Image.asset(
                       'assets/images/icon-park-solid_transaction-order.png'),
