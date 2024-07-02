@@ -16,7 +16,7 @@ class ChartBarComponent extends StatefulWidget {
 }
 
 class _ChartBarComponentState extends State<ChartBarComponent> {
-  final HomeController _incomePageController = Get.find();
+  final HomeController _homePageController = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -38,11 +38,11 @@ class _ChartBarComponentState extends State<ChartBarComponent> {
         child: SizedBox(
           width: (size.width - 20),
           height: 160,
-          child: Obx(() => _incomePageController.isFetching.isFalse &&
-                  _incomePageController.orders.isNotEmpty
+          child: Obx(() => _homePageController.isFetching.isFalse &&
+                  _homePageController.orders.isNotEmpty
               ? LineChart(
-                  mainData(_incomePageController.orders,
-                      _incomePageController.viewSelected.value),
+                  mainData(_homePageController.orders,
+                      _homePageController.selectFiler.value),
                 )
               : const SizedBox()),
         ),

@@ -5,8 +5,17 @@ import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:tajiri_waitress/domain/entities/orders_data.entity.dart';
 import 'package:tajiri_waitress/presentation/screens/home/components/my_orders_statistiques.component.dart';
 
+class OrderStatus {
+  final int id;
+  final String asset;
+  final String title;
+
+  OrderStatus({required this.id, required this.asset, required this.title});
+}
+
 class MyOrdersComponent extends StatefulWidget {
   final List<OrdersDataEntity> orders;
+
   const MyOrdersComponent({super.key, required this.orders});
 
   @override
@@ -14,42 +23,56 @@ class MyOrdersComponent extends StatefulWidget {
 }
 
 class _MyOrdersComponentState extends State<MyOrdersComponent> {
-  @override
-  void initState() {
-    super.initState();
+  final List<OrderStatus> orderStatuses = [
+    OrderStatus(asset: 'assets/svgs/inkitchen.svg', title: 'En cuisine', id: 0),
+    OrderStatus(
+        asset: 'assets/svgs/enattente.svg',
+        title: 'Paiement en attente',
+        id: 1),
+    OrderStatus(
+        asset: 'assets/svgs/dejaservie.svg', title: 'Déjà servie', id: 2),
+    OrderStatus(
+        asset: 'assets/svgs/Union.svg', title: 'Paiement effectué', id: 3)
+  ];
+
+  int getValue(OrderStatus status) {
+    if (status.id == 3) {
+      //Paiement effectué
+      return widget.orders
+          .where((element) => element.status == "PAID")
+          .toList()
+          .length;
+    }
+    if (status.id == 1) {
+      //Paiement en attente
+      return widget.orders
+          .where((element) => element.status == "NEW")
+          .toList()
+          .length;
+    }
+    return 0;
   }
 
   @override
   Widget build(BuildContext context) {
     return AutoHeightGridView(
       shrinkWrap: true,
-      itemCount: 4,
+      itemCount: orderStatuses.length,
       crossAxisCount: 2,
       mainAxisSpacing: 10.r,
       builder: (context, index) {
+        final status = orderStatuses[index];
         return AnimationConfiguration.staggeredGrid(
-          columnCount: 4,
+          columnCount: orderStatuses.length,
           position: index,
           duration: const Duration(milliseconds: 375),
           child: ScaleAnimation(
             scale: 0.5,
             child: FadeInAnimation(
               child: MyOrdersStatistiquesComponent(
-                value: 0,
-                asset: index == 0
-                    ? 'assets/svgs/inkitchen.svg'
-                    : index == 1
-                        ? 'assets/svgs/enattente.svg'
-                        : index == 2
-                            ? 'assets/svgs/dejaservie.svg'
-                            : 'assets/svgs/Union.svg',
-                title: index == 0
-                    ? 'En cuisine'
-                    : index == 1
-                        ? 'Paiement en attente'
-                        : index == 2
-                            ? 'Déjà servie'
-                            : 'Paiement effectué',
+                value: getValue(status),
+                asset: status.asset,
+                title: status.title,
               ),
             ),
           ),

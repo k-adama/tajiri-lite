@@ -6,7 +6,7 @@ import 'package:get/route_manager.dart';
 import 'package:tajiri_waitress/app/common/app_helpers.common.dart';
 import 'package:tajiri_waitress/app/config/constants/auth.constant.dart';
 import 'package:tajiri_waitress/app/config/constants/user.constant.dart';
-import 'package:tajiri_waitress/app/data/auth/auth.repository.dart';
+import 'package:tajiri_waitress/app/data/repositories/auth/auth.repository.dart';
 import 'package:tajiri_waitress/app/mixpanel/mixpanel.dart';
 import 'package:tajiri_waitress/app/services/app_connectivity.service.dart';
 import 'package:tajiri_waitress/app/services/app_validators.service.dart';

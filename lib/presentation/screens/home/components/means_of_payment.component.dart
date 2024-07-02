@@ -7,17 +7,15 @@ import 'package:tajiri_waitress/app/common/app_helpers.common.dart';
 import 'package:tajiri_waitress/app/config/theme/style.theme.dart';
 
 class MeansOfPaymentComponent extends StatelessWidget {
-  final String asset;
-  final String title;
+  final Map<String, dynamic> meansOfpayment;
   final int value;
   const MeansOfPaymentComponent(
-      {super.key,
-      required this.asset,
-      required this.title,
-      required this.value});
+      {super.key, required this.value, required this.meansOfpayment});
 
   @override
   Widget build(BuildContext context) {
+    final asset = meansOfpayment['icon'];
+    final title = meansOfpayment['name'];
     return Container(
       width: 230,
       padding: EdgeInsets.symmetric(horizontal: 6, vertical: 12.r),
@@ -36,10 +34,14 @@ class MeansOfPaymentComponent extends StatelessWidget {
                 AppHelpersCommon.checkIsSvg(asset)
                     ? SvgPicture.asset(
                         asset,
-                        width: 30,
-                        height: 30,
+                        width: 32,
+                        height: 32,
                       )
-                    : Image.asset(asset),
+                    : Image.asset(
+                        asset,
+                        width: 32,
+                        height: 32,
+                      ),
                 5.horizontalSpace,
                 Text(title),
               ],

@@ -3,7 +3,7 @@ import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:intl/intl.dart';
 import 'package:tajiri_waitress/app/common/app_helpers.common.dart';
 import 'package:tajiri_waitress/app/common/utils.common.dart';
-import 'package:tajiri_waitress/app/data/order_history/order_history.repository.dart';
+import 'package:tajiri_waitress/app/data/repositories/order_history/order_history.repository.dart';
 import 'package:tajiri_waitress/app/services/app_connectivity.service.dart';
 import 'package:tajiri_waitress/domain/entities/orders_data.entity.dart';
 import 'package:tajiri_waitress/domain/entities/user.entity.dart';

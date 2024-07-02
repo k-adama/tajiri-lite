@@ -24,8 +24,6 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  HomeController homeController = Get.find();
-  String dropdownValue = 'Aujourd\'hui';
   late RefreshController _smartRefreshController;
 
   @override
@@ -51,39 +49,39 @@ class _HomeScreenState extends State<HomeScreen> {
   @override
   Widget build(BuildContext context) {
     return UpgradeAlert(
-      child: Scaffold(
-        resizeToAvoidBottomInset: false,
-        appBar: PreferredSize(
-          preferredSize: const Size.fromHeight(kToolbarHeight),
-          child: AppBar(
-            centerTitle: true,
-            elevation: 0,
-            title: Text(
-              "Tableau de bord",
-              style: Style.interBold(size: 20, color: Style.brandBlue950),
+      child: GetBuilder<HomeController>(builder: (homeController) {
+        return Scaffold(
+          resizeToAvoidBottomInset: false,
+          appBar: PreferredSize(
+            preferredSize: const Size.fromHeight(kToolbarHeight),
+            child: AppBar(
+              centerTitle: true,
+              elevation: 0,
+              title: Text(
+                "Tableau de bord",
+                style: Style.interBold(size: 20, color: Style.brandBlue950),
+              ),
+              iconTheme: const IconThemeData(color: Style.brandBlue950),
+              backgroundColor: Style.white,
             ),
-            iconTheme: const IconThemeData(color: Style.brandBlue950),
-            backgroundColor: Style.white,
           ),
-        ),
-        drawer: const Drawer(
-          backgroundColor: Style.white,
-          child: DrawerPageComponent(),
-        ),
-        backgroundColor: Style.bodyNewColor,
-        body: SmartRefresher(
-          enablePullDown: true,
-          enablePullUp: false,
-          physics: const BouncingScrollPhysics(),
-          controller: _smartRefreshController,
-          header: WaterDropMaterialHeader(
-            distance: 160.h,
+          drawer: const Drawer(
             backgroundColor: Style.white,
-            color: Style.light,
+            child: DrawerPageComponent(),
           ),
-          onLoading: () => _onLoading(),
-          onRefresh: () => _onRefresh(),
-          child: SingleChildScrollView(
+          backgroundColor: Style.bodyNewColor,
+          body: SmartRefresher(
+            enablePullDown: true,
+            enablePullUp: false,
+            physics: const BouncingScrollPhysics(),
+            controller: _smartRefreshController,
+            header: WaterDropMaterialHeader(
+              distance: 160.h,
+              backgroundColor: Style.white,
+              color: Style.light,
+            ),
+            onLoading: () => _onLoading(),
+            onRefresh: () => _onRefresh(),
             child: Padding(
               padding: const EdgeInsets.only(top: 20.0),
               child: Column(
@@ -92,141 +90,159 @@ class _HomeScreenState extends State<HomeScreen> {
                 children: [
                   Padding(
                     padding: const EdgeInsets.only(left: 12.0),
-                    child: SelectDropdownComponent<String>(
-                      value: dropdownValue,
+                    child: SelectDropdownComponent<String?>(
+                      value: homeController.selectFiler.value,
                       onChanged: (String? newValue) {
-                        print('Selected value: $newValue');
                         setState(() {
                           if (newValue == null) {
                             return;
                           }
-                          dropdownValue = newValue;
+                          homeController.changeDateFilter(newValue);
                         });
                       },
-                      items: const ['Aujourd\'hui', 'Demain', 'Hier'],
-                      itemAsString: (String value) => value,
+                      items: homeController.filterItems,
+                      itemAsString: (String? value) {
+                        return value ?? "Aucun element";
+                      },
                     ),
                   ),
                   24.verticalSpace,
-                  Padding(
-                    padding: const EdgeInsets.only(left: 12.0),
-                    child: CartItemRowComponent(
-                      dashboardController: homeController,
-                    ),
-                  ),
-                  24.verticalSpace,
-                  const Padding(
-                    padding: EdgeInsets.only(left: 12.0, right: 12),
-                    child: ChartBarComponent(),
-                  ),
-                  20.verticalSpace,
-                  Padding(
-                    padding: const EdgeInsets.only(left: 14.0),
-                    child: Text(
-                      "Mes commandes",
-                      style: Style.interBold(),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 4.0, right: 4),
-                    child: MyOrdersComponent(
-                      orders: homeController.orders,
-                    ),
-                  ),
-                  8.verticalSpace,
-                  Padding(
-                    padding: const EdgeInsets.only(left: 14.0),
-                    child: Text(
-                      "Ventes/Moyen de paiement",
-                      style: Style.interBold(),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 4.0, right: 4),
-                    child: MeansOfPaymentBySaleComponent(
-                      orders: homeController.orders,
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 14.0),
-                    child: Text(
-                      "Ventes/catégorie",
-                      style: Style.interBold(),
-                    ),
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 4.0, right: 4),
-                    child: SaleByCategoriyComponent(
-                      orders: homeController.orders,
-                    ),
-                  ),
-                  20.verticalSpace,
+                  homeController.isFetching.value
+                      ? const Center(child: CircularProgressIndicator())
+                      : Expanded(
+                          child: SingleChildScrollView(
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 12.0, right: 12),
+                                  child: CartItemRowComponent(
+                                    homeController: homeController,
+                                  ),
+                                ),
+                                24.verticalSpace,
+                                const Padding(
+                                  padding:
+                                      EdgeInsets.only(left: 12.0, right: 12),
+                                  child: ChartBarComponent(),
+                                ),
+                                20.verticalSpace,
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 14.0),
+                                  child: Text(
+                                    "Mes commandes",
+                                    style: Style.interBold(),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 4.0, right: 4),
+                                  child: MyOrdersComponent(
+                                    orders: homeController.orders,
+                                  ),
+                                ),
+                                8.verticalSpace,
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 14.0),
+                                  child: Text(
+                                    "Ventes/Moyen de paiement",
+                                    style: Style.interBold(),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 4.0, right: 4),
+                                  child: MeansOfPaymentBySaleComponent(
+                                    orders: homeController.orders,
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 14.0),
+                                  child: Text(
+                                    "Ventes/catégorie",
+                                    style: Style.interBold(),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 4.0, right: 4),
+                                  child: SaleByCategoriyComponent(
+                                    orders: homeController.orders,
+                                  ),
+                                ),
+                                20.verticalSpace,
+                              ],
+                            ),
+                          ),
+                        ),
                 ],
               ),
             ),
           ),
-        ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-        floatingActionButton: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 20),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Obx(() {
-                final selectBagProductsLength =
-                    homeController.posController.selectbagProductsLength.value;
-                return Expanded(
-                  child: selectBagProductsLength == 0
-                      ? CustomRoundedButton(
-                          title: 'Nouvelle Commande',
-                          asset:
-                              SvgPicture.asset("assets/svgs/edit-pen-fill.svg"),
-                          onTap: () {
-                            Get.toNamed(Routes.POS);
-                          },
-                        )
-                      : CustomRoundedButton(
-                          title: 'Commande en cours',
-                          asset: Container(
-                            width: 25,
-                            padding: const EdgeInsets.all(5),
-                            decoration: const BoxDecoration(
-                                shape: BoxShape.circle,
-                                color: Style.brandBlue950),
-                            child: Center(
-                              child: Text(
-                                selectBagProductsLength.toString(),
-                                style: Style.interBold(
-                                  color: Style.yellowLigther,
+          floatingActionButtonLocation:
+              FloatingActionButtonLocation.centerFloat,
+          floatingActionButton: Container(
+            padding: const EdgeInsets.symmetric(horizontal: 20),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.center,
+              children: [
+                Obx(() {
+                  final selectBagProductsLength = homeController
+                      .posController.selectbagProductsLength.value;
+                  return Expanded(
+                    child: selectBagProductsLength == 0
+                        ? CustomRoundedButton(
+                            title: 'Nouvelle Commande',
+                            asset: SvgPicture.asset(
+                                "assets/svgs/edit-pen-fill.svg"),
+                            onTap: () {
+                              Get.toNamed(Routes.POS);
+                            },
+                          )
+                        : CustomRoundedButton(
+                            title: 'Commande en cours',
+                            asset: Container(
+                              width: 25,
+                              padding: const EdgeInsets.all(5),
+                              decoration: const BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  color: Style.brandBlue950),
+                              child: Center(
+                                child: Text(
+                                  selectBagProductsLength.toString(),
+                                  style: Style.interBold(
+                                    color: Style.yellowLigther,
+                                  ),
                                 ),
                               ),
                             ),
+                            onTap: () {
+                              Get.toNamed(Routes.POS);
+                            },
                           ),
-                          onTap: () {
-                            Get.toNamed(Routes.POS);
-                          },
-                        ),
-                );
-              }),
-              10.horizontalSpace,
-              SizedBox(
-                width: 48,
-                height: 48,
-                child: FittedBox(
-                  child: FloatingActionButton(
-                    backgroundColor: Style.brandBlue950,
-                    onPressed: () {
-                      Get.toNamed(Routes.ORDER_HISTORY);
-                    },
-                    child: Image.asset(
-                        'assets/images/icon-park-solid_transaction-order.png'),
+                  );
+                }),
+                10.horizontalSpace,
+                SizedBox(
+                  width: 48,
+                  height: 48,
+                  child: FittedBox(
+                    child: FloatingActionButton(
+                      backgroundColor: Style.brandBlue950,
+                      onPressed: () {
+                        Get.toNamed(Routes.ORDER_HISTORY);
+                      },
+                      child: Image.asset(
+                          'assets/images/icon-park-solid_transaction-order.png'),
+                    ),
                   ),
                 ),
-              ),
-            ],
+              ],
+            ),
           ),
-        ),
-      ),
+        );
+      }),
     );
   }
 }

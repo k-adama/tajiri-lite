@@ -5,7 +5,7 @@ import 'package:tajiri_waitress/presentation/routes/presentation_screen.route.da
 import 'package:tajiri_waitress/presentation/screens/pos/components/category_list.component.dart';
 import 'package:tajiri_waitress/presentation/screens/pos/components/product_list.component.dart';
 import 'package:tajiri_waitress/presentation/screens/pos/components/see_cart_button.component.dart';
-import 'package:tajiri_waitress/presentation/screens/pos/components/select_waitress.component.dart';
+import 'package:tajiri_waitress/presentation/screens/pos/components/select_table.component.dart';
 import 'package:upgrader/upgrader.dart';
 
 class PosScreen extends StatefulWidget {
