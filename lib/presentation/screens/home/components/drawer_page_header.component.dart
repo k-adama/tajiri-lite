@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tajiri_waitress/app/common/app_helpers.common.dart';
 import 'package:tajiri_waitress/app/config/theme/style.theme.dart';
 
 class DrawerPageHearderComponent extends StatelessWidget {
@@ -6,7 +7,7 @@ class DrawerPageHearderComponent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // final user = AppHelpersCommon.getUserInLocalStorage();
+    final user = AppHelpersCommon.getUserInLocalStorage();
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
@@ -33,14 +34,12 @@ class DrawerPageHearderComponent extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(top: 5.0),
           child: Text(
-            //"${user?.lastname ?? ""} ${user?.firstname ?? ''}",
-            'user name',
+            "${user?.lastname ?? ""} ${user?.firstname ?? ''}",
             style: Style.interBold(color: Style.white, size: 15),
           ),
         ),
         Text(
-          //user?.role?.name ?? '',
-          'user role',
+          user?.role?.name ?? '',
           style: Style.interNormal(color: Style.white, size: 12),
         ),
       ],

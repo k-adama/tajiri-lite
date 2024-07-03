@@ -42,7 +42,8 @@ class _HomeScreenState extends State<HomeScreen> {
     _smartRefreshController.loadComplete();
   }
 
-  void _onRefresh() async {
+  void _onRefresh(HomeController homeController) async {
+    await homeController.fetchDataForReports();
     _smartRefreshController.refreshCompleted();
   }
 
@@ -70,46 +71,48 @@ class _HomeScreenState extends State<HomeScreen> {
             child: DrawerPageComponent(),
           ),
           backgroundColor: Style.bodyNewColor,
-          body: SmartRefresher(
-            enablePullDown: true,
-            enablePullUp: false,
-            physics: const BouncingScrollPhysics(),
-            controller: _smartRefreshController,
-            header: WaterDropMaterialHeader(
-              distance: 160.h,
-              backgroundColor: Style.white,
-              color: Style.light,
-            ),
-            onLoading: () => _onLoading(),
-            onRefresh: () => _onRefresh(),
-            child: Padding(
-              padding: const EdgeInsets.only(top: 20.0),
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Padding(
-                    padding: const EdgeInsets.only(left: 12.0),
-                    child: SelectDropdownComponent<String?>(
-                      value: homeController.selectFiler.value,
-                      onChanged: (String? newValue) {
-                        setState(() {
-                          if (newValue == null) {
-                            return;
-                          }
-                          homeController.changeDateFilter(newValue);
-                        });
-                      },
-                      items: homeController.filterItems,
-                      itemAsString: (String? value) {
-                        return value ?? "Aucun element";
-                      },
-                    ),
+          body: Padding(
+            padding: const EdgeInsets.only(top: 20.0),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.start,
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Padding(
+                  padding: const EdgeInsets.only(left: 12.0),
+                  child: SelectDropdownComponent<String?>(
+                    value: homeController.selectFiler.value,
+                    onChanged: (String? newValue) {
+                      setState(() {
+                        if (newValue == null) {
+                          return;
+                        }
+                        homeController.changeDateFilter(newValue);
+                      });
+                    },
+                    items: homeController.filterItems,
+                    itemAsString: (String? value) {
+                      return value ?? "Aucun element";
+                    },
                   ),
-                  24.verticalSpace,
-                  homeController.isFetching.value
-                      ? const Center(child: CircularProgressIndicator())
-                      : Expanded(
+                ),
+                24.verticalSpace,
+                homeController.isFetching.value
+                    ? const Center(child: CircularProgressIndicator())
+                    : Expanded(
+                        child: SmartRefresher(
+                          enablePullDown: true,
+                          enablePullUp: false,
+                          physics: const BouncingScrollPhysics(),
+                          controller: _smartRefreshController,
+                          header: WaterDropMaterialHeader(
+                            distance: 160.h,
+                            backgroundColor: Style.white,
+                            color: Style.light,
+                          ),
+                          onLoading: () => _onLoading(),
+                          onRefresh: () {
+                            _onRefresh(homeController);
+                          },
                           child: SingleChildScrollView(
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -176,8 +179,8 @@ class _HomeScreenState extends State<HomeScreen> {
                             ),
                           ),
                         ),
-                ],
-              ),
+                      ),
+              ],
             ),
           ),
           floatingActionButtonLocation:
