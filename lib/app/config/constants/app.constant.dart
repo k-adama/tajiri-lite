@@ -22,6 +22,18 @@ class AppConstants {
   static const String orderTakeAway = 'TAKE_AWAY';
   static const String orderDelivered = 'DELIVERED';
 
+  //Status orders
+  static const String ORDER_NEW = 'NEW';
+  static const String ORDER_MODIFIED = 'MODIFIED';
+  static const String ORDER_READY = 'READY';
+  static const String ORDER_ACCEPTED_BY_RESTAURANT = 'ACCEPTED_BY_RESTAURANT';
+  static const String ORDER_COOKING = 'COOKING';
+  static const String ORDER_CANCELED = 'CANCELLED';
+  static const String ORDER_DELIVRED = 'DELIVERED';
+  static const String ORDER_TAKEN_BY_COURIER = 'TAKEN_BY_COURIER';
+  static const String ORDER_DELIVERED = 'DELIVERED';
+  static const String ORDER_PAID = 'PAID';
+
   static bool getStatusOrderInProgressOrDone(
       OrdersDataEntity order, String status) {
     bool checking = false;

@@ -2,6 +2,7 @@ import 'package:auto_height_grid_view/auto_height_grid_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:tajiri_waitress/app/config/constants/app.constant.dart';
 import 'package:tajiri_waitress/domain/entities/orders_data.entity.dart';
 import 'package:tajiri_waitress/presentation/screens/home/components/my_orders_statistiques.component.dart';
 
@@ -39,18 +40,33 @@ class _MyOrdersComponentState extends State<MyOrdersComponent> {
     if (status.id == 3) {
       //Paiement effectué
       return widget.orders
-          .where((element) => element.status == "PAID")
+          .where((element) => element.status == AppConstants.ORDER_PAID)
+          .toList()
+          .length;
+    }
+
+    if (status.id == 2) {
+      //Déja servie
+      return widget.orders
+          .where((element) => element.status == AppConstants.ORDER_READY)
           .toList()
           .length;
     }
     if (status.id == 1) {
       //Paiement en attente
       return widget.orders
-          .where((element) => element.status == "NEW")
+          .where((element) =>
+              element.status != AppConstants.ORDER_PAID &&
+              element.status != AppConstants.ORDER_CANCELED)
           .toList()
           .length;
     }
-    return 0;
+
+    //Paiement en cuisine
+    return widget.orders
+        .where((element) => element.status == AppConstants.ORDER_COOKING)
+        .toList()
+        .length;
   }
 
   @override
