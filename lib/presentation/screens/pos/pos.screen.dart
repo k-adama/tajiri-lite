@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:get/route_manager.dart';
 import 'package:tajiri_waitress/app/config/theme/style.theme.dart';
+import 'package:tajiri_waitress/presentation/controllers/pos/pos.controller.dart';
 import 'package:tajiri_waitress/presentation/routes/presentation_screen.route.dart';
 import 'package:tajiri_waitress/presentation/screens/pos/components/category_list.component.dart';
 import 'package:tajiri_waitress/presentation/screens/pos/components/product_list.component.dart';
@@ -24,7 +26,16 @@ class _PosScreenState extends State<PosScreen> {
         appBar: AppBar(
           centerTitle: true,
           elevation: 0,
-          title: const SelectTableComponent(),
+          title: GetBuilder<PosController>(builder: (posController) {
+            final hasTableManagement = posController.hasTableManagement;
+            return hasTableManagement &&
+                    posController.selectbag.waitressId == null
+                ? const SelectTableComponent()
+                : const Text(
+                    "Tajiri",
+                    style: TextStyle(color: Style.brandBlue950),
+                  );
+          }),
           iconTheme: const IconThemeData(color: Style.brandBlue950),
           backgroundColor: Style.white,
           actions: <Widget>[

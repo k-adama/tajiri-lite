@@ -151,6 +151,9 @@ class _OrdersItemComponentState extends State<OrdersItemComponent> {
                   child: CustomButton(
                     background: Style.brandBlue50,
                     title: "Modifier la commande",
+                    isGrised: AppHelpersCommon.getUserInLocalStorage()
+                            ?.canUpdateOrCanceledOrder() ==
+                        false, // grised add product button if user can't update or cancel
                     textColor: Style.brandColor500,
                     haveBorder: false,
                     radius: 5,

@@ -27,12 +27,12 @@ class _SelectTableComponentState extends State<SelectTableComponent> {
         onChanged: (TableEntity? newValue) {
           posController.selectedTable.value = newValue;
         },
-        items: waitressController.tableListData.map((TableEntity? waitress) {
+        items: waitressController.tableListData.map((TableEntity? table) {
           return DropdownMenuItem<TableEntity?>(
-            value: waitress,
+            value: table,
             child: Container(
               constraints: const BoxConstraints(maxWidth: 200),
-              child: Text(waitress?.name ?? "Aucune table"),
+              child: Text(table?.name ?? "Aucune table"),
             ),
           );
         }).toList(),
