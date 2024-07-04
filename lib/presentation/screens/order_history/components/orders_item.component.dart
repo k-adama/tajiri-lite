@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:get/get.dart';
+import 'package:get/instance_manager.dart';
+import 'package:get/route_manager.dart';
 import 'package:tajiri_waitress/app/common/app_helpers.common.dart';
 import 'package:tajiri_waitress/app/common/utils.common.dart';
 import 'package:tajiri_waitress/app/config/constants/app.constant.dart';
@@ -146,25 +147,28 @@ class _OrdersItemComponentState extends State<OrdersItemComponent> {
                           [],
                     )),
                 20.verticalSpace,
-                Padding(
-                  padding: const EdgeInsets.only(left: 10, right: 10),
-                  child: CustomButton(
-                    background: Style.brandBlue50,
-                    title: "Modifier la commande",
-                    isGrised: AppHelpersCommon.getUserInLocalStorage()
-                            ?.canUpdateOrCanceledOrder() ==
-                        false, // grised add product button if user can't update or cancel
-                    textColor: Style.brandColor500,
-                    haveBorder: false,
-                    radius: 5,
-                    onPressed: () {
-                      homeController.posController
-                          .addItemsFromOrderToCart(widget.order);
-                      Get.toNamed(Routes.POS, arguments: true);
-                    },
-                    isUnderline: true,
-                  ),
-                ),
+                widget.order.status == AppConstants.ORDER_CANCELED ||
+                        widget.order.status == AppConstants.ORDER_PAID
+                    ? Container()
+                    : Padding(
+                        padding: const EdgeInsets.only(left: 10, right: 10),
+                        child: CustomButton(
+                          background: Style.brandBlue50,
+                          title: "Modifier la commande",
+                          isGrised: AppHelpersCommon.getUserInLocalStorage()
+                                  ?.canUpdateOrCanceledOrder() ==
+                              false, // grised add product button if user can't update or cancel
+                          textColor: Style.brandColor500,
+                          haveBorder: false,
+                          radius: 5,
+                          onPressed: () {
+                            homeController.posController
+                                .addItemsFromOrderToCart(widget.order);
+                            Get.toNamed(Routes.POS, arguments: true);
+                          },
+                          isUnderline: true,
+                        ),
+                      ),
                 10.verticalSpace,
               ],
             ),
