@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/route_manager.dart';
 import 'package:tajiri_waitress/app/config/theme/style.theme.dart';
 import 'package:tajiri_waitress/presentation/controllers/pos/pos.controller.dart';
 import 'package:tajiri_waitress/presentation/routes/presentation_screen.route.dart';
@@ -32,7 +31,7 @@ class _PosScreenState extends State<PosScreen> {
                     posController.selectbag.waitressId == null
                 ? const SelectTableComponent()
                 : const Text(
-                    "Tajiri",
+                    "POS",
                     style: TextStyle(color: Style.brandBlue950),
                   );
           }),

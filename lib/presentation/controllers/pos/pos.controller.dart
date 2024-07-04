@@ -847,13 +847,8 @@ class PosController extends GetxController {
       'address': "",
       'tax': 0,
     };
-    final waitressFromBagSelected = bags[selectedBagIndex.value].waitressId;
     final tableFromBagSelected = bags[selectedBagIndex.value].tableId;
 
-    // if (checkListingType(user) == ListingType.waitress) {
-    //   params['waitressId'] = waitressFromBagSelected ?? waitressCurrentId;
-    // }   ici on envoie pas le waitresId car on considere que le user qui crée la commande est le waitres
-    // else
     if (hasTableManagement) {
       params['tableId'] = tableFromBagSelected ?? selectedTable.value?.id;
     }

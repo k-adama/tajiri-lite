@@ -47,6 +47,8 @@ class HomeController extends GetxController {
   ];
 
   RxString selectFiler = TrKeysConstant.day.obs;
+  bool get hasWaitressPermission =>
+      user?.role?.permissions?[0].dashboardUnique == true;
 
   @override
   void onInit() {
@@ -87,8 +89,7 @@ class HomeController extends GetxController {
     String startDateComparaison = dateFormat.format(params['startDate']!);
     String endDateComparaison = dateFormat.format(params['endDate']!);
 
-    String? ownerId =
-        user?.role?.permissions?[0].dashboardUnique == true ? user?.id : null;
+    String? ownerId = hasWaitressPermission ? user?.id : null;
 
     final [ordersResponse, comparaisonOders] = await Future.wait([
       _ordersRepository.getOrders(

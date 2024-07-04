@@ -7,10 +7,6 @@ import 'package:tajiri_waitress/presentation/routes/presentation_screen.route.da
 class SplashController extends GetxController {
   Future<void> getToken() async {
     final storage = LocalStorageService.instance;
-
-    if (storage == null) {
-      return;
-    }
     if (storage.get(AuthConstant.keyToken) == null) {
       Get.offAllNamed(Routes.LOGIN);
     } else {
