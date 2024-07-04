@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:tajiri_waitress/app/common/app_helpers.common.dart';
 import 'package:tajiri_waitress/app/config/theme/style.theme.dart';
 import 'package:tajiri_waitress/presentation/controllers/pos/pos.controller.dart';
 import 'package:tajiri_waitress/presentation/routes/presentation_screen.route.dart';
@@ -17,9 +18,13 @@ class PosScreen extends StatefulWidget {
 }
 
 class _PosScreenState extends State<PosScreen> {
+  final user = AppHelpersCommon.getUserInLocalStorage();
   final backScreenIsOrderHistory = Get.arguments;
+
   @override
   Widget build(BuildContext context) {
+    final restaurantName =
+        "${user != null && user?.restaurantUser != null ? user?.restaurantUser![0].restaurant?.name : ""}";
     return UpgradeAlert(
       child: Scaffold(
         appBar: AppBar(
@@ -30,9 +35,9 @@ class _PosScreenState extends State<PosScreen> {
             return hasTableManagement &&
                     posController.selectbag.waitressId == null
                 ? const SelectTableComponent()
-                : const Text(
-                    "POS",
-                    style: TextStyle(color: Style.brandBlue950),
+                : Text(
+                    restaurantName,
+                    style: const TextStyle(color: Style.brandBlue950),
                   );
           }),
           iconTheme: const IconThemeData(color: Style.brandBlue950),
