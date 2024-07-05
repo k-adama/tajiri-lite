@@ -41,8 +41,8 @@ class HomeController extends GetxController {
 
   List<String> filterItems = [
     TrKeysConstant.day,
-    TrKeysConstant.week,
-    TrKeysConstant.month,
+   // TrKeysConstant.week,
+   // TrKeysConstant.month,
   ];
 
   RxString selectFiler = TrKeysConstant.day.obs;

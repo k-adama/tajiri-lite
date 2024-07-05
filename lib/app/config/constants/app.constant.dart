@@ -31,12 +31,12 @@ class AppConstants {
     bool checking = false;
     switch (status) {
       case "IN_PROGRESS":
-        if (order.status != "PAID" && order.status != "CANCELLED")
+        if (order.status != ORDER_PAID && order.status != ORDER_CANCELED) {
           checking = true;
+        }
         break;
       case "DONE":
-        if (order.status == "PAID" || order.status == "CANCELLED")
-          checking = true;
+        if (order.status == ORDER_READY) checking = true;
         break;
     }
 
@@ -95,7 +95,7 @@ class AppConstants {
 final tabs = [
   const Tab(text: "Tout"),
   const Tab(text: "En cours"),
-  const Tab(text: "Payée"),
+  const Tab(text: "Prête"),
 ];
 
 const onPlaceSvg = "assets/svgs/onplace.svg";

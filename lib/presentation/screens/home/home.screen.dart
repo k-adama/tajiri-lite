@@ -5,15 +5,14 @@ import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:get/route_manager.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
+import 'package:tajiri_waitress/app/common/app_helpers.common.dart';
 import 'package:tajiri_waitress/app/config/theme/style.theme.dart';
 import 'package:tajiri_waitress/presentation/controllers/home/home.controller.dart';
 import 'package:tajiri_waitress/presentation/routes/presentation_screen.route.dart';
 import 'package:tajiri_waitress/presentation/screens/home/components/cart_item_row.component.dart';
 import 'package:tajiri_waitress/presentation/screens/home/components/chart_bar.component.dart';
 import 'package:tajiri_waitress/presentation/screens/home/components/drawer_page.component.dart';
-import 'package:tajiri_waitress/presentation/screens/home/components/means_of_payment_by_sale.component.dart';
 import 'package:tajiri_waitress/presentation/screens/home/components/my_orders.component.dart';
-import 'package:tajiri_waitress/presentation/screens/home/components/sale_by_category.component..dart';
 import 'package:tajiri_waitress/presentation/screens/home/components/select_periode_dropdown.component.dart';
 import 'package:tajiri_waitress/presentation/ui/widgets/buttons/custom.rounded.button.dart';
 import 'package:upgrader/upgrader.dart';
@@ -64,14 +63,32 @@ class _HomeScreenState extends State<HomeScreen> {
                 "Tableau de bord",
                 style: Style.interBold(size: 20, color: Style.brandBlue950),
               ),
+              leading: IconButton(
+                icon: const Icon(Icons.menu),
+                onPressed: () {
+                  AppHelpersCommon.showCustomModalBottomSheet(
+                    context: context,
+                    modal: Text("dd"),
+                    isDarkMode: false,
+                    isDrag: true,
+                    radius: 12,
+                  );
+                },
+              ),
               iconTheme: const IconThemeData(color: Style.brandBlue950),
               backgroundColor: Style.white,
             ),
           ),
-          drawer: const Drawer(
-            backgroundColor: Style.white,
-            child: DrawerPageComponent(),
-          ),
+
+          /* drawer: InkWell(
+            onTap: () {
+              print("bfhfhjfhfhff");
+            },
+            child: const Drawer(
+              backgroundColor: Style.white,
+              // child: DrawerPageComponent(),
+            ),
+          ),*/
           backgroundColor: Style.bodyNewColor,
           body: Padding(
             padding: const EdgeInsets.only(top: 20.0),
@@ -83,14 +100,15 @@ class _HomeScreenState extends State<HomeScreen> {
                   padding: const EdgeInsets.only(left: 12.0),
                   child: SelectDropdownComponent<String?>(
                     value: homeController.selectFiler.value,
-                    onChanged: (String? newValue) {
+                    onChanged: null,
+                    /*(String? newValue) {
                       setState(() {
                         if (newValue == null) {
                           return;
                         }
                         homeController.changeDateFilter(newValue);
                       });
-                    },
+                    },*/
                     items: homeController.filterItems,
                     itemAsString: (String? value) {
                       return value ?? "Aucun element";
@@ -147,35 +165,6 @@ class _HomeScreenState extends State<HomeScreen> {
                                     orders: homeController.orders,
                                   ),
                                 ),
-                                /* 8.verticalSpace,
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 14.0),
-                                  child: Text(
-                                    "Ventes/Moyen de paiement",
-                                    style: Style.interBold(),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 4.0, right: 4),
-                                  child: MeansOfPaymentBySaleComponent(
-                                    orders: homeController.orders,
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(left: 14.0),
-                                  child: Text(
-                                    "Ventes/catégorie",
-                                    style: Style.interBold(),
-                                  ),
-                                ),
-                                Padding(
-                                  padding: const EdgeInsets.only(
-                                      left: 4.0, right: 4),
-                                  child: SaleByCategoriyComponent(
-                                    orders: homeController.orders,
-                                  ),
-                                ),*/
                                 20.verticalSpace,
                               ],
                             ),

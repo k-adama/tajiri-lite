@@ -71,19 +71,12 @@ class _OrdersItemComponentState extends State<OrdersItemComponent> {
                     ),
                   ),
                   10.verticalSpace,
-                  orderController.tableOrWaitessNoNullOrNotEmpty(widget.order)
-                      ? Text(
-                          orderController.tableOrWaitressName(widget.order),
-                          style: Style.interNormal(
-                            color: Style.grey500,
-                          ),
-                        )
-                      : Text(
-                          "${widget.order.createdUser?.firstname ?? ""} ${widget.order.createdUser?.lastname ?? ""}",
-                          style: Style.interNormal(
-                            color: Style.grey500,
-                          ),
-                        ),
+                  Text(
+                    "N° ${widget.order.orderNumber ?? ""}",
+                    style: Style.interNormal(
+                      color: Style.grey500,
+                    ),
+                  ),
                   8.verticalSpace,
                   Text(
                     "${widget.order.grandTotal}".currencyLong(),
