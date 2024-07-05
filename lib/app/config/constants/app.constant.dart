@@ -7,14 +7,6 @@ class AppConstants {
   /// shared preferences keys
   static const String keyAppThemeMode = 'keyAppThemeMode';
   static const TYPE_QUERY_ONLY_PRODUCT = 'ONLY_PRODUCT';
-
-  static const String orderCooking = 'COOKING';
-  static const String orderCancelled = 'CANCELLED';
-  static const String orderReady = 'READY';
-  static const String orderNew = 'NEW';
-  static const String orderAccepted = 'ACCEPTED_BY_RESTAURANT';
-  static const String orderPaid = 'PAID';
-  static const String orderTakeByCourier = 'TAKEN_BY_COURIER';
   static const String clientTypeRestaurant = 'RESTAURANT';
 
   //..........................
@@ -54,28 +46,28 @@ class AppConstants {
   static String getStatusInFrench(OrdersDataEntity order) {
     String status = "";
     switch (order.status) {
-      case orderCooking:
+      case ORDER_COOKING:
         status = "En Cuisine";
         break;
-      case orderCancelled:
+      case ORDER_CANCELED:
         status = "Annulée";
         break;
-      case orderReady:
+      case ORDER_READY:
         status = "Prête";
         break;
-      case orderNew:
+      case ORDER_NEW:
         status = "Nouvelle";
         break;
-      case orderAccepted:
+      case ORDER_ACCEPTED_BY_RESTAURANT:
         status = "Acceptée";
         break;
-      case orderPaid:
+      case ORDER_PAID:
         status = "Payée";
         break;
       case orderDelivered:
         status = "Livrée";
         break;
-      case orderTakeByCourier:
+      case ORDER_TAKEN_BY_COURIER:
         status = "En livraison";
         break;
     }

@@ -147,7 +147,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     orders: homeController.orders,
                                   ),
                                 ),
-                                8.verticalSpace,
+                                /* 8.verticalSpace,
                                 Padding(
                                   padding: const EdgeInsets.only(left: 14.0),
                                   child: Text(
@@ -175,7 +175,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                   child: SaleByCategoriyComponent(
                                     orders: homeController.orders,
                                   ),
-                                ),
+                                ),*/
                                 20.verticalSpace,
                               ],
                             ),
