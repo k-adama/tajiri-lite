@@ -11,7 +11,7 @@ import 'package:tajiri_waitress/presentation/controllers/home/home.controller.da
 import 'package:tajiri_waitress/presentation/routes/presentation_screen.route.dart';
 import 'package:tajiri_waitress/presentation/screens/home/components/cart_item_row.component.dart';
 import 'package:tajiri_waitress/presentation/screens/home/components/chart_bar.component.dart';
-import 'package:tajiri_waitress/presentation/screens/home/components/drawer_page.component.dart';
+import 'package:tajiri_waitress/presentation/screens/home/components/deconnection_modal.component.dart';
 import 'package:tajiri_waitress/presentation/screens/home/components/my_orders.component.dart';
 import 'package:tajiri_waitress/presentation/screens/home/components/select_periode_dropdown.component.dart';
 import 'package:tajiri_waitress/presentation/ui/widgets/buttons/custom.rounded.button.dart';
@@ -68,7 +68,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 onPressed: () {
                   AppHelpersCommon.showCustomModalBottomSheet(
                     context: context,
-                    modal: Text("dd"),
+                    modal: const DeconnectionModalComponent(),
                     isDarkMode: false,
                     isDrag: true,
                     radius: 12,
@@ -79,16 +79,6 @@ class _HomeScreenState extends State<HomeScreen> {
               backgroundColor: Style.white,
             ),
           ),
-
-          /* drawer: InkWell(
-            onTap: () {
-              print("bfhfhjfhfhff");
-            },
-            child: const Drawer(
-              backgroundColor: Style.white,
-              // child: DrawerPageComponent(),
-            ),
-          ),*/
           backgroundColor: Style.bodyNewColor,
           body: Padding(
             padding: const EdgeInsets.only(top: 20.0),
