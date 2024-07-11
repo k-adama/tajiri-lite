@@ -10,67 +10,42 @@ import 'package:tajiri_waitress/app/config/theme/style.theme.dart';
 import 'package:tajiri_waitress/presentation/controllers/home/home.controller.dart';
 
 class CartItemRowComponent extends StatelessWidget {
-  final HomeController dashboardController;
-  const CartItemRowComponent({super.key, required this.dashboardController});
+  final HomeController homeController;
+  const CartItemRowComponent({super.key, required this.homeController});
 
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: 80,
-      child: ListView.builder(
-          scrollDirection: Axis.horizontal,
-          itemCount: 2,
-          itemBuilder: (context, index) {
-            return Container(
-              width: 300,
-              margin: const EdgeInsets.only(right: 12),
-              child: CartItemComponent(
-                value: 0,
-                asset: index == 0
-                    ? 'assets/svgs/revenue.svg'
-                    : 'assets/svgs/dashboard_order.svg',
-                title: index == 0
-                    ? AppHelpersCommon.getTranslation(TrKeysConstant.revenue)
-                    : "Nombre de Commandes",
-                valuePercent: 50,
-                isNumber: index != 0,
-              ),
-            );
-            /* Row(
+      child: ListView(
+        scrollDirection: Axis.horizontal,
         children: [
-          Expanded(
-            child: CartItemComponent(
-              value: 0,
-              //dashboardController.totalAmount.value.toDouble(),
-              asset: 'assets/svgs/revenue.svg',
-              title: AppHelpersCommon.getTranslation(TrKeysConstant.revenue),
-              valuePercent: 50,
-              /*dashboardController.percentRevenueComparaison.value.isFinite
-                      ? dashboardController.percentRevenueComparaison.value
-                          .floor()
-                          .toDouble()
-                      : dashboardController.percentRevenueComparaison.value,*/
-            ),
+          CartItemComponent(
+            value: homeController.totalAmount.value.toDouble(),
+            asset: 'assets/svgs/revenue.svg',
+            title: AppHelpersCommon.getTranslation(TrKeysConstant.revenue),
+            valuePercent:
+                homeController.percentRevenueComparaison.value.isFinite
+                    ? homeController.percentRevenueComparaison.value
+                        .floor()
+                        .toDouble()
+                    : 0,
           ),
           12.horizontalSpace,
-          Expanded(
-            child: CartItemComponent(
-              value: 0,
-              //dashboardController.totalOrders.value.toDouble(),
-              isNumber: true,
-              asset: 'assets/svgs/dashboard_order.svg',
-              title: "Nombre total de Commandes",
-              valuePercent: 50,
-              /*dashboardController.percentNbrOrderComparaison.value.isFinite
-                      ? dashboardController.percentNbrOrderComparaison.value
-                          .floor()
-                          .toDouble()
-                      : dashboardController.percentNbrOrderComparaison.value,*/
-            ),
+          CartItemComponent(
+            value: homeController.totalOrders.value.toDouble(),
+            isNumber: true,
+            asset: 'assets/svgs/dashboard_order.svg',
+            title: "Nombre total de Commandes",
+            valuePercent:
+                homeController.percentNbrOrderComparaison.value.isFinite
+                    ? homeController.percentNbrOrderComparaison.value
+                        .floor()
+                        .toDouble()
+                    : 0,
           ),
         ],
-      );*/
-          }),
+      ),
     );
   }
 }
@@ -96,7 +71,8 @@ class CartItemComponent extends StatelessWidget {
     return Stack(
       children: [
         Container(
-          padding: EdgeInsets.only(left: 8),
+          width: 300,
+          padding: const EdgeInsets.only(left: 8),
           decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10.r),
             color: Style.white,

@@ -5,10 +5,11 @@ import 'package:tajiri_waitress/app/common/app_helpers.common.dart';
 import 'package:tajiri_waitress/app/common/utils.common.dart';
 import 'package:tajiri_waitress/app/config/constants/app.constant.dart';
 import 'package:tajiri_waitress/app/config/theme/style.theme.dart';
-import 'package:tajiri_waitress/app/data/products/products.repository.dart';
+import 'package:tajiri_waitress/app/data/repositories/products/products.repository.dart';
 import 'package:tajiri_waitress/app/mixpanel/mixpanel.dart';
 import 'package:tajiri_waitress/app/services/app_connectivity.service.dart';
 import 'package:tajiri_waitress/domain/entities/category.entity.dart';
+import 'package:tajiri_waitress/domain/entities/category_supabase.entity.dart';
 import 'package:tajiri_waitress/domain/entities/food_data.entity.dart';
 import 'package:tajiri_waitress/domain/entities/food_variant_categorie.entity.dart';
 import 'package:tajiri_waitress/domain/entities/local_cart_enties/main_item.entity.dart';
@@ -56,7 +57,6 @@ class PosController extends GetxController {
   RxString orderNotes = "".obs;
   RxString paymentMethodId = "d8b8d45d-da79-478f-9d5f-693b33d654e6".obs;
 
-  BagDataEntity get selectbag => bags[selectedBagIndex.value];
   final selectbagProductsLength = 0.obs;
 
   final waitress = List<WaitressEntity>.empty().obs;
@@ -65,12 +65,18 @@ class PosController extends GetxController {
 
   final createOrderLoading = false.obs;
   dynamic placeOrder;
-  String? waitressCurrentId;
-  String? tableCurrentId;
+  //String? waitressCurrentId;
+
+  //Categorie Supabase
+  final categoriesSupabase = List<CategorySupabaseEntity>.empty().obs;
+
+  BagDataEntity get selectbag => bags[selectedBagIndex.value];
+  bool get hasTableManagement => checkListingType(user) == ListingType.table;
 
   @override
   void onReady() async {
     await Future.wait([
+      fetchCategoriesSupabase(),
       fetchFoods(),
       fetchTypeOfCookingFromSupabase(),
     ]);
@@ -159,6 +165,52 @@ class PosController extends GetxController {
       );
       isProductLoading = false;
       update();
+    }
+  }
+
+  Future<void> fetchCategoriesSupabase() async {
+    final restaurantId = user?.role?.restaurantId;
+
+    if (restaurantId == null) {
+      AppHelpersCommon.showBottomSnackBar(
+        Get.context!,
+        const Text("Impossible de recuperer l'id du restaurant"),
+        const Duration(seconds: 2),
+        true,
+      );
+    }
+
+    final connected = await AppConnectivityService.connectivity();
+
+    if (connected) {
+      // isOrdersLoading = true;
+      update();
+      try {
+        print("---------------fetchCategories on supabse-------------");
+        final supabase = Supabase.instance.client;
+        final response =
+            await supabase.from('categories').select('*, collectionId(*)');
+
+        final json = response as List<dynamic>;
+        final data =
+            json.map((item) => CategorySupabaseEntity.fromJson(item)).toList();
+
+        categoriesSupabase.assignAll(data);
+        update();
+      } catch (e) {
+        print(
+            "---------------fetchCategories on supabse error : $e-------------");
+
+        AppHelpersCommon.showBottomSnackBar(
+          Get.context!,
+          Text(e.toString()),
+          const Duration(seconds: 2),
+          true,
+        );
+
+        print(e);
+        update();
+      }
     }
   }
 
@@ -550,6 +602,7 @@ class PosController extends GetxController {
     // supprimer le seul pannier et creer un nouveau
     bags.clear();
     addANewBagFromOrder(order);
+
     for (var orderDetail in order.orderDetails!) {
       print(
           "========order detail==${orderDetail.food?.name}===${orderDetail.orderDetailExtra} ");
@@ -584,11 +637,11 @@ class PosController extends GetxController {
         bagProducts: [],
         idOrderToUpdate: order.id,
         waitressId: order.waitressId,
+        tableId: order.tableId,
         settleOrderId: order.orderType);
 
     bags.add(newBag);
     selectedBagIndex.value = bags.length - 1; //setSelectedBagIndex
-    ();
   }
 
   void addProductToSelectedBagByMAinItem(MainCartEntity product) {
@@ -634,12 +687,11 @@ class PosController extends GetxController {
   saveOrder(BuildContext context) async {
     const status = "NEW";
     setPlaceOrder(status);
-    print(placeOrder);
 
     createOrderLoading.value = true;
     update();
 
-    print(placeOrder);
+    print("+++++++++PARAMS $placeOrder");
 
     final idOrderToUpdate = bags[selectedBagIndex.value].idOrderToUpdate;
 
@@ -691,7 +743,6 @@ class PosController extends GetxController {
 
       selectedBagIndex.value = selectedIndex;
       update();
-      print("+++++++++PARAMS $placeOrder");
 
       AppHelpersCommon.showAlertDialog(
         context: context,
@@ -745,9 +796,15 @@ class PosController extends GetxController {
 
   void handleInitialState() {
     orderNotes.value = "";
-    selectedTable = TableEntity().obs;
-    selectedWaitress = WaitressEntity().obs;
+    selectedTable.value = null;
+    selectedWaitress.value = null;
     update();
+  }
+
+  int getNbrProductByCategorie(String? categoryId) {
+    final newData =
+        foodsInit.where((item) => item.mainCategoryId == categoryId).toList();
+    return newData.length;
   }
 
   void setPlaceOrder(String status) {
@@ -790,14 +847,10 @@ class PosController extends GetxController {
       'address': "",
       'tax': 0,
     };
-    final waitressFromBagSelected = bags[selectedBagIndex.value].waitressId;
+    final tableFromBagSelected = bags[selectedBagIndex.value].tableId;
 
-    // if (checkListingType(user) == ListingType.waitress) {
-    //   params['waitressId'] = waitressFromBagSelected ?? waitressCurrentId;
-    // }   ici on envoie pas le waitresId car on considere que le user qui crée la commande est le waitres
-    // else
-    if (checkListingType(user) == ListingType.table) {
-      params['tableId'] = selectedTable.value?.id ?? tableCurrentId;
+    if (hasTableManagement) {
+      params['tableId'] = tableFromBagSelected ?? selectedTable.value?.id;
     }
     placeOrder = params;
     update();

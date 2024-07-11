@@ -8,6 +8,7 @@ class BagDataEntity {
   List<MainCartEntity>? deleteProducts;
 
   String? waitressId;
+  String? tableId;
   String? settleOrderId;
 
   BagDataEntity({
@@ -16,6 +17,7 @@ class BagDataEntity {
     this.idOrderToUpdate,
     this.orderNumber,
     this.waitressId,
+    this.tableId,
     this.settleOrderId = "ON_PLACE",
     List<MainCartEntity>? deleteProducts,
   }) : deleteProducts = deleteProducts ?? [];
@@ -24,6 +26,7 @@ class BagDataEntity {
     return BagDataEntity(
       index: json['index'],
       waitressId: json['waitressId'],
+      tableId: json['tableId'],
       settleOrderId: json['settleOrderId'],
       idOrderToUpdate: json['idOrderToUpdate'],
       orderNumber: json['orderNumber'],
@@ -40,6 +43,7 @@ class BagDataEntity {
     final Map<String, dynamic> data = {
       'index': index,
       'waitressId': waitressId,
+      'tableId': tableId,
       'settleOrderId': settleOrderId,
       'idOrderToUpdate': idOrderToUpdate,
       'orderNumber': orderNumber,
@@ -52,6 +56,8 @@ class BagDataEntity {
   BagDataEntity copyWith() {
     return BagDataEntity(
       index: this.index,
+      waitressId: this.waitressId,
+      tableId: this.tableId,
       idOrderToUpdate: this.idOrderToUpdate,
       settleOrderId: this.settleOrderId,
       orderNumber: this.orderNumber,
@@ -62,95 +68,3 @@ class BagDataEntity {
     );
   }
 }
-
-// class BagDataEntity {
-//   BagDataEntity({
-//     int? index,
-//     List<BagProductData>? bagProducts,
-//   }) {
-//     _index = index;
-//     _bagProducts = bagProducts;
-//   }
-
-//   BagDataEntity.fromJson(dynamic json) {
-//     _index = json['index'];
-//     if (json['bag_products'] != null) {
-//       _bagProducts = [];
-//       json['bag_products'].forEach((v) {
-//         _bagProducts?.add(BagProductData.fromJson(v));
-//       });
-//     }
-//   }
-//   int? _index;
-//   List<BagProductData>? _bagProducts;
-
-//   BagDataEntity copyWith({
-//     int? index,
-//     List<BagProductData>? bagProducts,
-//   }) =>
-//       BagDataEntity(
-//         index: index ?? _index,
-//         bagProducts: bagProducts ?? _bagProducts,
-//       );
-
-//   int? get index => _index;
-//   List<BagProductData>? get bagProducts => _bagProducts;
-
-//   Map<String, dynamic> toJson() {
-//     final map = <String, dynamic>{};
-//     map['index'] = _index;
-//     if (_bagProducts != null) {
-//       map['bag_products'] = _bagProducts?.map((v) {
-//         return v.toJsonInsert();
-//       }).toList();
-//     }
-//     return map;
-//   }
-// }
-
-// class BagProductData {
-//   final List<MainItemEntity>? carts;
-//   BagProductData({this.carts});
-
-//   factory BagProductData.fromJson(Map data) {
-//     List<BagProductData> newList = [];
-//     List<MainItemEntity> newListMaintItem = [];
-//     data["products"]?.forEach((item) {
-//       newList.add(BagProductData.fromJson(item));
-//       item['carts']?.forEach((element) {
-//         newListMaintItem.add(MainItemEntity.fromJson(element));
-//       });
-//     });
-//     return BagProductData(carts: newListMaintItem //data['cart_main_item']
-//         );
-//   }
-//   BagProductData copyWith() {
-//     return BagProductData(
-//       carts: carts ?? carts,
-//     );
-//   }
-
-//   Map<String, dynamic> toJson() {
-//     final map = <String, dynamic>{};
-//     if (carts != null) map["products"] = toJsonCart();
-//     return map;
-//   }
-
-//   Map<String, dynamic> toJsonInsert() {
-//     final map = <String, dynamic>{};
-//     if (carts != null) {
-//       map["products"] = toJsonCart();
-//     }
-//     return map;
-//   }
-
-//   List<Map<String, dynamic>> toJsonCart() {
-//     List<Map<String, dynamic>> list = [];
-//     carts?.forEach((element) {
-//       final map = <String, dynamic>{};
-//       map['carts'] = carts;
-//       list.add(map);
-//     });
-//     return list;
-//   }
-// }

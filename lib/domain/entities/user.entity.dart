@@ -81,4 +81,13 @@ class UserEntity {
     }
     return data;
   }
+
+  bool canUpdateOrCanceledOrder() {
+    print("---------Tchek  -canUpdateOrCanceledOrder-  ---------");
+    // grised if and on if canUpdateOrCanceled = false
+    if (role?.permissions == null || role?.permissions?.length == 0) {
+      return true;
+    }
+    return role?.permissions?[0].canUpdateOrCanceled ?? true;
+  }
 }
