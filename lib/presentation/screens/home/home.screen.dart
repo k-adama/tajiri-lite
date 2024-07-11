@@ -11,8 +11,10 @@ import 'package:tajiri_waitress/presentation/controllers/home/home.controller.da
 import 'package:tajiri_waitress/presentation/routes/presentation_screen.route.dart';
 import 'package:tajiri_waitress/presentation/screens/home/components/cart_item_row.component.dart';
 import 'package:tajiri_waitress/presentation/screens/home/components/chart_bar.component.dart';
-import 'package:tajiri_waitress/presentation/screens/home/components/deconnection_modal.component.dart';
+import 'package:tajiri_waitress/presentation/screens/home/components/app_menu_modal.component.dart';
+import 'package:tajiri_waitress/presentation/screens/home/components/means_of_payment_by_sale.component.dart';
 import 'package:tajiri_waitress/presentation/screens/home/components/my_orders.component.dart';
+import 'package:tajiri_waitress/presentation/screens/home/components/sale_by_category.component..dart';
 import 'package:tajiri_waitress/presentation/screens/home/components/select_periode_dropdown.component.dart';
 import 'package:tajiri_waitress/presentation/ui/widgets/buttons/custom.rounded.button.dart';
 import 'package:upgrader/upgrader.dart';
@@ -152,6 +154,35 @@ class _HomeScreenState extends State<HomeScreen> {
                                   padding: const EdgeInsets.only(
                                       left: 4.0, right: 4),
                                   child: MyOrdersComponent(
+                                    orders: homeController.orders,
+                                  ),
+                                ),
+                                8.verticalSpace,
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 14.0),
+                                  child: Text(
+                                    "Ventes/Moyen de paiement",
+                                    style: Style.interBold(),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 4.0, right: 4),
+                                  child: MeansOfPaymentBySaleComponent(
+                                    orders: homeController.orders,
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(left: 14.0),
+                                  child: Text(
+                                    "Ventes/catégorie",
+                                    style: Style.interBold(),
+                                  ),
+                                ),
+                                Padding(
+                                  padding: const EdgeInsets.only(
+                                      left: 4.0, right: 4),
+                                  child: SaleByCategoriyComponent(
                                     orders: homeController.orders,
                                   ),
                                 ),

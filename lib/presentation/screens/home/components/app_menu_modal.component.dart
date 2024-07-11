@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tajiri_waitress/app/common/app_helpers.common.dart';
 import 'package:tajiri_waitress/app/config/theme/style.theme.dart';
@@ -74,28 +75,40 @@ class DeconnectionModalComponent extends StatelessWidget {
               thickness: 2,
             ),
             20.verticalSpace,
-            InkWell(
-              onTap: () {
-                AppHelpersCommon.logoutApi();
-              },
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Text(
-                    "Déconnexion",
-                    style: Style.interNormal(
-                        size: 15.sp, color: Style.brandBlue950),
-                  ),
-                  const Icon(
-                    Icons.chevron_right,
-                    color: Style.grey950,
-                  ),
-                ],
-              ),
+            buildComponent(
+              "Rapport de ventes",
+              null,
+            ),
+            20.verticalSpace,
+            buildComponent(
+              "Déconnexion",
+              () => AppHelpersCommon.logoutApi(),
             ),
             20.verticalSpace,
           ],
         ),
+      ),
+    );
+  }
+
+  Widget buildComponent(
+    String text,
+    void Function()? onTap,
+  ) {
+    return InkWell(
+      onTap: onTap,
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+        children: [
+          Text(
+            text,
+            style: Style.interNormal(size: 15.sp, color: Style.brandBlue950),
+          ),
+          const Icon(
+            Icons.chevron_right,
+            color: Style.grey950,
+          ),
+        ],
       ),
     );
   }
