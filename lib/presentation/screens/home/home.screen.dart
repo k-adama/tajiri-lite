@@ -70,7 +70,7 @@ class _HomeScreenState extends State<HomeScreen> {
                 onPressed: () {
                   AppHelpersCommon.showCustomModalBottomSheet(
                     context: context,
-                    modal: const DeconnectionModalComponent(),
+                    modal: const AppMenuModalComponent(),
                     isDarkMode: false,
                     isDrag: true,
                     radius: 12,

@@ -1,11 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:tajiri_waitress/app/common/app_helpers.common.dart';
 import 'package:tajiri_waitress/app/config/theme/style.theme.dart';
 
-class DeconnectionModalComponent extends StatelessWidget {
-  const DeconnectionModalComponent({super.key});
+class AppMenuModalComponent extends StatelessWidget {
+  const AppMenuModalComponent({super.key});
 
   @override
   Widget build(BuildContext context) {
