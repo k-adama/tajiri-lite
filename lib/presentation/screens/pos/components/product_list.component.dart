@@ -29,12 +29,12 @@ class _ProductsListComponentState extends State<ProductsListComponent> {
   }
 
   void _onRefresh(PosController posController) async {
-    await posController.fetchFoods();
+   // await posController.fetchFoods();
     _refreshController.refreshCompleted();
   }
 
   void _onLoading(PosController posController) async {
-    await posController.fetchFoods();
+   // await posController.fetchFoods();
     _refreshController.loadComplete();
   }
 

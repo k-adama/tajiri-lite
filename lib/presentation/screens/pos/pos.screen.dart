@@ -9,7 +9,6 @@ import 'package:tajiri_waitress/presentation/screens/pos/components/category_lis
 import 'package:tajiri_waitress/presentation/screens/pos/components/product_list.component.dart';
 import 'package:tajiri_waitress/presentation/screens/pos/components/see_cart_button.component.dart';
 import 'package:tajiri_waitress/presentation/screens/pos/components/select_table.component.dart';
-import 'package:upgrader/upgrader.dart';
 
 class PosScreen extends StatefulWidget {
   const PosScreen({super.key});
@@ -26,8 +25,7 @@ class _PosScreenState extends State<PosScreen> {
   Widget build(BuildContext context) {
     final restaurantName =
         "${user != null && user?.restaurantUser != null ? user?.restaurantUser![0].restaurant?.name : ""}";
-    return UpgradeAlert(
-      child: Scaffold(
+    return Scaffold(
         appBar: AppBar(
           centerTitle: true,
           elevation: 0,
@@ -69,7 +67,7 @@ class _PosScreenState extends State<PosScreen> {
         floatingActionButton: SeeCartButtonComponent(
           backScreenIsOrderHistory: backScreenIsOrderHistory == true,
         ),
-      ),
+     
     );
   }
 }
