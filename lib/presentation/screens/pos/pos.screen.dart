@@ -9,6 +9,7 @@ import 'package:tajiri_waitress/presentation/screens/pos/components/category_lis
 import 'package:tajiri_waitress/presentation/screens/pos/components/product_list.component.dart';
 import 'package:tajiri_waitress/presentation/screens/pos/components/see_cart_button.component.dart';
 import 'package:tajiri_waitress/presentation/screens/pos/components/select_table.component.dart';
+//import 'package:upgrader/upgrader.dart';
 
 class PosScreen extends StatefulWidget {
   const PosScreen({super.key});
@@ -20,11 +21,12 @@ class PosScreen extends StatefulWidget {
 class _PosScreenState extends State<PosScreen> {
   final user = AppHelpersCommon.getUserInLocalStorage();
   final backScreenIsOrderHistory = Get.arguments;
+  final restaurant = AppHelpersCommon.getRestaurantInLocalStorage();
 
   @override
   Widget build(BuildContext context) {
     final restaurantName =
-        "${user != null && user?.restaurantUser != null ? user?.restaurantUser![0].restaurant?.name : ""}";
+        "${user != null && restaurant != null ? restaurant?.name : ""}";
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
@@ -66,7 +68,7 @@ class _PosScreenState extends State<PosScreen> {
         floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
         floatingActionButton: SeeCartButtonComponent(
           backScreenIsOrderHistory: backScreenIsOrderHistory == true,
-        ),
+      ),
      
     );
   }

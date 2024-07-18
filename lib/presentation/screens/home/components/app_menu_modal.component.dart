@@ -63,7 +63,7 @@ class AppMenuModalComponent extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    user?.role?.name ?? '',
+                    user?.role ?? '',
                     style: Style.interNormal(color: Style.grey800, size: 12),
                   ),
                 ],

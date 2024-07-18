@@ -1,14 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:tajiri_sdk/tajiri_sdk.dart';
 import 'package:tajiri_waitress/app/config/theme/style.theme.dart';
-import 'package:tajiri_waitress/domain/entities/food_data.entity.dart';
 import 'package:tajiri_waitress/presentation/controllers/pos/pos.controller.dart';
 import 'package:tajiri_waitress/presentation/screens/pos/components/fooddetail_update_quantity.component.dart';
 import 'package:tajiri_waitress/presentation/screens/pos/components/food_detail_formField.component.dart';
 
 class FoodDetailUpdatePrice extends StatefulWidget {
-  final FoodDataEntity? product;
+  final Product? product;
   const FoodDetailUpdatePrice({
     super.key,
     this.product,

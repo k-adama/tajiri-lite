@@ -24,17 +24,18 @@ void main() async {
     url: Environment.supabaseUrl,
     anonKey: Environment.supabaseToken,
   );
+  
   TajiriSDK.initialize(env: EnvType.production, debugEnable: false);
-  //Remove this method to stop OneSignal Debugging
-/*  OneSignal.Debug.setLogLevel(OSLogLevel.verbose);
-  OneSignal.initialize(Environment.onesignalToken);
-  OneSignal.Notifications.requestPermission(true);*/
-
   try {
     await Mixpanel.init(Environment.mixpanelToken, trackAutomaticEvents: true);
   } catch (e) {
     print("Mixpanel error : $e");
   }
+
+  //Remove this method to stop OneSignal Debugging
+/*  OneSignal.Debug.setLogLevel(OSLogLevel.verbose);
+  OneSignal.initialize(Environment.onesignalToken);
+  OneSignal.Notifications.requestPermission(true);*/
 
   //await Upgrader.clearSavedSettings();
   SystemChrome.setPreferredOrientations(

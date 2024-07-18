@@ -1,6 +1,7 @@
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:intl/intl.dart';
+import 'package:tajiri_sdk/tajiri_sdk.dart';
 import 'package:tajiri_waitress/app/common/app_helpers.common.dart';
 import 'package:tajiri_waitress/app/common/utils.common.dart';
 import 'package:tajiri_waitress/app/data/repositories/order_history/order_history.repository.dart';
@@ -15,7 +16,7 @@ class OrderHistoryController extends GetxController {
   final OrdersRepository _ordersRepository = OrdersRepository();
   List<OrdersDataEntity> orders = List<OrdersDataEntity>.empty().obs;
   List<OrdersDataEntity> ordersInit = List<OrdersDataEntity>.empty().obs;
-  final UserEntity? user = AppHelpersCommon.getUserInLocalStorage();
+  final Staff? user = AppHelpersCommon.getUserInLocalStorage();
 
   @override
   void onReady() {
@@ -32,7 +33,7 @@ class OrderHistoryController extends GetxController {
     String startDate =
         DateFormat("yyyy-MM-dd").format(startRangeDate ?? sevenDaysAgo);
     String endDate = DateFormat("yyyy-MM-dd").format(endRangeDate ?? today);
-    String? ownerId = (user?.role?.permissions?[0].dashboardUnique ?? false)
+    String? ownerId = user?.role ==" OWNER" // (user?.role?.permissions?[0].dashboardUnique ?? false)
         ? user?.id
         : null;
     final connected = await AppConnectivityService.connectivity();
@@ -68,7 +69,7 @@ class OrderHistoryController extends GetxController {
   }
 
   tableOrWaitessNoNullOrNotEmpty(OrdersDataEntity orderItem) {
-    if (user?.restaurantUser![0].restaurant?.listingType == "TABLE") {
+    if (false) { //user?.restaurantUser![0].restaurant?.listingType == "TABLE"
       return orderItem.tableId != null ? true : false;
     } else {
       return orderItem.waitressId != null ? true : false;

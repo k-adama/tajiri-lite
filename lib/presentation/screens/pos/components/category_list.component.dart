@@ -34,7 +34,7 @@ class _CategoryListComponentState extends State<CategoryListComponent> {
               padding: const EdgeInsets.only(right: 8.0),
               child: CategoryCardComponent(
                 onTap: () {
-                  posController.handleFilter(category.id!, category.name!);
+                  posController.handleFilter(category.id, category.name);
                 },
                 category: category,
                 isSelected: category.id == posController.categoryId.value,
