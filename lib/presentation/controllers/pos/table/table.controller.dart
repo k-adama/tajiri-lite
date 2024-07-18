@@ -21,6 +21,7 @@ class TableController extends GetxController {
   TableEntity newTable = TableEntity();
   Rx<TableEntity?> selectedTable = Rx<TableEntity?>(null);
   // OrdersController ordersController = Get.find();
+  final user = AppHelpersCommon.getUserInLocalStorage();
 
   @override
   void onReady() async {
@@ -66,7 +67,7 @@ class TableController extends GetxController {
       isLoadingTable = true;
       update();
       final user = AppHelpersCommon.getUserInLocalStorage();
-      final restaurantId = user?.role?.restaurantId;
+      final restaurantId = user?.restaurantId;
       if (restaurantId == null) {
         print("====${restaurantId} null====");
         return;

@@ -15,6 +15,7 @@ import 'package:tajiri_waitress/presentation/routes/presentation_screen.route.da
 import 'package:tajiri_waitress/presentation/ui/widgets/custom_range_slider.widget.dart';
 import 'package:upgrader/upgrader.dart';
 import 'package:onesignal_flutter/onesignal_flutter.dart';
+import 'package:tajiri_sdk/tajiri_sdk.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,6 +24,13 @@ void main() async {
     url: Environment.supabaseUrl,
     anonKey: Environment.supabaseToken,
   );
+
+  TajiriSDK.initialize(env: EnvType.production, debugEnable: false);
+  try {
+    await Mixpanel.init(Environment.mixpanelToken, trackAutomaticEvents: true);
+  } catch (e) {
+    print("Mixpanel error : $e");
+  }
 
   //Remove this method to stop OneSignal Debugging
   OneSignal.Debug.setLogLevel(OSLogLevel.verbose);

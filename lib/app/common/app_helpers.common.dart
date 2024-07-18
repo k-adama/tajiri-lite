@@ -4,6 +4,8 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/route_manager.dart';
+import 'package:tajiri_sdk/tajiri_sdk.dart';
+import 'package:tajiri_waitress/app/config/constants/restaurant.constant.dart';
 import 'package:tajiri_waitress/app/config/constants/tr_keys.constant.dart';
 import 'package:tajiri_waitress/app/config/constants/user.constant.dart';
 import 'package:tajiri_waitress/app/config/theme/style.theme.dart';
@@ -22,24 +24,32 @@ import 'package:top_snackbar_flutter/top_snack_bar.dart';
 class AppHelpersCommon {
   AppHelpersCommon._();
 
-  static UserEntity? getUserInLocalStorage() {
+  static Staff? getUserInLocalStorage() {
     final userEncoding = LocalStorageService.instance.get(UserConstant.keyUser);
     if (userEncoding == null) {
       logoutApi();
       return null;
     }
-    final user = UserEntity.fromJson(jsonDecode(userEncoding));
+    final user = Staff.fromJson(
+        jsonDecode(LocalStorageService.instance.get(UserConstant.keyUser)!));
     return user;
   }
 
+  static Restaurant? getRestaurantInLocalStorage() {
+    final restoEncoding =
+        LocalStorageService.instance.get(RestaurantConstant.keyRestaurant);
+    if (restoEncoding == null) {
+      return null;
+    }
+    final resto = Restaurant.fromJson(jsonDecode(
+        LocalStorageService.instance.get(RestaurantConstant.keyRestaurant)!));
+    return resto;
+  }
+
   static logoutApi() async {
-    HttpService server = HttpService();
+    final tajiriSdk = TajiriSDK.instance;
     try {
-      final client =
-          server.client(requireAuth: true, requireRestaurantId: false);
-      await client.get(
-        '/auth/logout/',
-      );
+      final client = await tajiriSdk.authService.logout();
       Mixpanel.instance
           .track("Logout", properties: {"Date": DateTime.now().toString()});
       Mixpanel.instance.reset();

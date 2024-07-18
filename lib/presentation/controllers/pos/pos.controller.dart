@@ -73,6 +73,7 @@ class PosController extends GetxController {
   BagDataEntity get selectbag => bags[selectedBagIndex.value];
   bool get hasTableManagement => checkListingType(user) == ListingType.table;
 
+
   @override
   void onReady() async {
     await Future.wait([
@@ -169,7 +170,7 @@ class PosController extends GetxController {
   }
 
   Future<void> fetchCategoriesSupabase() async {
-    final restaurantId = user?.role?.restaurantId;
+    final restaurantId = user?.restaurantId;
 
     if (restaurantId == null) {
       AppHelpersCommon.showBottomSnackBar(
@@ -522,7 +523,7 @@ class PosController extends GetxController {
   }
 
   Future<void> fetchTypeOfCookingFromSupabase() async {
-    final restaurantId = user?.role?.restaurantId;
+    final restaurantId = user?.restaurantId;
 
     if (restaurantId == null) {
       AppHelpersCommon.showBottomSnackBar(
@@ -809,7 +810,7 @@ class PosController extends GetxController {
 
   void setPlaceOrder(String status) {
     final user = AppHelpersCommon.getUserInLocalStorage();
-    final restaurantId = user?.role?.restaurantId;
+    final restaurantId = user?.restaurantId;
 
     String customeType =
         "GUEST"; //(customerNameSelect.value == "") ? "GUEST" : "SAVED";

@@ -30,6 +30,10 @@ environment:
 dependencies:
   flutter:
     sdk: flutter
+  tajiri_sdk:
+    git:
+      url: git@github.com:tajiri-app/tajiri-sdk.git
+      ref: main
 
 
   # The following adds the Cupertino Icons font to your application.

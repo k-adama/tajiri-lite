@@ -47,7 +47,7 @@ class HomeController extends GetxController {
 
   RxString selectFiler = TrKeysConstant.day.obs;
   bool get hasWaitressPermission =>
-      user?.role?.permissions?[0].dashboardUnique == true;
+      user?.role == "OWNER";//user?.role?.permissions?[0].dashboardUnique == true;
 
   @override
   void onInit() {

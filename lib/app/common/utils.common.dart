@@ -1,3 +1,4 @@
+import 'package:tajiri_sdk/tajiri_sdk.dart';
 import 'package:tajiri_waitress/domain/entities/orders_details.entity.dart';
 import 'package:tajiri_waitress/domain/entities/user.entity.dart';
 
@@ -30,12 +31,12 @@ String getNameFromOrderDetail(OrderDetailsEntity? orderDetail) {
     return orderDetail.food?.name ?? 'N/A';
   }
 }
-ListingType? checkListingType(UserEntity? user) {
-  if (user?.restaurantUser?[0].restaurant?.listingEnable != true) {
+ListingType? checkListingType(Staff? user) {
+  if (false) { //user?.restaurantUser?[0].restaurant?.listingEnable != true
     return null;
   }
 
-  return user!.restaurantUser?[0].restaurant?.listingType == "TABLE"
+  return false//user!.restaurantUser?[0].restaurant?.listingType == "TABLE"
       ? ListingType.table
       : ListingType.waitress;
 }

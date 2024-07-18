@@ -21,11 +21,12 @@ class PosScreen extends StatefulWidget {
 class _PosScreenState extends State<PosScreen> {
   final user = AppHelpersCommon.getUserInLocalStorage();
   final backScreenIsOrderHistory = Get.arguments;
+  final restaurant = AppHelpersCommon.getRestaurantInLocalStorage();
 
   @override
   Widget build(BuildContext context) {
     final restaurantName =
-        "${user != null && user?.restaurantUser != null ? user?.restaurantUser![0].restaurant?.name : ""}";
+        "${user != null && restaurant != null ? restaurant?.name : ""}";
     return UpgradeAlert(
       child: Scaffold(
         appBar: AppBar(

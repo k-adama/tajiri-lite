@@ -3,6 +3,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/instance_manager.dart';
 import 'package:get/route_manager.dart';
+import 'package:tajiri_sdk/tajiri_sdk.dart';
 import 'package:tajiri_waitress/app/common/app_helpers.common.dart';
 import 'package:tajiri_waitress/app/common/utils.common.dart';
 import 'package:tajiri_waitress/app/config/constants/app.constant.dart';
@@ -23,7 +24,7 @@ class OrdersItemComponent extends StatefulWidget {
 }
 
 class _OrdersItemComponentState extends State<OrdersItemComponent> {
-  final UserEntity? user = AppHelpersCommon.getUserInLocalStorage();
+  final Staff? user = AppHelpersCommon.getUserInLocalStorage();
   final OrderHistoryController orderController = Get.find();
   final homeController = Get.find<HomeController>();
   bool isExpanded = false;
@@ -148,9 +149,7 @@ class _OrdersItemComponentState extends State<OrdersItemComponent> {
                         child: CustomButton(
                           background: Style.brandBlue50,
                           title: "Modifier la commande",
-                          isGrised: AppHelpersCommon.getUserInLocalStorage()
-                                  ?.canUpdateOrCanceledOrder() ==
-                              false, // grised add product button if user can't update or cancel
+                          isGrised: false,//AppHelpersCommon.getUserInLocalStorage()?.canUpdateOrCanceledOrder() ==false, // grised add product button if user can't update or cancel
                           textColor: Style.brandColor500,
                           haveBorder: false,
                           radius: 5,
