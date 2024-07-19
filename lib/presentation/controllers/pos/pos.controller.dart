@@ -1,3 +1,5 @@
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tajiri_sdk/tajiri_sdk.dart';
@@ -669,6 +671,12 @@ class PosController extends GetxController {
     String customeType = (customerNameSelect.value == "") ? "GUEST" : "SAVED";
     String? customerIdValue =
         (customerId.value == "") ? null : customerId.value;
+    final paymentValueDto = parseProductList().map((item) {
+      return PaymentValueDto(
+        paymentMethodId: paymentMethodId.string,
+        amount: calculateBagProductTotal().toInt(),
+      );
+    }).toList();
     final orderProductDto = parseProductList().map((item) {
       return OrderProductDto(
         productId: item.id!,
@@ -692,10 +700,14 @@ class PosController extends GetxController {
       orderNotes: orderNotes.value,
       createdId: user?.id,
       tax: 0,
+      paymentValues: paymentValueDto,
       products: orderProductDto,
       tableId:
           hasTableManagement ? selectedTable.value?.id ?? tableCurrentId : null,
     );
+    print('dddkdj');
+    log("CREATE DTO : ${createDto.toJson()}");
+    print('dddkdjddeee');
     return createDto;
   }
 

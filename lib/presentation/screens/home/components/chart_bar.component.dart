@@ -5,6 +5,7 @@ import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/instance_manager.dart';
 import 'package:intl/intl.dart';
+import 'package:tajiri_sdk/tajiri_sdk.dart';
 import 'package:tajiri_waitress/app/common/app_helpers.common.dart';
 import 'package:tajiri_waitress/app/config/theme/style.theme.dart';
 import 'package:tajiri_waitress/domain/entities/orders_data.entity.dart';
@@ -52,7 +53,7 @@ class _ChartBarComponentState extends State<ChartBarComponent> {
     );
   }
 
-  LineChartData mainData(List<OrdersDataEntity> orders, String viewSelected) {
+  LineChartData mainData(List<Order> orders, String viewSelected) {
     return LineChartData(
       lineTouchData: LineTouchData(
         touchTooltipData: LineTouchTooltipData(
@@ -154,7 +155,7 @@ class _ChartBarComponentState extends State<ChartBarComponent> {
   }
 
   Widget bottomTitleWidgets(double value, TitleMeta meta,
-      List<OrdersDataEntity> orders, String viewSelected) {
+      List<Order> orders, String viewSelected) {
     return SideTitleWidget(
       axisSide: meta.axisSide,
       child: getTextChart(orders, value, viewSelected),

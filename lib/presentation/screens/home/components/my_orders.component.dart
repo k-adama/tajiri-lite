@@ -2,6 +2,7 @@ import 'package:auto_height_grid_view/auto_height_grid_view.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
+import 'package:tajiri_sdk/tajiri_sdk.dart';
 import 'package:tajiri_waitress/app/config/constants/app.constant.dart';
 import 'package:tajiri_waitress/domain/entities/orders_data.entity.dart';
 import 'package:tajiri_waitress/presentation/screens/home/components/my_orders_statistiques.component.dart';
@@ -15,7 +16,7 @@ class OrderStatus {
 }
 
 class MyOrdersComponent extends StatefulWidget {
-  final List<OrdersDataEntity> orders;
+  final List<Order> orders;
 
   const MyOrdersComponent({super.key, required this.orders});
 
