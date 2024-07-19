@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:get/instance_manager.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart';
-import 'package:tajiri_waitress/domain/entities/orders_data.entity.dart';
+import 'package:tajiri_sdk/tajiri_sdk.dart';
 import 'package:tajiri_waitress/presentation/controllers/order_history/order_history.controller.dart';
 import 'package:tajiri_waitress/presentation/screens/order_history/components/orders_item.component.dart';
 
 class OrdersListItemComponent extends StatefulWidget {
-  final List<OrdersDataEntity> orders;
+  final List<Order> orders;
   final bool isRestaurant;
   const OrdersListItemComponent(
       {super.key, required this.orders, required this.isRestaurant});
@@ -39,7 +39,7 @@ class _OrdersListItemComponentState extends State<OrdersListItemComponent> {
           padding: const EdgeInsets.only(bottom: 100),
           itemCount: widget.orders.length,
           itemBuilder: (BuildContext context, index) {
-            OrdersDataEntity orderData = widget.orders[index];
+            Order orderData = widget.orders[index];
             return OrdersItemComponent(
               order: orderData,
             );

@@ -1,5 +1,4 @@
 import 'package:tajiri_sdk/tajiri_sdk.dart';
-import 'package:tajiri_waitress/domain/entities/food_data.entity.dart';
 import 'package:tajiri_waitress/domain/entities/side_dish.entity.dart';
 
 enum CartItemStatus { none, updated, isNew, deleted }

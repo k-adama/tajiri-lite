@@ -4,22 +4,18 @@ import 'package:tajiri_sdk/tajiri_sdk.dart';
 import 'package:tajiri_waitress/app/common/app_helpers.common.dart';
 import 'package:tajiri_waitress/app/common/utils.common.dart';
 import 'package:tajiri_waitress/app/config/theme/style.theme.dart';
-import 'package:tajiri_waitress/app/data/repositories/products/products.repository.dart';
 import 'package:tajiri_waitress/app/mixpanel/mixpanel.dart';
 import 'package:tajiri_waitress/app/services/app_connectivity.service.dart';
 import 'package:tajiri_waitress/domain/entities/category_supabase.entity.dart';
 import 'package:tajiri_waitress/app/extensions/product.extension.dart';
-import 'package:tajiri_waitress/domain/entities/food_variant_categorie.entity.dart';
+import 'package:tajiri_waitress/domain/entities/local_cart_enties/bag_data.entity.dart';
 import 'package:tajiri_waitress/domain/entities/local_cart_enties/main_item.entity.dart';
-import 'package:tajiri_waitress/domain/entities/orders_data.entity.dart';
 import 'package:tajiri_waitress/domain/entities/side_dish.entity.dart';
-import 'package:tajiri_waitress/domain/entities/table.entity.dart';
 import 'package:tajiri_waitress/domain/entities/waitress.entity.dart';
 import 'package:tajiri_waitress/presentation/ui/widgets/buttons/custom.button.dart';
 import 'package:tajiri_waitress/presentation/ui/widgets/dialogs/successfull.dialog.dart';
 import 'package:uuid/uuid.dart';
-
-import '../../../domain/entities/local_cart_enties/bag_data.entity.dart';
+import 'package:tajiri_sdk/src/models/table.model.dart' as taj_sdk;
 
 class PosController extends GetxController {
   final KIT_ID = "1c755978-ae56-47c6-b8e6-a5e3b03577ce";
@@ -30,11 +26,13 @@ class PosController extends GetxController {
   RxInt priceAddFood = 0.obs;
   List<Product> products = List<Product>.empty().obs;
   List<Product> productsInit = List<Product>.empty().obs;
+  RxString customerNameSelect = "".obs;
+  RxString customerId = ''.obs;
+  String? tableCurrentId;
   MainCategory? categorieSupabaseSelected;
   RxList bundlePacks = [].obs;
   final categories = List<Category>.empty().obs;
   RxString categoryId = 'all'.obs;
-  final foodVariantCategories = List<FoodVariantCategoryEntity>.empty().obs;
 
   // cart
   RxInt selectedBagIndex =
@@ -53,8 +51,8 @@ class PosController extends GetxController {
   final selectbagProductsLength = 0.obs;
 
   final waitress = List<WaitressEntity>.empty().obs;
-  Rx<WaitressEntity?> selectedWaitress = Rx<WaitressEntity?>(null);
-  Rx<TableEntity?> selectedTable = Rx<TableEntity?>(null);
+  Rx<Waitress?> selectedWaitress = Rx<Waitress?>(null);
+  Rx<taj_sdk.Table?> selectedTable = Rx<taj_sdk.Table?>(null);
 
   final createOrderLoading = false.obs;
   dynamic placeOrder;
@@ -446,46 +444,6 @@ class PosController extends GetxController {
     }
   }
 
-  /* Future<void> fetchTypeOfCookingFromSupabase() async {
-    final restaurantId = user?.restaurantId;
-
-    if (restaurantId == null) {
-      AppHelpersCommon.showBottomSnackBar(
-        Get.context!,
-        const Text("Impossible de recuperer l'id du restaurant"),
-        const Duration(seconds: 2),
-        true,
-      );
-    }
-    final connected = await AppConnectivityService.connectivity();
-
-    if (connected) {
-      update();
-      try {
-        final supabase = Supabase.instance.client;
-        final response = await supabase
-            .from('type_of_cooking')
-            .select('*')
-            .eq("restaurantId", restaurantId!);
-
-        final json = response as List<dynamic>;
-        final data =
-            json.map((item) => TypeOfCookingEntityData.fromJson(item)).toList();
-
-        typesOfCooking.assignAll(data);
-        update();
-      } catch (e) {
-        AppHelpersCommon.showBottomSnackBar(
-          Get.context!,
-          Text(e.toString()),
-          const Duration(seconds: 2),
-          true,
-        );
-        update();
-      }
-    }
-  }*/
-
   void removeItemInBag(MainCartEntity item) {
     if (selectedBagIndex.value < bags.length) {
       final product = selectbag.bagProducts
@@ -523,21 +481,19 @@ class PosController extends GetxController {
     }
   }
 
-  void addItemsFromOrderToCart(OrdersDataEntity order) {
+  void addItemsFromOrderToCart(Order order) {
     // supprimer le seul pannier et creer un nouveau
     bags.clear();
     addANewBagFromOrder(order);
 
-    for (var orderDetail in order.orderDetails!) {
-      print(
-          "========order detail==${orderDetail.food?.name}===${orderDetail.orderDetailExtra} ");
-      Product food = orderDetail.food ?? orderDetail.bundle;
+    for (var orderDetail in order.orderProducts) {
+      Product food = orderDetail.product;
       List<SideDishAndQuantityEntity> sideDishList =
-          orderDetail.orderDetailExtra!.map((item) {
+          orderDetail.orderProductExtra.map((item) {
         return SideDishAndQuantityEntity(
           sideDish: SideDishEntity(
-            id: item.food?.id,
-            name: item.food?.name,
+            id: item.product.id,
+            name: item.product.name,
             price: null,
           ),
           quantity: item.quantity,
@@ -547,16 +503,16 @@ class PosController extends GetxController {
       // mettre CartItemStatus a none le status pour pouvoir update
       addProductToSelectedBagByMAinItem(createMainCartItemFromFood(
           food,
-          orderDetail.quantity!,
-          orderDetail.price!,
+          orderDetail.quantity,
+          orderDetail.price,
           sideDishList,
-          orderDetail.typeOfCooking,
+          orderDetail.productTypeOfCookingId,
           status: CartItemStatus.none));
     }
     selectbagProductsLength.value = selectbag.bagProducts.length;
   }
 
-  void addANewBagFromOrder(OrdersDataEntity order) {
+  void addANewBagFromOrder(Order order) {
     BagDataEntity newBag = BagDataEntity(
         index: bags.length,
         bagProducts: [],
@@ -601,6 +557,7 @@ class PosController extends GetxController {
   }
 
   // MAKE ORDER
+
   Future<void> handleCreateOrder(BuildContext context) async {
     try {
       await saveOrder(context);
@@ -612,28 +569,17 @@ class PosController extends GetxController {
   saveOrder(BuildContext context) async {
     const status = "NEW";
     final createOrderDto = getCreateOrderDto(status);
-    // setPlaceOrder(status);
     createOrderLoading.value = true;
     update();
-
-    print("+++++++++PARAMS $createOrderDto");
-    print(createOrderDto.toJson());
-
     final idOrderToUpdate = bags[selectedBagIndex.value].idOrderToUpdate;
-    await tajiriSdk.ordersService.createOrder(createOrderDto);
-    handleInitialState();
-    createOrderLoading.value = false;
-    update();
-    /* try {
-    final result = idOrderToUpdate != null
-        ? await tajiriSdk.ordersService
-            .updateOrder(idOrderToUpdate, getUpdateOrderDto(status))
-        : await tajiriSdk.ordersService.createOrder(createOrderDto);
-    newOrder = result;
-    createOrderLoading.value = false;
-    print("ggg");
-    print(newOrder);
-    /*try {
+    try {
+      final result = idOrderToUpdate != null
+          ? await tajiriSdk.ordersService
+              .updateOrder(idOrderToUpdate, getUpdateOrderDto(status))
+          : await tajiriSdk.ordersService.createOrder(createOrderDto);
+      newOrder = result;
+      createOrderLoading.value = false;
+      try {
         Mixpanel.instance.track("Checkout (Send Order to DB)", properties: {
           "CustomerEntity type":
               newOrder?.customerId == null ? 'GUEST' : 'SAVED',
@@ -650,82 +596,7 @@ class PosController extends GetxController {
             };
           }).toList()
         });
-      } catch (e) {
-        print("Mixpanel error $e");
-      }*/
-   /* if (bags.length == 1) {
-      bags[selectedBagIndex.value] = BagDataEntity(index: 0, bagProducts: []);
-      // Vider le panier sans le supprimer
-    } else {
-      List<BagDataEntity> newBags = [];
-      bags.removeAt(selectedBagIndex.value);
-      for (int i = 0; i < bags.length; i++) {
-        newBags.add(BagDataEntity(index: i, bagProducts: bags[i].bagProducts));
-      }
-
-      bags.assignAll(newBags);
-    }
-    selectbagProductsLength.value = selectbag.bagProducts.length;
-    const int selectedIndex = 0;
-    selectedBagIndex.value = selectedIndex;*/
-    update();
-    AppHelpersCommon.showAlertDialog(
-      context: context,
-      canPop: false,
-      child: SuccessfullDialog(
-        content: 'La commande \n a été envoyée à la caisse.',
-        redirect: () {},
-        asset: "assets/svgs/confirmOrderIcon.svg",
-        button: CustomButton(
-          isUnderline: true,
-          textColor: Style.brandColor500,
-          background: Style.brandBlue50,
-          underLineColor: Style.brandColor500,
-          title: 'Prendre une nouvelle commande',
-          onPressed: () {
-            Get.close(3);
-          },
-        ),
-        closePressed: () {
-          Get.close(3);
-        },
-      ),
-    );
-
-    handleInitialState();
-     } catch (e) {
-      createOrderLoading.value = false;
-      print("error : $e");
-      update();
-    }*/
-    /*final response = idOrderToUpdate != null
-        ? await _productsRepository.updateOrder(placeOrder, idOrderToUpdate)
-        : await _productsRepository.createOrder(placeOrder);
-
-    response.when(success: (data) {
-      newOrder = data!;
-      createOrderLoading.value = false;
-      try {
-        Mixpanel.instance.track("Checkout (Send Order to DB)", properties: {
-          "CustomerEntity type": newOrder.customer == null ? 'GUEST' : 'SAVED',
-          "Order Status": status,
-          "Payment method": "",
-          "Status": "Success",
-          "Products": newOrder.orderDetails?.map((item) {
-            final int foodPrice =
-                item.food != null ? item.food?.price : item.bundle['price'];
-            return {
-              'Product Name': getNameFromOrderDetail(item),
-              'Price': item.price,
-              'Quantity': item.quantity,
-              'IsVariant': item.price != foodPrice ? true : false
-            };
-          }).toList()
-        });
-      } catch (e) {
-        print("Mixpanel error $e");
-      }
-
+      } catch (e) {}
       if (bags.length == 1) {
         bags[selectedBagIndex.value] = BagDataEntity(index: 0, bagProducts: []);
         // Vider le panier sans le supprimer
@@ -741,10 +612,8 @@ class PosController extends GetxController {
       }
       selectbagProductsLength.value = selectbag.bagProducts.length;
       const int selectedIndex = 0;
-
       selectedBagIndex.value = selectedIndex;
       update();
-
       AppHelpersCommon.showAlertDialog(
         context: context,
         canPop: false,
@@ -767,32 +636,11 @@ class PosController extends GetxController {
           },
         ),
       );
-
       handleInitialState();
-    }, failure: (failure, statusCode) {
+    } catch (e) {
       createOrderLoading.value = false;
       update();
-      try {
-        Mixpanel.instance.track("Checkout (Send Order to DB)", properties: {
-          "CustomerEntity type": newOrder.customer == null ? 'GUEST' : 'SAVED',
-          "Order Status": status,
-          "Payment method": "",
-          "Status": "Failure",
-          "Products": newOrder.orderDetails?.map((item) {
-            final int foodPrice =
-                item.food != null ? item.food?.price : item.bundle['price'];
-            return {
-              'Product Name': getNameFromOrderDetail(item),
-              'Price': item.price,
-              'Quantity': item.quantity,
-              'IsVariant': item.price != foodPrice ? true : false
-            };
-          }).toList()
-        });
-      } catch (e) {
-        print("Mixpanel error : $e");
-      }
-    });*/
+    }
   }
 
   void handleInitialState() {
@@ -818,8 +666,9 @@ class PosController extends GetxController {
   }
 
   CreateOrderDto getCreateOrderDto(String status) {
-    final user = AppHelpersCommon.getUserInLocalStorage();
-    final restaurantId = user?.restaurantId;
+    String customeType = (customerNameSelect.value == "") ? "GUEST" : "SAVED";
+    String? customerIdValue =
+        (customerId.value == "") ? null : customerId.value;
     final orderProductDto = parseProductList().map((item) {
       return OrderProductDto(
         productId: item.id!,
@@ -831,14 +680,7 @@ class PosController extends GetxController {
         }).toList(),
       );
     }).toList();
-    String? tableId;
-    final tableFromBagSelected = bags[selectedBagIndex.value].tableId;
-    String? customerIdValue;
-    if (hasTableManagement) {
-      tableId = tableFromBagSelected ?? selectedTable.value?.id;
-    }
     final totalCartValue = calculateBagProductTotal();
-    String customeType = "GUEST";
     final createDto = CreateOrderDto(
       subTotal: totalCartValue.toInt(),
       grandTotal: totalCartValue.toInt(),
@@ -849,22 +691,18 @@ class PosController extends GetxController {
       customerId: customerIdValue,
       orderNotes: orderNotes.value,
       createdId: user?.id,
-      couponCode: "",
-      discountAmount: 0,
+      tax: 0,
       products: orderProductDto,
-      tableId: tableId,
+      tableId:
+          hasTableManagement ? selectedTable.value?.id ?? tableCurrentId : null,
     );
     return createDto;
   }
 
   UpdateOrderDto getUpdateOrderDto(String status) {
-    String? tableId;
-    final tableFromBagSelected = bags[selectedBagIndex.value].tableId;
-    String? customerIdValue;
-    if (hasTableManagement) {
-      tableId = tableFromBagSelected ?? selectedTable.value?.id;
-    }
-
+    String customeType = (customerNameSelect.value == "") ? "GUEST" : "SAVED";
+    String? customerIdValue =
+        (customerId.value == "") ? null : customerId.value;
     final orderProductDto = parseProductList().map((item) {
       return OrderProductDto(
         productId: item.id!,
@@ -878,7 +716,6 @@ class PosController extends GetxController {
     }).toList();
 
     final totalCartValue = calculateBagProductTotal();
-    String customeType = "GUEST";
     final updateDto = UpdateOrderDto(
       subTotal: totalCartValue.toInt(),
       grandTotal: totalCartValue.toInt(),
@@ -888,65 +725,13 @@ class PosController extends GetxController {
       customerId: customerIdValue,
       orderNotes: orderNotes.value,
       createdId: user?.id,
-      couponCode: "",
-      discountAmount: 0,
+      tax: 0,
       products: orderProductDto,
-      tableId: tableId,
+      tableId:
+          hasTableManagement ? selectedTable.value?.id ?? tableCurrentId : null,
     );
-    print(updateDto.toJson());
     return updateDto;
   }
-
-  /*void setPlaceOrder(String status) {
-    final user = AppHelpersCommon.getUserInLocalStorage();
-    final restaurantId = user?.restaurantId;
-
-    String customeType =
-        "GUEST"; //(customerNameSelect.value == "") ? "GUEST" : "SAVED";
-    String? customerIdValue;
-    //(customerId.value == "") ? null : customerId.value;
-
-    final itemFoods = selectbag.bagProducts.map((item) {
-      return {
-        'foodId': item.id,
-        'price': item.price,
-        'typeOfCooking': item.typeOfCooking,
-        'quantity': item.quantity,
-        'extras': item.sideDishes?.map((dish) {
-          return {"foodId": dish.sideDish?.id, "quantity": dish.quantity};
-        }).toList()
-      };
-    }).toList();
-
-    final totalCartValue = calculateBagProductTotal();
-    final Map<String, dynamic> params = {
-      'subTotal': totalCartValue,
-      'grandTotal': totalCartValue,
-      'customerType': customeType,
-      'status': status,
-      'customerId': customerIdValue,
-      'items': itemFoods,
-      'orderType': bags[selectedBagIndex.value].settleOrderId,
-      'orderNotes': orderNotes.value,
-      'restaurantId': restaurantId,
-      'createdId': user?.id,
-      'couponCode': "", // couponCode,
-      'discountAmount': 0,
-      'paymentMethodId': paymentMethodId.value,
-      'pinCode': "",
-      'address': "",
-      'tax': 0,
-    };
-    final tableFromBagSelected = bags[selectedBagIndex.value].tableId;
-
-    if (hasTableManagement) {
-      params['tableId'] = tableFromBagSelected ?? selectedTable.value?.id;
-    }
-    placeOrder = params;
-    update();
-  }*/
-
-  //
 
   bool productCanMarkedUpdate(MainCartEntity product) {
     return product.status != CartItemStatus.isNew;

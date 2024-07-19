@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tajiri_sdk/tajiri_sdk.dart';
 import 'package:tajiri_waitress/domain/entities/orders_data.entity.dart';
 
 class AppConstants {
@@ -27,7 +28,7 @@ class AppConstants {
   static const String ORDER_PAID = 'PAID';
 
   static bool getStatusOrderInProgressOrDone(
-      OrdersDataEntity order, String status) {
+      Order order, String status) {
     bool checking = false;
     switch (status) {
       case "IN_PROGRESS":
@@ -43,7 +44,7 @@ class AppConstants {
     return checking;
   }
 
-  static String getStatusInFrench(OrdersDataEntity order) {
+  static String getStatusInFrench(Order order) {
     String status = "";
     switch (order.status) {
       case ORDER_COOKING:
@@ -75,7 +76,7 @@ class AppConstants {
     return status;
   }
 
-  static String getOrderTypeInFrench(OrdersDataEntity order) {
+  static String getOrderTypeInFrench(Order order) {
     String orderType = "";
     switch (order.orderType) {
       case orderOnPLace:

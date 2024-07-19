@@ -28,48 +28,47 @@ class _PosScreenState extends State<PosScreen> {
     final restaurantName =
         "${user != null && restaurant != null ? restaurant?.name : ""}";
     return Scaffold(
-        appBar: AppBar(
-          centerTitle: true,
-          elevation: 0,
-          title: GetBuilder<PosController>(builder: (posController) {
-            final hasTableManagement = posController.hasTableManagement;
-            return hasTableManagement &&
-                    posController.selectbag.waitressId == null
-                ? const SelectTableComponent()
-                : Text(
-                    restaurantName,
-                    style: const TextStyle(color: Style.brandBlue950),
-                  );
-          }),
-          iconTheme: const IconThemeData(color: Style.brandBlue950),
-          backgroundColor: Style.white,
-          actions: <Widget>[
-            IconButton(
-              icon: const Icon(
-                Icons.search,
-                color: Style.brandBlue950,
-              ),
-              onPressed: () {
-                Get.toNamed(Routes.SEARCH_PRODUCT);
-              },
+      appBar: AppBar(
+        centerTitle: true,
+        elevation: 0,
+        title: GetBuilder<PosController>(builder: (posController) {
+          final hasTableManagement = posController.hasTableManagement;
+          return hasTableManagement &&
+                  posController.selectbag.waitressId == null
+              ? const SelectTableComponent()
+              : Text(
+                  restaurantName,
+                  style: const TextStyle(color: Style.brandBlue950),
+                );
+        }),
+        iconTheme: const IconThemeData(color: Style.brandBlue950),
+        backgroundColor: Style.white,
+        actions: <Widget>[
+          IconButton(
+            icon: const Icon(
+              Icons.search,
+              color: Style.brandBlue950,
             ),
+            onPressed: () {
+              Get.toNamed(Routes.SEARCH_PRODUCT);
+            },
+          ),
+        ],
+      ),
+      backgroundColor: Style.bodyNewColor,
+      body: Container(
+        padding: const EdgeInsets.only(left: 1),
+        child: const Column(
+          children: [
+            CategoryListComponent(),
+            Expanded(child: ProductsListComponent())
           ],
         ),
-        backgroundColor: Style.bodyNewColor,
-        body: Container(
-          padding: const EdgeInsets.only(left: 1),
-          child: const Column(
-            children: [
-              CategoryListComponent(),
-              Expanded(child: ProductsListComponent())
-            ],
-          ),
-        ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-        floatingActionButton: SeeCartButtonComponent(
-          backScreenIsOrderHistory: backScreenIsOrderHistory == true,
       ),
-     
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: SeeCartButtonComponent(
+        backScreenIsOrderHistory: backScreenIsOrderHistory == true,
+      ),
     );
   }
 }
