@@ -4,7 +4,6 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:tajiri_sdk/src/models/order.model.dart';
-import 'package:tajiri_waitress/domain/entities/orders_data.entity.dart';
 import 'package:tajiri_waitress/domain/entities/sale_category.entity.dart';
 import 'package:tajiri_waitress/presentation/controllers/pos/pos.controller.dart';
 import 'package:tajiri_waitress/presentation/screens/home/components/categorie_statistique.component.dart';
@@ -30,7 +29,7 @@ class _SaleByCategoriyComponentState extends State<SaleByCategoriyComponent> {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<PosController>(
-        builder: (posController) => posController.categoriesSupabase.isEmpty
+        builder: (posController) => posController.mainCategories.isEmpty
             ? const SizedBox.shrink()
             : AutoHeightGridView(
                 shrinkWrap: true,
@@ -38,7 +37,7 @@ class _SaleByCategoriyComponentState extends State<SaleByCategoriyComponent> {
                 crossAxisCount: 2,
                 mainAxisSpacing: 10.r,
                 builder: (context, index) {
-                  final element = posController.categoriesSupabase[index];
+                  final element = posController.mainCategories[index];
                   return AnimationConfiguration.staggeredGrid(
                     columnCount: 8,
                     position: index,

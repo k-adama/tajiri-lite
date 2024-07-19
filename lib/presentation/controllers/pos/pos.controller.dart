@@ -34,6 +34,8 @@ class PosController extends GetxController {
   MainCategory? categorieSupabaseSelected;
   RxList bundlePacks = [].obs;
   final categories = List<Category>.empty().obs;
+  final mainCategories = List<MainCategory>.empty().obs;
+  MainCategory? mainCategorieSelected;
   RxString categoryId = 'all'.obs;
 
   // cart
@@ -69,8 +71,12 @@ class PosController extends GetxController {
 
   @override
   void onReady() async {
-    await Future.wait(
-        [fetchCategories(), fetchProducts(), fetchTypeOfCooking()]);
+    await Future.wait([
+      fetchCategories(),
+      fetchProducts(),
+      fetchTypeOfCooking(),
+      fetchMainCategories(),
+    ]);
     super.onReady();
   }
 
@@ -127,6 +133,33 @@ class PosController extends GetxController {
       isProductLoading = false;
       update();
     }
+  }
+
+  Future<void> fetchMainCategories() async {
+    if (restaurantId == null) {
+      return;
+    }
+
+    final connected = await AppConnectivityService.connectivity();
+
+    if (connected) {
+      update();
+      try {
+        final result =
+            await tajiriSdk.mainCategoriesService.getMainCategories();
+        mainCategories.assignAll(result);
+        selectCategorieSupabase(mainCategories[0]);
+        update();
+      } catch (e) {
+        update();
+      }
+    }
+  }
+
+  selectCategorieSupabase(MainCategory categorie) {
+    mainCategorieSelected = categorie;
+    handleFilter(categorie.id, categorie.name);
+    update();
   }
 
   void setCategoryId(String id) {
@@ -671,12 +704,6 @@ class PosController extends GetxController {
     String customeType = (customerNameSelect.value == "") ? "GUEST" : "SAVED";
     String? customerIdValue =
         (customerId.value == "") ? null : customerId.value;
-    final paymentValueDto = parseProductList().map((item) {
-      return PaymentValueDto(
-        paymentMethodId: paymentMethodId.string,
-        amount: calculateBagProductTotal().toInt(),
-      );
-    }).toList();
     final orderProductDto = parseProductList().map((item) {
       return OrderProductDto(
         productId: item.id!,
@@ -700,14 +727,10 @@ class PosController extends GetxController {
       orderNotes: orderNotes.value,
       createdId: user?.id,
       tax: 0,
-      paymentValues: paymentValueDto,
       products: orderProductDto,
       tableId:
           hasTableManagement ? selectedTable.value?.id ?? tableCurrentId : null,
     );
-    print('dddkdj');
-    log("CREATE DTO : ${createDto.toJson()}");
-    print('dddkdjddeee');
     return createDto;
   }
 
@@ -715,6 +738,7 @@ class PosController extends GetxController {
     String customeType = (customerNameSelect.value == "") ? "GUEST" : "SAVED";
     String? customerIdValue =
         (customerId.value == "") ? null : customerId.value;
+
     final orderProductDto = parseProductList().map((item) {
       return OrderProductDto(
         productId: item.id!,
@@ -742,6 +766,7 @@ class PosController extends GetxController {
       tableId:
           hasTableManagement ? selectedTable.value?.id ?? tableCurrentId : null,
     );
+    log("updateDto DTO : ${updateDto.toJson()}");
     return updateDto;
   }
 

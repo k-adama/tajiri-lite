@@ -1,13 +1,8 @@
-import 'dart:developer';
 import 'package:get/get.dart';
-import 'package:intl/intl.dart';
 import 'package:tajiri_waitress/app/common/app_helpers.common.dart';
 import 'package:tajiri_waitress/app/config/constants/app.constant.dart';
 import 'package:tajiri_waitress/app/config/constants/tr_keys.constant.dart';
-import 'package:tajiri_waitress/app/data/repositories/order_history/order_history.repository.dart';
 import 'package:tajiri_waitress/app/mixpanel/mixpanel.dart';
-import 'package:tajiri_waitress/domain/entities/orders_data.entity.dart';
-import 'package:tajiri_waitress/domain/entities/payment_method_data.entity.dart';
 import 'package:tajiri_waitress/presentation/controllers/order_history/order_history.controller.dart';
 import 'package:tajiri_waitress/presentation/controllers/pos/pos.controller.dart';
 import 'package:tajiri_sdk/tajiri_sdk.dart';
@@ -19,9 +14,6 @@ class HomeController extends GetxController {
 
   final posController = Get.put(PosController());
   final orderHistoryController = Get.put(OrderHistoryController());
-
-  //
-  final OrdersRepository _ordersRepository = OrdersRepository();
   final user = AppHelpersCommon.getUserInLocalStorage();
 
   static final dateTimeNow = DateTime.now();
@@ -37,24 +29,16 @@ class HomeController extends GetxController {
   RxInt countTajiriProvider = 0.obs;
   Rx<double> yangoProviderPercent = 0.0.obs;
   RxInt countYangoProvider = 0.obs;
-
   Rx<double> cancelStatusPercent = 0.0.obs;
   RxInt countCancelStatus = 0.obs;
-
   Rx<double> deliveredStatusPercent = 0.0.obs;
   RxInt countDeliveredStatus = 0.obs;
-
   Rx<double> onWayStatusPercent = 0.0.obs;
   RxInt countOnWayStatusProvider = 0.obs;
-
   Rx<double> readyStatusPercent = 0.0.obs;
   RxInt countReadyStatusProvider = 0.obs;
-
   Rx<double> accepetedSatusPercent = 0.0.obs;
   RxInt countAccepetedSatus = 0.obs;
-
-  RxBool isNotSame = false.obs;
-  RxBool isAfterCurrentDate = false.obs;
 
   int ordersDeliveredCount = 0;
   int ordersOnPlaceCount = 0;
@@ -75,9 +59,7 @@ class HomeController extends GetxController {
   ];
 
   RxString selectFiler = TrKeysConstant.day.obs;
-  bool get hasWaitressPermission =>
-      user?.role ==
-      "OWNER"; //user?.role?.permissions?[0].dashboardUnique == true;
+  bool get hasWaitressPermission => user?.role == "OWNER";
 
   final tajiriSdk = TajiriSDK.instance;
 
@@ -85,7 +67,6 @@ class HomeController extends GetxController {
   void onInit() {
     super.onInit();
     fetchDataForReports();
-    //getCurrentMonth();
   }
 
   void changeDateFilter(String status) {
@@ -244,92 +225,6 @@ class HomeController extends GetxController {
     }
     return orders.where((item) => item.status == status).length;
   }
-  /*fetchDataForReports() async {
-    final indexFilter = getIndexFilter();
-    final dateFormat = DateFormat("yyyy-MM-dd");
-    isFetching.value = true;
-    update();
-
-    final params = getDatesForComparison();
-
-    String startDateComparaison = dateFormat.format(params['startDate']!);
-    String endDateComparaison = dateFormat.format(params['endDate']!);
-
-    String? ownerId = hasWaitressPermission ? user?.id : null;
-
-    final [ordersResponse, comparaisonOders] = await Future.wait([
-      _ordersRepository.getOrders(
-          dateFormat.format(startDate), dateFormat.format(endDate), ownerId),
-      _ordersRepository.getOrders(
-        startDateComparaison,
-        endDateComparaison,
-        ownerId,
-      )
-    ]);
-
-    ordersResponse.when(success: (data) {
-      final ordersComparaison = comparaisonOders.data != null
-          ? (comparaisonOders.data as List<dynamic>)
-              .map((item) => OrdersDataEntity.fromJson(item))
-              .toList()
-          : <OrdersDataEntity>[];
-
-      var ordersData = data != null
-          ? (data as List<dynamic>)
-              .map((item) => OrdersDataEntity.fromJson(item))
-              .toList()
-          : <OrdersDataEntity>[];
-
-      // Supprime les commandes annulees
-      ordersData =
-          ordersData.where((item) => item.status != 'CANCELLED').toList();
-
-      final groupedByPaymentMethodValue = groupedByPaymentMethod(ordersData);
-      paymentsMethodAmount
-          .assignAll(paymentMethodsData(groupedByPaymentMethodValue));
-
-      ordersPaid.value = getTotalAmount(
-          ordersData.where((item) => item.status == 'PAID').toList());
-      ordersSave.value = getTotalAmount(
-          ordersData.where((item) => item.status == "NEW").toList());
-
-      final int ordersComparaisonsAmount = getTotalAmount(ordersComparaison);
-      totalAmount.value = getTotalAmount(ordersData);
-
-      // calcule percentComparaison en fonction du montant de commandes
-      percentRevenueComparaison.value =
-          ((totalAmount.value - ordersComparaisonsAmount) /
-                  ordersComparaisonsAmount) *
-              100;
-
-      totalOrders.value = ordersData.length;
-
-      // calcule percentComparaison en fonction du nombre de commandes
-
-      percentNbrOrderComparaison.value =
-          ((totalOrders.value - ordersComparaison.length) /
-                          ordersComparaison.length ==
-                      0
-                  ? 1
-                  : ordersComparaison.length) *
-              100;
-
-      isFetching.value = false;
-      update();
-
-      orders.assignAll(ordersData);
-
-      isFetching.value = false;
-      update();
-      eventFilter(indexFilter: indexFilter, status: "Succes");
-    }, failure: (status, _) {
-      eventFilter(indexFilter: indexFilter, status: "Failure");
-      isFetching.value = false;
-      update();
-    });
-    isFetching.value = false;
-    update();
-  }*/
 
   Map<String, List<Order>> groupedByPaymentMethod(List<Order> data) {
     Map<String, List<Order>> result = {};
@@ -425,8 +320,6 @@ class HomeController extends GetxController {
   void handleDaySelection() {
     startDate = dateTimeNow;
     endDate = dateTimeNow;
-
-    log("Date when jour is select :   $startDate  $endDate");
   }
 
   void handleWeekSelection() {
@@ -435,8 +328,6 @@ class HomeController extends GetxController {
     final DateTime end = currentWeekDates['end']!;
     startDate = start;
     endDate = end;
-
-    log("Date when semaine is select:   $startDate  $endDate");
     update();
   }
 
@@ -445,8 +336,6 @@ class HomeController extends GetxController {
     final dateRange = getFirstAndLastDayOfMonth(currentMonth);
     startDate = dateRange['start']!;
     endDate = dateRange['end']!;
-
-    log("Date when mois is select :   $startDate  $endDate");
   }
 
   Map<String, DateTime> getCurrentWeekDates() {
