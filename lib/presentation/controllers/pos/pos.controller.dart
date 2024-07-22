@@ -705,10 +705,15 @@ class PosController extends GetxController {
     String? customerIdValue =
         (customerId.value == "") ? null : customerId.value;
     final orderProductDto = parseProductList().map((item) {
+      final productTypeOfCookingId =
+          item.typeOfCookingId == null || item.typeOfCookingId!.trim().isEmpty
+              ? null
+              : item.typeOfCookingId;
       return OrderProductDto(
         productId: item.id!,
         price: item.price ?? 0,
         quantity: item.quantity ?? 1,
+        productTypeOfCookingId: productTypeOfCookingId,
         extras: item.sideDishes?.map((dish) {
           return OrderProductExtraDto(
               productId: dish.sideDish?.id ?? "", quantity: dish.quantity ?? 0);
@@ -740,10 +745,15 @@ class PosController extends GetxController {
         (customerId.value == "") ? null : customerId.value;
 
     final orderProductDto = parseProductList().map((item) {
+      final productTypeOfCookingId =
+          item.typeOfCookingId == null || item.typeOfCookingId!.trim().isEmpty
+              ? null
+              : item.typeOfCookingId;
       return OrderProductDto(
         productId: item.id!,
         price: item.price ?? 0,
         quantity: item.quantity ?? 1,
+        productTypeOfCookingId: productTypeOfCookingId,
         extras: item.sideDishes?.map((dish) {
           return OrderProductExtraDto(
               productId: dish.sideDish?.id ?? "", quantity: dish.quantity ?? 0);
