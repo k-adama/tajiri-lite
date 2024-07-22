@@ -148,7 +148,7 @@ class PosController extends GetxController {
         final result =
             await tajiriSdk.mainCategoriesService.getMainCategories();
         mainCategories.assignAll(result);
-        selectCategorieSupabase(mainCategories[0]);
+        selectMainCategorie(mainCategories[0]);
         update();
       } catch (e) {
         update();
@@ -156,7 +156,7 @@ class PosController extends GetxController {
     }
   }
 
-  selectCategorieSupabase(MainCategory categorie) {
+  selectMainCategorie(MainCategory categorie) {
     mainCategorieSelected = categorie;
     handleFilter(categorie.id, categorie.name);
     update();
