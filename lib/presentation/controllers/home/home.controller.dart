@@ -70,7 +70,7 @@ class HomeController extends GetxController {
   void changeDateFilter(String status) {
     selectFiler.value = status;
     update();
-    
+
     switch (status) {
       case TrKeysConstant.day:
         handleDaySelection();
