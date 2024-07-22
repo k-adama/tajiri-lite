@@ -303,7 +303,6 @@ class PosController extends GetxController {
 
   setPriceAddFood(int value) {
     priceAddFood.value = value;
-    print("---priceAddFood : $priceAddFood");
     update();
   }
 
@@ -311,6 +310,7 @@ class PosController extends GetxController {
     quantityAddFood = 1;
     sideDishAndQuantity = [];
     priceAddFood.value = 0;
+    setSelectTypeOfCooking(null);
     update();
   }
 
