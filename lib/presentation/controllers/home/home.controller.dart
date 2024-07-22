@@ -9,8 +9,6 @@ import 'package:tajiri_sdk/tajiri_sdk.dart';
 
 class HomeController extends GetxController {
   Rx<bool> isFetching = true.obs;
-  RxList<PaymentValueDto> paymentsMethodAmount =
-      List<PaymentValueDto>.empty().obs;
 
   final posController = Get.put(PosController());
   final orderHistoryController = Get.put(OrderHistoryController());
@@ -72,7 +70,7 @@ class HomeController extends GetxController {
   void changeDateFilter(String status) {
     selectFiler.value = status;
     update();
-
+    
     switch (status) {
       case TrKeysConstant.day:
         handleDaySelection();
@@ -100,9 +98,7 @@ class HomeController extends GetxController {
     DateTime startDateComparaison = params['startDate']!;
     DateTime endDateComparaison = params['endDate']!;
 
-    String? ownerId = user?.role == "OWER"
-        ? user?.id
-        : null; // user?.role?.permissions?[0].dashboardUnique == true ? user?.id : null;
+    String? ownerId = user?.role == "OWER" ? user?.id : null;
     final GetOrdersDto dto = GetOrdersDto(
         startDate: startDateComparaison,
         endDate: endDateComparaison,
@@ -122,10 +118,6 @@ class HomeController extends GetxController {
       // Supprime les commandes annulees
       ordersData =
           ordersData.where((item) => item.status != 'CANCELLED').toList();
-
-      final groupedByPaymentMethodValue = groupedByPaymentMethod(ordersData);
-      paymentsMethodAmount
-          .assignAll(paymentMethodsData(groupedByPaymentMethodValue));
 
       ordersPaid.value = getTotalAmount(
           ordersData.where((item) => item.status == 'PAID').toList());
@@ -198,7 +190,6 @@ class HomeController extends GetxController {
       eventFilter(indexFilter: indexFilter, status: "Failure");
       isFetching.value = false;
       update();
-      print("================> e $e");
     }
     isFetching.value = false;
     update();
@@ -224,48 +215,6 @@ class HomeController extends GetxController {
       return orders.where((item) => item.status == null).length;
     }
     return orders.where((item) => item.status == status).length;
-  }
-
-  Map<String, List<Order>> groupedByPaymentMethod(List<Order> data) {
-    Map<String, List<Order>> result = {};
-
-    for (var item in data) {
-      String payment = "Cash";
-      //item.payments.name ?? "Cash";
-
-      if (!result.containsKey(payment)) {
-        result[payment] = [];
-      }
-
-      result[payment]!.add(item);
-    }
-
-    return result;
-  }
-
-  List<PaymentValueDto> paymentMethodsData(
-      Map<String, List<Order>> groupedByPaymentMethod) {
-    return groupedByPaymentMethod.entries
-        .map((MapEntry<String, List<Order>> entry) {
-      String key = entry.key;
-      List<Order> items = entry.value;
-
-      if (key != "Carte bancaire") {
-        int total = items.fold(
-            0, (count, item) => count + (item.grandTotal as num).toInt());
-        String id = (items.isNotEmpty && items[0].payments.isNotEmpty
-                ? items[0].payments[0].paymentMethodId
-                : null) ??
-            PAIEMENTS.firstWhere((item) => item['name'] == "Cash",
-                orElse: () => {'id': ''})['id'];
-
-        return PaymentValueDto(paymentMethodId: id, status: key, amount: total);
-      }
-
-      return PaymentValueDto(paymentMethodId: "", status: "", amount: 0);
-    })
-        // .where((element) => element != null)
-        .toList();
   }
 
   Map<String, DateTime> getDatesForComparison() {
@@ -393,5 +342,17 @@ class HomeController extends GetxController {
     } catch (e) {
       print("Mixpanel error : $e");
     }
+  }
+
+  int calculateTotalAmountByPaymentMenthode(String paymentMethodId) {
+    int totalAmount = 0;
+    for (var order in orders) {
+      for (var payment in order.payments) {
+        if (payment.paymentMethodId == paymentMethodId) {
+          totalAmount += payment.amount;
+        }
+      }
+    }
+    return totalAmount;
   }
 }
