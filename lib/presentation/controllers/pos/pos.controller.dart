@@ -72,8 +72,7 @@ class PosController extends GetxController {
   @override
   void onReady() async {
     await Future.wait([
-      fetchCategories(),
-      fetchProducts(),
+      fetchProductsAndCategories(),
       fetchTypeOfCooking(),
       fetchMainCategories(),
     ]);
@@ -84,6 +83,11 @@ class PosController extends GetxController {
     bags.add(BagDataEntity(index: bags.length, bagProducts: []));
     selectedBagIndex.value = bags.length - 1;
     update();
+  }
+
+  Future<void> fetchProductsAndCategories() async {
+    fetchProducts();
+    fetchCategories();
   }
 
   Future<void> fetchProducts() async {
