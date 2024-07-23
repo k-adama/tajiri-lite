@@ -3,13 +3,13 @@ import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
-import 'package:tajiri_waitress/domain/entities/orders_data.entity.dart';
+import 'package:tajiri_sdk/src/models/order.model.dart';
 import 'package:tajiri_waitress/domain/entities/sale_category.entity.dart';
 import 'package:tajiri_waitress/presentation/controllers/pos/pos.controller.dart';
 import 'package:tajiri_waitress/presentation/screens/home/components/categorie_statistique.component.dart';
 
 class SaleByCategoriyComponent extends StatefulWidget {
-  final List<OrdersDataEntity> orders;
+  final List<Order> orders;
   const SaleByCategoriyComponent({super.key, required this.orders});
 
   @override
@@ -29,7 +29,7 @@ class _SaleByCategoriyComponentState extends State<SaleByCategoriyComponent> {
   @override
   Widget build(BuildContext context) {
     return GetBuilder<PosController>(
-        builder: (posController) => posController.categoriesSupabase.isEmpty
+        builder: (posController) => posController.mainCategories.isEmpty
             ? const SizedBox.shrink()
             : AutoHeightGridView(
                 shrinkWrap: true,
@@ -37,7 +37,7 @@ class _SaleByCategoriyComponentState extends State<SaleByCategoriyComponent> {
                 crossAxisCount: 2,
                 mainAxisSpacing: 10.r,
                 builder: (context, index) {
-                  final element = posController.categoriesSupabase[index];
+                  final element = posController.mainCategories[index];
                   return AnimationConfiguration.staggeredGrid(
                     columnCount: 8,
                     position: index,
@@ -60,12 +60,12 @@ class _SaleByCategoriyComponentState extends State<SaleByCategoriyComponent> {
 }
 
 Map<String?, SaleCategoryEntity> countAndSumOrdersByCategorie(
-    List<OrdersDataEntity> orders) {
+    List<Order> orders) {
   Map<String?, SaleCategoryEntity> orderSummaryByCategory = {};
 
   for (var order in orders) {
-    order.orderDetails?.forEach((product) {
-      String? mainCategoryId = product.food?.mainCategoryId ?? 'Unknown';
+    for (var product in order.orderProducts) {
+      String? mainCategoryId = product.product.category.mainCategoryId;
 
       var saleCategory = orderSummaryByCategory[mainCategoryId] ??
           SaleCategoryEntity(
@@ -74,12 +74,11 @@ Map<String?, SaleCategoryEntity> countAndSumOrdersByCategorie(
             totalAmount: 0,
           );
 
-      saleCategory.count += (product.quantity ?? 0);
-      saleCategory.totalAmount +=
-          ((product.price ?? 0) * (product.quantity ?? 0));
+      saleCategory.count += (product.quantity);
+      saleCategory.totalAmount += ((product.price) * (product.quantity));
 
       orderSummaryByCategory[mainCategoryId] = saleCategory;
-    });
+    }
   }
 
   return orderSummaryByCategory;

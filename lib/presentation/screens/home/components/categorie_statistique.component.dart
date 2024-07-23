@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:tajiri_sdk/src/models/main-category.model.dart';
 import 'package:tajiri_waitress/app/config/theme/style.theme.dart';
-import 'package:tajiri_waitress/domain/entities/category_supabase.entity.dart';
 import 'package:tajiri_waitress/domain/entities/sale_category.entity.dart';
 import 'package:tajiri_waitress/presentation/ui/widgets/images/custom_network_image.dart';
 
 class CategoryStatistique extends StatelessWidget {
-  final CategorySupabaseEntity category;
+  final MainCategory category;
   final SaleCategoryEntity? saleByCategory;
   final int nbrProduct;
   const CategoryStatistique(
@@ -34,7 +34,7 @@ class CategoryStatistique extends StatelessWidget {
                 decoration: const BoxDecoration(shape: BoxShape.circle),
                 child: Center(
                   child: CustomNetworkImage(
-                    url: category.iconUrl ?? '',
+                    url: category.iconUrl ,
                     height: null,
                     width: null,
                     radius: 180,
@@ -48,7 +48,7 @@ class CategoryStatistique extends StatelessWidget {
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
                     Text(
-                      category.name ?? '',
+                      category.name,
                       overflow: TextOverflow.ellipsis,
                       style: Style.interBold(size: 14),
                     ),

@@ -13,8 +13,8 @@ import 'package:tajiri_waitress/app/services/local_storage.service.dart';
 import 'package:tajiri_waitress/presentation/controllers/splash/splash.binding.dart';
 import 'package:tajiri_waitress/presentation/routes/presentation_screen.route.dart';
 import 'package:tajiri_waitress/presentation/ui/widgets/custom_range_slider.widget.dart';
-import 'package:upgrader/upgrader.dart';
-import 'package:onesignal_flutter/onesignal_flutter.dart';
+//import 'package:upgrader/upgrader.dart';
+//import 'package:onesignal_flutter/onesignal_flutter.dart';
 import 'package:tajiri_sdk/tajiri_sdk.dart';
 
 void main() async {
@@ -24,7 +24,7 @@ void main() async {
     url: Environment.supabaseUrl,
     anonKey: Environment.supabaseToken,
   );
-
+  
   TajiriSDK.initialize(env: EnvType.production, debugEnable: false);
   try {
     await Mixpanel.init(Environment.mixpanelToken, trackAutomaticEvents: true);
@@ -33,13 +33,11 @@ void main() async {
   }
 
   //Remove this method to stop OneSignal Debugging
-  OneSignal.Debug.setLogLevel(OSLogLevel.verbose);
+/*  OneSignal.Debug.setLogLevel(OSLogLevel.verbose);
   OneSignal.initialize(Environment.onesignalToken);
-  OneSignal.Notifications.requestPermission(true);
+  OneSignal.Notifications.requestPermission(true);*/
 
-  await Mixpanel.init(Environment.mixpanelToken, trackAutomaticEvents: true);
-
-  await Upgrader.clearSavedSettings();
+  //await Upgrader.clearSavedSettings();
   SystemChrome.setPreferredOrientations(
       [DeviceOrientation.portraitUp, DeviceOrientation.portraitDown]);
 

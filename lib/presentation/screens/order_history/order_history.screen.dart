@@ -9,8 +9,6 @@ import 'package:tajiri_sdk/tajiri_sdk.dart';
 import 'package:tajiri_waitress/app/common/app_helpers.common.dart';
 import 'package:tajiri_waitress/app/config/constants/app.constant.dart';
 import 'package:tajiri_waitress/app/config/theme/style.theme.dart';
-import 'package:tajiri_waitress/domain/entities/orders_data.entity.dart';
-import 'package:tajiri_waitress/domain/entities/user.entity.dart';
 import 'package:tajiri_waitress/presentation/controllers/home/home.controller.dart';
 import 'package:tajiri_waitress/presentation/controllers/order_history/order_history.controller.dart';
 import 'package:tajiri_waitress/presentation/routes/presentation_screen.route.dart';
@@ -148,15 +146,14 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen>
   bool _isRestaurantUser(Restaurant? restaurant) {
     return user != null &&
         restaurant!.name != null &&
-        restaurant!.name.isNotEmpty &&
-        restaurant?.type ==
-            AppConstants.clientTypeRestaurant;
+        restaurant.name.isNotEmpty &&
+        restaurant.type == AppConstants.clientTypeRestaurant;
   }
 
   Widget _buildOrderTab({
     required bool isLoading,
-    required List<OrdersDataEntity> orders,
-    required bool Function(OrdersDataEntity) filter,
+    required List<Order> orders,
+    required bool Function(Order) filter,
     required Restaurant? restaurant,
   }) {
     if (isLoading) {

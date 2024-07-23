@@ -1,5 +1,4 @@
 import 'dart:convert';
-
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:get/route_manager.dart';
@@ -7,7 +6,6 @@ import 'package:tajiri_waitress/app/common/app_helpers.common.dart';
 import 'package:tajiri_waitress/app/config/constants/auth.constant.dart';
 import 'package:tajiri_waitress/app/config/constants/restaurant.constant.dart';
 import 'package:tajiri_waitress/app/config/constants/user.constant.dart';
-import 'package:tajiri_waitress/app/data/repositories/auth/auth.repository.dart';
 import 'package:tajiri_waitress/app/mixpanel/mixpanel.dart';
 import 'package:tajiri_waitress/app/services/app_connectivity.service.dart';
 import 'package:tajiri_waitress/app/services/app_validators.service.dart';
@@ -23,8 +21,6 @@ class AuthController extends GetxController {
   bool showPassword = false;
   bool isPasswordNotValid = false;
   bool isLoginError = false;
-  final AuthRepository _authRepository = AuthRepository();
-
   final tajiriSdk = TajiriSDK.instance;
 
   Future<void> login(BuildContext context) async {
@@ -45,16 +41,12 @@ class AuthController extends GetxController {
       }
       isLoading = true;
       update();
-      final response = await _authRepository.login(
-        email: email,
-        password: password,
-      );
-
+      
       try {
         final response = await tajiriSdk.authService.login(email, password);
         final user = await tajiriSdk.staffService.getStaff("me");
         final restaurant =
-        await tajiriSdk.restaurantsService.getRestaurant(user.restaurantId);
+            await tajiriSdk.restaurantsService.getRestaurant(user.restaurantId);
 
         await Future.wait([
           LocalStorageService.instance

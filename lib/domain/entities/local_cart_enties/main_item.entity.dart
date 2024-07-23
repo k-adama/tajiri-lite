@@ -1,4 +1,4 @@
-import 'package:tajiri_waitress/domain/entities/food_data.entity.dart';
+import 'package:tajiri_sdk/tajiri_sdk.dart';
 import 'package:tajiri_waitress/domain/entities/side_dish.entity.dart';
 
 enum CartItemStatus { none, updated, isNew, deleted }
@@ -24,7 +24,7 @@ class MainCartEntity {
   String? typeOfCookingId;
   List<SideDishAndQuantityEntity>? sideDishes;
   int? totalAmount;
-  FoodDataEntity? foodDataEntity;
+  Product? foodDataEntity;
   CartItemStatus? status;
   String? itemId;
   // bool? updated;
@@ -63,7 +63,7 @@ class MainCartEntity {
               )
             : null,
         totalAmount: json['totalAmount'],
-        foodDataEntity: FoodDataEntity.fromJson(json),
+        foodDataEntity: Product.fromJson(json),
         status: json['status']
         // updated: json['updated'],
         // isNew: json['isNew'],
@@ -102,7 +102,7 @@ class MainCartEntity {
               this.sideDishes!.map((item) => item.copyWith()))
           : null,
       totalAmount: this.totalAmount,
-      foodDataEntity: this.foodDataEntity?.copyWith(),
+      foodDataEntity: this.foodDataEntity,
       status: this.status,
     );
   }

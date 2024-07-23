@@ -88,10 +88,10 @@ class OrdersInformationsDisplayComponent extends StatelessWidget {
                           isUpdateModal: true,
                           initSelectDish: selectDish,
                           initTypeOfCooking: selectTypeOfCooking,
-                          product: posController.foodDataInCart,
+                          product: posController.productDataInCart,
                           addCart: () {
                             posController.updateCartItem(context,
-                                posController.foodDataInCart, cart?.itemId);
+                                posController.productDataInCart, cart?.itemId);
 
                             Get.close(0);
                           },
@@ -102,7 +102,6 @@ class OrdersInformationsDisplayComponent extends StatelessWidget {
                         isDrag: true,
                         radius: 12,
                       );
-                      print(result);
                       posController.handleAddModalFoodInCartItemInitialState();
                     },
                     child: Container(

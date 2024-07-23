@@ -9,7 +9,7 @@ import 'package:tajiri_waitress/presentation/screens/pos/components/category_lis
 import 'package:tajiri_waitress/presentation/screens/pos/components/product_list.component.dart';
 import 'package:tajiri_waitress/presentation/screens/pos/components/see_cart_button.component.dart';
 import 'package:tajiri_waitress/presentation/screens/pos/components/select_table.component.dart';
-import 'package:upgrader/upgrader.dart';
+//import 'package:upgrader/upgrader.dart';
 
 class PosScreen extends StatefulWidget {
   const PosScreen({super.key});
@@ -27,49 +27,47 @@ class _PosScreenState extends State<PosScreen> {
   Widget build(BuildContext context) {
     final restaurantName =
         "${user != null && restaurant != null ? restaurant?.name : ""}";
-    return UpgradeAlert(
-      child: Scaffold(
-        appBar: AppBar(
-          centerTitle: true,
-          elevation: 0,
-          title: GetBuilder<PosController>(builder: (posController) {
-            final hasTableManagement = posController.hasTableManagement;
-            return hasTableManagement &&
-                    posController.selectbag.waitressId == null
-                ? const SelectTableComponent()
-                : Text(
-                    restaurantName,
-                    style: const TextStyle(color: Style.brandBlue950),
-                  );
-          }),
-          iconTheme: const IconThemeData(color: Style.brandBlue950),
-          backgroundColor: Style.white,
-          actions: <Widget>[
-            IconButton(
-              icon: const Icon(
-                Icons.search,
-                color: Style.brandBlue950,
-              ),
-              onPressed: () {
-                Get.toNamed(Routes.SEARCH_PRODUCT);
-              },
+    return Scaffold(
+      appBar: AppBar(
+        centerTitle: true,
+        elevation: 0,
+        title: GetBuilder<PosController>(builder: (posController) {
+          final hasTableManagement = posController.hasTableManagement;
+          return hasTableManagement &&
+                  posController.selectbag.waitressId == null
+              ? const SelectTableComponent()
+              : Text(
+                  restaurantName,
+                  style: const TextStyle(color: Style.brandBlue950),
+                );
+        }),
+        iconTheme: const IconThemeData(color: Style.brandBlue950),
+        backgroundColor: Style.white,
+        actions: <Widget>[
+          IconButton(
+            icon: const Icon(
+              Icons.search,
+              color: Style.brandBlue950,
             ),
+            onPressed: () {
+              Get.toNamed(Routes.SEARCH_PRODUCT);
+            },
+          ),
+        ],
+      ),
+      backgroundColor: Style.bodyNewColor,
+      body: Container(
+        padding: const EdgeInsets.only(left: 1),
+        child: const Column(
+          children: [
+            CategoryListComponent(),
+            Expanded(child: ProductsListComponent())
           ],
         ),
-        backgroundColor: Style.bodyNewColor,
-        body: Container(
-          padding: const EdgeInsets.only(left: 1),
-          child: const Column(
-            children: [
-              CategoryListComponent(),
-              Expanded(child: ProductsListComponent())
-            ],
-          ),
-        ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
-        floatingActionButton: SeeCartButtonComponent(
-          backScreenIsOrderHistory: backScreenIsOrderHistory == true,
-        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerFloat,
+      floatingActionButton: SeeCartButtonComponent(
+        backScreenIsOrderHistory: backScreenIsOrderHistory == true,
       ),
     );
   }

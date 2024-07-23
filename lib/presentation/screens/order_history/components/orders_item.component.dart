@@ -9,15 +9,13 @@ import 'package:tajiri_waitress/app/common/utils.common.dart';
 import 'package:tajiri_waitress/app/config/constants/app.constant.dart';
 import 'package:tajiri_waitress/app/config/theme/style.theme.dart';
 import 'package:tajiri_waitress/app/extensions/string.extension.dart';
-import 'package:tajiri_waitress/domain/entities/orders_data.entity.dart';
-import 'package:tajiri_waitress/domain/entities/user.entity.dart';
 import 'package:tajiri_waitress/presentation/controllers/home/home.controller.dart';
 import 'package:tajiri_waitress/presentation/controllers/order_history/order_history.controller.dart';
 import 'package:tajiri_waitress/presentation/routes/presentation_screen.route.dart';
 import 'package:tajiri_waitress/presentation/ui/widgets/buttons/custom.button.dart';
 
 class OrdersItemComponent extends StatefulWidget {
-  final OrdersDataEntity order;
+  final Order order;
   const OrdersItemComponent({super.key, required this.order});
   @override
   State<OrdersItemComponent> createState() => _OrdersItemComponentState();
@@ -28,8 +26,8 @@ class _OrdersItemComponentState extends State<OrdersItemComponent> {
   final OrderHistoryController orderController = Get.find();
   final homeController = Get.find<HomeController>();
   bool isExpanded = false;
-
   bool isPaid = false;
+
   @override
   void initState() {
     super.initState();
@@ -93,13 +91,12 @@ class _OrdersItemComponentState extends State<OrdersItemComponent> {
                   : Row(
                       children: [
                         for (int i = 0; i < 2; i++)
-                          if (widget.order.orderDetails != null &&
-                              i < widget.order.orderDetails!.length)
+                          if (i < widget.order.orderProducts.length)
                             Flexible(
                               child: Container(
                                 margin: const EdgeInsets.only(left: 2),
                                 child: Text(
-                                  "${widget.order.orderDetails?[i].quantity ?? ''}x ${getNameFromOrderDetail(widget.order.orderDetails?[i])}",
+                                  "${widget.order.orderProducts[i].quantity}x ${getNameFromOrderDetail(widget.order.orderProducts[i])}",
                                   style: Style.interNormal(color: Style.black),
                                   overflow: TextOverflow.ellipsis,
                                 ),
@@ -122,7 +119,7 @@ class _OrdersItemComponentState extends State<OrdersItemComponent> {
                     child: Wrap(
                       spacing: 8.0,
                       runSpacing: 8.0,
-                      children: widget.order.orderDetails?.map((orderDetail) {
+                      children: widget.order.orderProducts.map((orderDetail) {
                             return Container(
                               padding: const EdgeInsets.symmetric(
                                   horizontal: 10, vertical: 4),
@@ -149,7 +146,8 @@ class _OrdersItemComponentState extends State<OrdersItemComponent> {
                         child: CustomButton(
                           background: Style.brandBlue50,
                           title: "Modifier la commande",
-                          isGrised: false,//AppHelpersCommon.getUserInLocalStorage()?.canUpdateOrCanceledOrder() ==false, // grised add product button if user can't update or cancel
+                          isGrised:
+                              false, //AppHelpersCommon.getUserInLocalStorage()?.canUpdateOrCanceledOrder() ==false, // grised add product button if user can't update or cancel
                           textColor: Style.brandColor500,
                           haveBorder: false,
                           radius: 5,

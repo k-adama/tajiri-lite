@@ -4,6 +4,7 @@ import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_staggered_animations/flutter_staggered_animations.dart';
 import 'package:get/get.dart';
 import 'package:pull_to_refresh/pull_to_refresh.dart' as refresh;
+import 'package:tajiri_sdk/tajiri_sdk.dart';
 import 'package:tajiri_waitress/app/common/app_helpers.common.dart';
 import 'package:tajiri_waitress/app/config/theme/style.theme.dart';
 import 'package:tajiri_waitress/domain/entities/food_data.entity.dart';
@@ -12,7 +13,7 @@ import 'package:tajiri_waitress/presentation/screens/pos/components/food_detail_
 import 'package:tajiri_waitress/presentation/screens/pos/components/product_grid_item.component.dart';
 
 class ProductsListComponent extends StatefulWidget {
-  final List<FoodDataEntity>? foodList;
+  final List<Product>? foodList;
   const ProductsListComponent({super.key, this.foodList});
 
   @override
@@ -29,16 +30,16 @@ class _ProductsListComponentState extends State<ProductsListComponent> {
   }
 
   void _onRefresh(PosController posController) async {
-    await posController.fetchFoods();
+    // await posController.fetchFoods();
     _refreshController.refreshCompleted();
   }
 
   void _onLoading(PosController posController) async {
-    await posController.fetchFoods();
+    // await posController.fetchFoods();
     _refreshController.loadComplete();
   }
 
-  addToCart(FoodDataEntity food, PosController posController) {
+  addToCart(Product food, PosController posController) {
     if (food.quantity == 0) {
       return;
     }
@@ -68,12 +69,12 @@ class _ProductsListComponentState extends State<ProductsListComponent> {
                 child: AutoHeightGridView(
                   shrinkWrap: true,
                   itemCount:
-                      widget.foodList?.length ?? posController.foods.length,
+                      widget.foodList?.length ?? posController.products.length,
                   crossAxisCount: 2,
                   mainAxisSpacing: 10.r,
                   builder: (context, index) {
-                    final food =
-                        widget.foodList?[index] ?? posController.foods[index];
+                    final product = widget.foodList?[index] ??
+                        posController.products[index];
                     return AnimationConfiguration.staggeredGrid(
                       columnCount: 20,
                       position: index,
@@ -82,20 +83,19 @@ class _ProductsListComponentState extends State<ProductsListComponent> {
                         scale: 0.5,
                         child: FadeInAnimation(
                             child: ProductGridItemComponent(
-                          key: Key("${food.id}"),
-                          product: food,
+                          key: Key("${product.id}"),
+                          product: product,
                           onTap: () async {
                             print(
-                                "================================> catégory : ${food.category?.name}");
-                            posController.setPriceAddFood(food.price!);
-                            final result = await AppHelpersCommon
-                                .showCustomModalBottomSheet(
+                                "================================> catégory : ${product.category.name}");
+                            posController.setPriceAddFood(product.price);
+                            await AppHelpersCommon.showCustomModalBottomSheet(
                               context: context,
                               modal: FoodDetailModalComponent(
-                                key: Key("${food.id}"),
-                                product: food,
+                                key: Key(product.id),
+                                product: product,
                                 addCart: () {
-                                  addToCart(food, posController);
+                                  addToCart(product, posController);
                                   Get.close(0);
                                 },
                                 addCount: () {
@@ -109,7 +109,6 @@ class _ProductsListComponentState extends State<ProductsListComponent> {
                               isDrag: true,
                               radius: 12,
                             );
-                            print(result);
                             posController
                                 .handleAddModalFoodInCartItemInitialState(); //reset state
                           },
