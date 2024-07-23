@@ -53,8 +53,6 @@ class PosController extends GetxController {
   RxString paymentMethodId = "d8b8d45d-da79-478f-9d5f-693b33d654e6".obs;
 
   final selectbagProductsLength = 0.obs;
-
-  final waitress = List<WaitressEntity>.empty().obs;
   Rx<Waitress?> selectedWaitress = Rx<Waitress?>(null);
   Rx<taj_sdk.Table?> selectedTable = Rx<taj_sdk.Table?>(null);
 
@@ -95,7 +93,6 @@ class PosController extends GetxController {
     if (connected) {
       isProductLoading = true;
       update();
-
       final result = await tajiriSdk.productsService.getProducts(restaurantId!);
       products.assignAll(result);
       productsInit.assignAll(result);
