@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:tajiri_sdk/tajiri_sdk.dart';
@@ -13,7 +12,6 @@ import 'package:tajiri_waitress/app/extensions/product.extension.dart';
 import 'package:tajiri_waitress/domain/entities/local_cart_enties/bag_data.entity.dart';
 import 'package:tajiri_waitress/domain/entities/local_cart_enties/main_item.entity.dart';
 import 'package:tajiri_waitress/domain/entities/side_dish.entity.dart';
-import 'package:tajiri_waitress/domain/entities/waitress.entity.dart';
 import 'package:tajiri_waitress/presentation/ui/widgets/buttons/custom.button.dart';
 import 'package:tajiri_waitress/presentation/ui/widgets/dialogs/successfull.dialog.dart';
 import 'package:uuid/uuid.dart';
@@ -51,15 +49,11 @@ class PosController extends GetxController {
   Order? newOrder;
   RxString orderNotes = "".obs;
   RxString paymentMethodId = "d8b8d45d-da79-478f-9d5f-693b33d654e6".obs;
-
   final selectbagProductsLength = 0.obs;
   Rx<Waitress?> selectedWaitress = Rx<Waitress?>(null);
   Rx<taj_sdk.Table?> selectedTable = Rx<taj_sdk.Table?>(null);
-
   final createOrderLoading = false.obs;
-  dynamic placeOrder;
   final categoriesSupabase = List<CategorySupabaseEntity>.empty().obs;
-
   BagDataEntity get selectbag => bags[selectedBagIndex.value];
   bool get hasTableManagement => checkListingType(user) == ListingType.table;
   static final user = AppHelpersCommon.getUserInLocalStorage();
