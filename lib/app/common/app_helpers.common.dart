@@ -13,10 +13,7 @@ import 'package:tajiri_waitress/app/mixpanel/mixpanel.dart';
 
 import 'dart:ui' as ui;
 
-import 'package:tajiri_waitress/app/services/http.service.dart';
 import 'package:tajiri_waitress/app/services/local_storage.service.dart';
-import 'package:tajiri_waitress/domain/entities/orders_data.entity.dart';
-import 'package:tajiri_waitress/domain/entities/user.entity.dart';
 import 'package:tajiri_waitress/presentation/routes/presentation_screen.route.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';

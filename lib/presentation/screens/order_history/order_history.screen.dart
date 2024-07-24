@@ -144,9 +144,10 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen>
   }
 
   bool _isRestaurantUser(Restaurant? restaurant) {
-    return user != null &&
-        restaurant!.name != null &&
-        restaurant.name.isNotEmpty &&
+    if (restaurant == null) {
+      return false;
+    }
+    return restaurant.name.isNotEmpty &&
         restaurant.type == AppConstants.clientTypeRestaurant;
   }
 
