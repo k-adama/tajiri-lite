@@ -42,7 +42,7 @@ class ProductGridItemComponent extends StatelessWidget {
                     .track("POS Product Out Stock Cliked", properties: {
                   "Product name": product?.name,
                   "Product ID": product?.id,
-                  "Category": product?.category?.name,
+                  "Category": product?.category.name,
                   "Selling Price": product?.price
                 });
                 return;

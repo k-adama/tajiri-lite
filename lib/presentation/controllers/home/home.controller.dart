@@ -98,7 +98,7 @@ class HomeController extends GetxController {
     DateTime startDateComparaison = params['startDate']!;
     DateTime endDateComparaison = params['endDate']!;
 
-    String? ownerId = user?.role == "OWER" ? user?.id : null;
+    String? ownerId = user?.id;
     final GetOrdersDto dto = GetOrdersDto(
         startDate: startDateComparaison,
         endDate: endDateComparaison,

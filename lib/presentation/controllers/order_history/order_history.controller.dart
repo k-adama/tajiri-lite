@@ -74,9 +74,11 @@ class OrderHistoryController extends GetxController {
   Future<void> fetchOrders() async {
     final DateTime today = DateTime.now();
     final DateTime sevenDaysAgo = today.subtract(const Duration(days: 2));
+    final ownerId = user?.id;
     final GetOrdersDto dto = GetOrdersDto(
       startDate: startRangeDate ?? sevenDaysAgo,
       endDate: endRangeDate ?? today,
+      ownerId: ownerId,
     );
     final connected = await AppConnectivityService.connectivity();
     if (connected) {

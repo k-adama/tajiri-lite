@@ -68,8 +68,8 @@ class _PosSearchProductScreenState extends State<PosSearchProductScreen> {
                 onSearch: (text) {
                   searchFoods = posController.productsInit.where((item) {
                     final nameRecherch = searchController.text.toLowerCase();
-                    final foodName = item.name!.toLowerCase();
-                    final categoryName = item.category!.name!.toLowerCase();
+                    final foodName = item.name.toLowerCase();
+                    final categoryName = item.category.name.toLowerCase();
                     return foodName.startsWith(nameRecherch) ||
                         categoryName.startsWith(nameRecherch);
                   }).toList();

@@ -282,10 +282,10 @@ packages:
     dependency: transitive
     description:
       name: flutter_cache_manager
-      sha256: "395d6b7831f21f3b989ebedbb785545932adb9afe2622c1ffacf7f4b53a7e544"
+      sha256: ceff65d74d907b1b772e22cf04daad60fb472461638977d9fae8b00a63e01e3d
       url: "https://pub.dev"
     source: hosted
-    version: "3.3.2"
+    version: "3.3.3"
   flutter_lints:
     dependency: "direct dev"
     description:
@@ -689,10 +689,10 @@ packages:
     dependency: transitive
     description:
       name: shared_preferences_platform_interface
-      sha256: "22e2ecac9419b4246d7c22bfbbda589e3acf5c0351137d87dd2939d984d37c3b"
+      sha256: "034650b71e73629ca08a0bd789fd1d83cc63c2d1e405946f7cef7bc37432f93a"
       url: "https://pub.dev"
     source: hosted
-    version: "2.3.2"
+    version: "2.4.0"
   shared_preferences_web:
     dependency: transitive
     description:
@@ -790,18 +790,18 @@ packages:
     dependency: transitive
     description:
       name: supabase
-      sha256: "7d2ca0499a6933b9aed2f4ff9eff4cbc4107f54006be35c42c8e1db70e99438e"
+      sha256: "91196ce9137e726ba137419318e4cd8c5266922729c991b40bd9a592b2867002"
       url: "https://pub.dev"
     source: hosted
-    version: "2.2.4"
+    version: "2.2.5"
   supabase_flutter:
     dependency: "direct main"
     description:
       name: supabase_flutter
-      sha256: "048d9377a76e43b95039d67e26b4bb2326fc8818df8d2f4bd63b4fdfc79f8f50"
+      sha256: "4ce9a251448a8d03d5bdcbd8700d480b378ad451dab9ce637e41a01ee58ec1b9"
       url: "https://pub.dev"
     source: hosted
-    version: "2.5.8"
+    version: "2.5.9"
   synchronized:
     dependency: transitive
     description:
@@ -815,7 +815,7 @@ packages:
     description:
       path: "."
       ref: main
-      resolved-ref: "192b00f99900261a0bfa937e02d16a3c516bf322"
+      resolved-ref: d51e757a496a1f9fb4af7f3a31abd930a62a70a2
       url: "git@github.com:tajiri-app/tajiri-sdk.git"
     source: git
     version: "0.0.1"
@@ -911,10 +911,10 @@ packages:
     dependency: transitive
     description:
       name: url_launcher_windows
-      sha256: ecf9725510600aa2bb6d7ddabe16357691b6d2805f66216a97d1b881e21beff7
+      sha256: "49c10f879746271804767cb45551ec5592cdab00ee105c06dddde1a98f73b185"
       url: "https://pub.dev"
     source: hosted
-    version: "3.1.1"
+    version: "3.1.2"
   uuid:
     dependency: "direct main"
     description:
