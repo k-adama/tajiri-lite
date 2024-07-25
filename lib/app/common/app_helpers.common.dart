@@ -4,6 +4,8 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/route_manager.dart';
+import 'package:tajiri_sdk/tajiri_sdk.dart';
+import 'package:tajiri_waitress/app/config/constants/restaurant.constant.dart';
 import 'package:tajiri_waitress/app/config/constants/tr_keys.constant.dart';
 import 'package:tajiri_waitress/app/config/constants/user.constant.dart';
 import 'package:tajiri_waitress/app/config/theme/style.theme.dart';
@@ -11,10 +13,7 @@ import 'package:tajiri_waitress/app/mixpanel/mixpanel.dart';
 
 import 'dart:ui' as ui;
 
-import 'package:tajiri_waitress/app/services/http.service.dart';
 import 'package:tajiri_waitress/app/services/local_storage.service.dart';
-import 'package:tajiri_waitress/domain/entities/orders_data.entity.dart';
-import 'package:tajiri_waitress/domain/entities/user.entity.dart';
 import 'package:tajiri_waitress/presentation/routes/presentation_screen.route.dart';
 import 'package:top_snackbar_flutter/custom_snack_bar.dart';
 import 'package:top_snackbar_flutter/top_snack_bar.dart';
@@ -22,29 +21,37 @@ import 'package:top_snackbar_flutter/top_snack_bar.dart';
 class AppHelpersCommon {
   AppHelpersCommon._();
 
-  static UserEntity? getUserInLocalStorage() {
+  static Staff? getUserInLocalStorage() {
     final userEncoding = LocalStorageService.instance.get(UserConstant.keyUser);
     if (userEncoding == null) {
       logoutApi();
       return null;
     }
-    final user = UserEntity.fromJson(jsonDecode(userEncoding));
+    final user = Staff.fromJson(
+        jsonDecode(LocalStorageService.instance.get(UserConstant.keyUser)!));
     return user;
   }
 
+  static Restaurant? getRestaurantInLocalStorage() {
+    final restoEncoding =
+        LocalStorageService.instance.get(RestaurantConstant.keyRestaurant);
+    if (restoEncoding == null) {
+      return null;
+    }
+    final resto = Restaurant.fromJson(jsonDecode(
+        LocalStorageService.instance.get(RestaurantConstant.keyRestaurant)!));
+    return resto;
+  }
+
   static logoutApi() async {
-    HttpService server = HttpService();
+    // final tajiriSdk = TajiriSDK.instance;
     try {
-      final client =
-          server.client(requireAuth: true, requireRestaurantId: false);
-      await client.get(
-        '/auth/logout/',
-      );
+      // final client = await tajiriSdk.authService.logout();
       Mixpanel.instance
           .track("Logout", properties: {"Date": DateTime.now().toString()});
       Mixpanel.instance.reset();
-      LocalStorageService.instance.logout();
       Get.offAllNamed(Routes.LOGIN);
+      LocalStorageService.instance.logout();
     } catch (e) {
       print('==> login failure: $e');
     }
@@ -222,14 +229,14 @@ class DataPoint {
   DataPoint(this.x, this.y);
 }
 
-getMaxItemChart(List<OrdersDataEntity> orders, String viewSelected) {
+getMaxItemChart(List<Order> orders, String viewSelected) {
   final List<Map<String, dynamic>> ordersForChart =
       getReportChart(orders, viewSelected);
 
   return ordersForChart.length - 1;
 }
 
-getMaxYChart(List<OrdersDataEntity> orders, String viewSelected) {
+getMaxYChart(List<Order> orders, String viewSelected) {
   final List<Map<String, dynamic>> ordersForChart =
       getReportChart(orders, viewSelected);
   double maxY = ordersForChart
@@ -239,14 +246,14 @@ getMaxYChart(List<OrdersDataEntity> orders, String viewSelected) {
   return maxY + 10.0;
 }
 
-getReportChart(List<OrdersDataEntity> orders, String viewSelected) {
+getReportChart(List<Order> orders, String viewSelected) {
   List<Map<String, dynamic>> ordersForChart;
 
   if (viewSelected == TrKeysConstant.day) {
     Map<int, Map<String, dynamic>> ordersByHours = orders.fold(
       {},
-      (Map<int, Map<String, dynamic>> acc, OrdersDataEntity order) {
-        DateTime createdAt = DateTime.parse(order.createdAt!);
+      (Map<int, Map<String, dynamic>> acc, Order order) {
+        DateTime createdAt = order.createdAt!;
 
         int hour = createdAt.hour;
 
@@ -295,7 +302,7 @@ getReportChart(List<OrdersDataEntity> orders, String viewSelected) {
 }
 
 Map<String, Map<String, dynamic>> calculateTotalSalesByDayOfWeek(
-    List<OrdersDataEntity> orders) {
+    List<Order> orders) {
   Map<String, Map<String, dynamic>> dayOfWeekTotals = {
     "lun": {"grandTotal": 0},
     "mar": {"grandTotal": 0},
@@ -308,8 +315,8 @@ Map<String, Map<String, dynamic>> calculateTotalSalesByDayOfWeek(
 
   List<String> days = ["lun", "mar", "mer", "jeu", "ven", "sam", "dim"];
 
-  for (OrdersDataEntity order in orders) {
-    DateTime createdAtDate = DateTime.parse(order.createdAt!);
+  for (Order order in orders) {
+    DateTime createdAtDate = order.createdAt!;
     String dayOfWeek = days[createdAtDate.weekday - 1];
 
     if (dayOfWeekTotals.containsKey(dayOfWeek)) {
@@ -321,14 +328,14 @@ Map<String, Map<String, dynamic>> calculateTotalSalesByDayOfWeek(
 }
 
 Map<String, Map<String, dynamic>> calculateClassAndGrandTotalByWeek(
-    List<OrdersDataEntity> orders) {
+    List<Order> orders) {
   Map<String, Map<String, dynamic>> result = {};
 
-  for (OrdersDataEntity order in orders) {
-    DateTime createdAt = DateTime.parse(order.createdAt!);
+  for (Order order in orders) {
+    DateTime createdAt = order.createdAt!;
     String weekNumber =
         'S ${getWeekNumber(createdAt).toString()}'; // Function to get the week number
-    int grandTotal = order.grandTotal!;
+    int grandTotal = order.grandTotal;
 
     if (!result.containsKey(weekNumber)) {
       result[weekNumber] = {
@@ -352,7 +359,7 @@ int getWeekNumber(DateTime date) {
       .ceil();
 }
 
-getMinYChart(List<OrdersDataEntity> orders, String viewSelected) {
+getMinYChart(List<Order> orders, String viewSelected) {
   final List<Map<String, dynamic>> ordersForChart =
       getReportChart(orders, viewSelected);
   double minY = ordersForChart
@@ -362,7 +369,7 @@ getMinYChart(List<OrdersDataEntity> orders, String viewSelected) {
   return minY;
 }
 
-getTextChart(List<OrdersDataEntity> orders, double value, String viewSelected) {
+getTextChart(List<Order> orders, double value, String viewSelected) {
   final List<Map<String, dynamic>> ordersForChart =
       getReportChart(orders, viewSelected);
   const style = TextStyle(
@@ -376,8 +383,7 @@ getTextChart(List<OrdersDataEntity> orders, double value, String viewSelected) {
   return const Text("error", style: style);
 }
 
-List<LineChartBarData> getFlatSpot(
-    List<OrdersDataEntity> orders, String viewSelected) {
+List<LineChartBarData> getFlatSpot(List<Order> orders, String viewSelected) {
   final List<Map<String, dynamic>> ordersForChart =
       getReportChart(orders, viewSelected);
   List<Color> gradientColors = [

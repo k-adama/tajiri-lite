@@ -5,11 +5,10 @@ import 'package:get/get_instance/src/extension_instance.dart';
 import 'package:get/get_state_manager/src/rx_flutter/rx_obx_widget.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
 import 'package:get/route_manager.dart';
+import 'package:tajiri_sdk/tajiri_sdk.dart';
 import 'package:tajiri_waitress/app/common/app_helpers.common.dart';
 import 'package:tajiri_waitress/app/config/constants/app.constant.dart';
 import 'package:tajiri_waitress/app/config/theme/style.theme.dart';
-import 'package:tajiri_waitress/domain/entities/orders_data.entity.dart';
-import 'package:tajiri_waitress/domain/entities/user.entity.dart';
 import 'package:tajiri_waitress/presentation/controllers/home/home.controller.dart';
 import 'package:tajiri_waitress/presentation/controllers/order_history/order_history.controller.dart';
 import 'package:tajiri_waitress/presentation/routes/presentation_screen.route.dart';
@@ -30,7 +29,8 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen>
     with SingleTickerProviderStateMixin {
   late TabController _tabController = TabController(length: 3, vsync: this);
   final homeController = Get.find<HomeController>();
-  final UserEntity? user = AppHelpersCommon.getUserInLocalStorage();
+  final Staff? user = AppHelpersCommon.getUserInLocalStorage();
+  final restaurant = AppHelpersCommon.getRestaurantInLocalStorage();
 
   @override
   void initState() {
@@ -75,7 +75,7 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen>
                                   orders: orderHistoryController.orders,
                                   filter: (order) =>
                                       true, // No filter for the first tab
-                                  user: user,
+                                  restaurant: restaurant,
                                 ),
                                 _buildOrderTab(
                                   isLoading:
@@ -84,7 +84,7 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen>
                                   filter: (order) => AppConstants
                                       .getStatusOrderInProgressOrDone(
                                           order, "IN_PROGRESS"),
-                                  user: user,
+                                  restaurant: restaurant,
                                 ),
                                 _buildOrderTab(
                                   isLoading:
@@ -93,7 +93,7 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen>
                                   filter: (order) => AppConstants
                                       .getStatusOrderInProgressOrDone(
                                           order, "DONE"),
-                                  user: user,
+                                  restaurant: restaurant,
                                 ),
                               ],
                             ),
@@ -143,19 +143,19 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen>
     );
   }
 
-  bool _isRestaurantUser(UserEntity? user) {
-    return user != null &&
-        user.restaurantUser != null &&
-        user.restaurantUser!.isNotEmpty &&
-        user.restaurantUser![0].restaurant?.type ==
-            AppConstants.clientTypeRestaurant;
+  bool _isRestaurantUser(Restaurant? restaurant) {
+    if (restaurant == null) {
+      return false;
+    }
+    return restaurant.name.isNotEmpty &&
+        restaurant.type == AppConstants.clientTypeRestaurant;
   }
 
   Widget _buildOrderTab({
     required bool isLoading,
-    required List<OrdersDataEntity> orders,
-    required bool Function(OrdersDataEntity) filter,
-    required UserEntity? user,
+    required List<Order> orders,
+    required bool Function(Order) filter,
+    required Restaurant? restaurant,
   }) {
     if (isLoading) {
       return const LoadingUi();
@@ -168,7 +168,7 @@ class _OrderHistoryScreenState extends State<OrderHistoryScreen>
 
     return OrdersListItemComponent(
       orders: filteredOrders,
-      isRestaurant: _isRestaurantUser(user),
+      isRestaurant: _isRestaurantUser(restaurant),
     );
   }
 }

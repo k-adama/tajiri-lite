@@ -17,7 +17,7 @@ import 'package:tajiri_waitress/presentation/screens/home/components/my_orders.c
 import 'package:tajiri_waitress/presentation/screens/home/components/sale_by_category.component..dart';
 import 'package:tajiri_waitress/presentation/screens/home/components/select_periode_dropdown.component.dart';
 import 'package:tajiri_waitress/presentation/ui/widgets/buttons/custom.rounded.button.dart';
-import 'package:upgrader/upgrader.dart';
+//import 'package:upgrader/upgrader.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -52,8 +52,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return UpgradeAlert(
-      child: GetBuilder<HomeController>(builder: (homeController) {
+    return GetBuilder<HomeController>(builder: (homeController) {
         return Scaffold(
           resizeToAvoidBottomInset: false,
           appBar: PreferredSize(
@@ -257,7 +256,7 @@ class _HomeScreenState extends State<HomeScreen> {
             ),
           ),
         );
-      }),
+      }
     );
   }
 }

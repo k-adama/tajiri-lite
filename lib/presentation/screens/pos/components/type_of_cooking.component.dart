@@ -66,7 +66,7 @@ class _TypeOfCookingComponentState extends State<TypeOfCookingComponent> {
                 scale: 0.5,
                 child: FadeInAnimation(
                     child: TypeOfCookingSelectionComponent(
-                  text: typeOfCooking.name ?? "_",
+                  text: typeOfCooking.name,
                   onTap: () =>
                       posController.setSelectTypeOfCooking(typeOfCooking.id),
                   isSelected: isSelect,

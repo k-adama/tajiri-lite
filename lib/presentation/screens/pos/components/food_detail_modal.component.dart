@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get_state_manager/src/simple/get_state.dart';
+import 'package:tajiri_sdk/tajiri_sdk.dart';
 import 'package:tajiri_waitress/app/config/theme/style.theme.dart';
-import 'package:tajiri_waitress/domain/entities/food_data.entity.dart';
 import 'package:tajiri_waitress/presentation/controllers/pos/pos.controller.dart';
 import 'package:tajiri_waitress/presentation/screens/pos/components/side_dish_food_list.component.dart';
 import 'package:tajiri_waitress/presentation/screens/pos/components/food_detail_update_price.dart';
@@ -10,7 +10,7 @@ import 'package:tajiri_waitress/presentation/screens/pos/components/type_of_cook
 import 'package:tajiri_waitress/presentation/ui/widgets/buttons/custom.button.dart';
 
 class FoodDetailModalComponent extends StatefulWidget {
-  final FoodDataEntity? product;
+  final Product? product;
   final VoidCallback addCart;
   final VoidCallback addCount;
   final VoidCallback removeCount;
@@ -81,18 +81,25 @@ class _FoodDetailModalComponentState extends State<FoodDetailModalComponent> {
                   child: SingleChildScrollView(
                     child: Column(
                       children: [
-                        TypeOfCookingComponent(
-                          initTypeOfCooking: widget.initTypeOfCooking,
-                        ),
+                        if (widget.product?.hasTypesOfCooking == true)
+                          TypeOfCookingComponent(
+                            initTypeOfCooking: widget.initTypeOfCooking,
+                          ),
                         8.verticalSpace,
-                        const Padding(
-                          padding: EdgeInsets.only(left: 12.0, right: 12.0),
-                          child: Divider(thickness: 1),
-                        ),
+                        if (widget.product?.hasTypesOfCooking == true)
+                          const Padding(
+                            padding: EdgeInsets.only(left: 12.0, right: 12.0),
+                            child: Divider(thickness: 1),
+                          ),
                         8.verticalSpace,
-                        SideDishFoodListComponent(
-                          product: widget.product,
-                        ),
+                        if (widget.product?.hasSideDishes == true)
+                          SideDishFoodListComponent(
+                            productData: widget.product!,
+                            dishes: posController.productsInit
+                                .where((element) => element.isSideDish)
+                                .toList(),
+                            product: widget.product,
+                          ),
                       ],
                     ),
                   ),

@@ -1,12 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:tajiri_sdk/tajiri_sdk.dart';
 import 'package:tajiri_waitress/app/config/theme/style.theme.dart';
-import 'package:tajiri_waitress/domain/entities/category.entity.dart';
 
 class CategoryCardComponent extends StatelessWidget {
   final VoidCallback onTap;
   final bool isSelected;
-  final CategoryEntity category;
+  final Category category;
   const CategoryCardComponent(
       {super.key,
       required this.onTap,
@@ -46,12 +46,12 @@ class CategoryCardComponent extends StatelessWidget {
                 color: Style.white,
               ),
               child: Center(
-                child: Text(category.imageUrl ?? ""),
+                child: Text(category.imageUrl),
               ),
             ),
             const Spacer(),
             Text(
-              category.name ?? "_",
+              category.name,
               style: Style.interBold(size: 13.sp),
               overflow: TextOverflow.ellipsis,
             ),

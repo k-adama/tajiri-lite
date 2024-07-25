@@ -1,15 +1,22 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
+import 'package:tajiri_sdk/tajiri_sdk.dart';
 import 'package:tajiri_waitress/app/config/theme/style.theme.dart';
-import 'package:tajiri_waitress/domain/entities/food_data.entity.dart';
 import 'package:tajiri_waitress/domain/entities/side_dish.entity.dart';
 import 'package:tajiri_waitress/presentation/controllers/pos/pos.controller.dart';
 import 'package:tajiri_waitress/presentation/screens/pos/components/select_dish_food.component.dart';
 
 class SideDishFoodListComponent extends StatefulWidget {
-  final FoodDataEntity? product;
-  const SideDishFoodListComponent({super.key, required this.product});
+  final Product productData;
+  final Product? product;
+  final List<Product> dishes;
+  const SideDishFoodListComponent({
+    super.key,
+    required this.product,
+    required this.dishes,
+    required this.productData,
+  });
 
   @override
   State<SideDishFoodListComponent> createState() =>
@@ -18,23 +25,15 @@ class SideDishFoodListComponent extends StatefulWidget {
 
 class _SideDishFoodListComponentState extends State<SideDishFoodListComponent> {
   final posController = Get.find<PosController>();
-
-  final excludedCategories = {
-    "dbef9866-5af0-498c-9eee-4ccf905f35ea", // boissonId
-    "8ebff6af-b8c8-4fec-adab-fcdda95b2762", // boissonSansAlcool
-    "fa342eb7-72ed-4ea8-ac80-0e1d0e0d6894" // supplements
-  };
-
-  List<FoodDataEntity> sideDish = [];
+  List<String?> disheSelected = [];
 
   @override
   void initState() {
-    sideDish = excludedCategories.contains(widget.product!.mainCategoryId)
-        ? []
-        : posController.foodsInit
-            .where((item) =>
-                item.mainCategoryId == "fa342eb7-72ed-4ea8-ac80-0e1d0e0d6894")
-            .toList();
+    /* setState(() {
+      if (widget.initSelectDish != null) {
+        disheSelected = widget.initSelectDish!;
+      }
+    });*/
     super.initState();
   }
 
@@ -59,9 +58,9 @@ class _SideDishFoodListComponentState extends State<SideDishFoodListComponent> {
             shrinkWrap: true,
             scrollDirection: Axis.vertical,
             physics: const NeverScrollableScrollPhysics(),
-            itemCount: sideDish.length,
+            itemCount: widget.dishes.length,
             itemBuilder: (context, index) {
-              final sideDishFood = sideDish[index];
+              final sideDishFood = widget.dishes[index];
               final sidDishFoodEntity = SideDishFoodEntity(
                 sideDish: SideDishEntity(
                     id: sideDishFood.id,
@@ -72,7 +71,7 @@ class _SideDishFoodListComponentState extends State<SideDishFoodListComponent> {
               final qty = posController.getSideDishAddQuantity(sideDishFood.id);
 
               return SelectDishFoodComponent(
-                dishFoodName: sideDishFood.name ?? "",
+                dishFoodName: sideDishFood.name,
                 add: () {
                   posController.setIncrementSideDish(
                     sidDishFoodEntity,

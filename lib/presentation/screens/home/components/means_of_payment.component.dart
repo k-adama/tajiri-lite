@@ -9,8 +9,11 @@ import 'package:tajiri_waitress/app/config/theme/style.theme.dart';
 class MeansOfPaymentComponent extends StatelessWidget {
   final Map<String, dynamic> meansOfpayment;
   final int value;
-  const MeansOfPaymentComponent(
-      {super.key, required this.value, required this.meansOfpayment});
+  const MeansOfPaymentComponent({
+    super.key,
+    required this.value,
+    required this.meansOfpayment,
+  });
 
   @override
   Widget build(BuildContext context) {

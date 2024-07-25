@@ -1,7 +1,7 @@
 {
     "backend_point": "https://api.tajiri.io/v1",
     "mixpanel_token": "c13799d9501ef4cb8cd503078fee8d33",
-    "supabase_url": "https://xuyfavsmxnbbaefzkdam.supabase.co",
-    "supabase_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Inh1eWZhdnNteG5iYmFlZnprZGFtIiwicm9sZSI6ImFub24iLCJpYXQiOjE2ODA2MzA1NjksImV4cCI6MTk5NjIwNjU2OX0.qHO5apqBGQsfb1aSyLZObZkVEDZs6Jfzr3bATUNwcxA",
+    "supabase_url": "https://nwbwktosqkgevkrvvepw.supabase.co",
+    "supabase_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6Im53YndrdG9zcWtnZXZrcnZ2ZXB3Iiwicm9sZSI6ImFub24iLCJpYXQiOjE3MjA2MjU1MjUsImV4cCI6MjAzNjIwMTUyNX0.-25a53FZX1Sq9ZrPqFmz4UAnBN9vuprcqA4-PlZrqaE",
     "onesignal_token": "8ea2a09b-6412-4405-b381-d7a05e6dc754"
 }

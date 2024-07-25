@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:tajiri_sdk/tajiri_sdk.dart';
 import 'package:tajiri_waitress/app/config/theme/style.theme.dart';
-import 'package:tajiri_waitress/domain/entities/food_data.entity.dart';
 import 'package:tajiri_waitress/presentation/controllers/pos/pos.controller.dart';
 import 'package:tajiri_waitress/presentation/routes/presentation_screen.route.dart';
 import 'package:tajiri_waitress/presentation/screens/pos/components/custom_pos_roundedButton.component.dart';
@@ -22,12 +22,12 @@ class _PosSearchProductScreenState extends State<PosSearchProductScreen> {
   final FocusNode searchFocusNode = FocusNode();
 
   final posController = Get.find<PosController>();
-  List<FoodDataEntity> searchFoods = <FoodDataEntity>[];
+  List<Product> searchFoods = <Product>[];
 
   @override
   void initState() {
     super.initState();
-    searchFoods = posController.foodsInit;
+    searchFoods = posController.productsInit;
     searchFocusNode.addListener(() {
       setState(() {
         isSearchFocused = searchFocusNode.hasFocus;
@@ -66,10 +66,10 @@ class _PosSearchProductScreenState extends State<PosSearchProductScreen> {
                 hintText: "Rechercher un plat, une boisson ...",
                 focusNode: searchFocusNode,
                 onSearch: (text) {
-                  searchFoods = posController.foodsInit.where((item) {
+                  searchFoods = posController.productsInit.where((item) {
                     final nameRecherch = searchController.text.toLowerCase();
-                    final foodName = item.name!.toLowerCase();
-                    final categoryName = item.category!.name!.toLowerCase();
+                    final foodName = item.name.toLowerCase();
+                    final categoryName = item.category.name.toLowerCase();
                     return foodName.startsWith(nameRecherch) ||
                         categoryName.startsWith(nameRecherch);
                   }).toList();

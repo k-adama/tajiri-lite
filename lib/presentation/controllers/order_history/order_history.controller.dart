@@ -1,24 +1,26 @@
+import 'package:audioplayers/audioplayers.dart';
+import 'package:flutter/material.dart' as mt;
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
-import 'package:intl/intl.dart';
+import 'package:get/route_manager.dart';
+import 'package:supabase_flutter/supabase_flutter.dart';
+import 'package:tajiri_sdk/tajiri_sdk.dart';
 import 'package:tajiri_waitress/app/common/app_helpers.common.dart';
-import 'package:tajiri_waitress/app/common/utils.common.dart';
-import 'package:tajiri_waitress/app/data/repositories/order_history/order_history.repository.dart';
+import 'package:tajiri_waitress/app/config/constants/app.constant.dart';
 import 'package:tajiri_waitress/app/services/app_connectivity.service.dart';
-import 'package:tajiri_waitress/domain/entities/orders_data.entity.dart';
-import 'package:tajiri_waitress/domain/entities/user.entity.dart';
 
 class OrderHistoryController extends GetxController {
   bool isProductLoading = true;
   DateTime? startRangeDate;
   DateTime? endRangeDate;
-  final OrdersRepository _ordersRepository = OrdersRepository();
-  List<OrdersDataEntity> orders = List<OrdersDataEntity>.empty().obs;
-  List<OrdersDataEntity> ordersInit = List<OrdersDataEntity>.empty().obs;
-  final UserEntity? user = AppHelpersCommon.getUserInLocalStorage();
+  List<Order> orders = List<Order>.empty().obs;
+  List<Order> ordersInit = List<Order>.empty().obs;
+  final Staff? user = AppHelpersCommon.getUserInLocalStorage();
+  final tajiriSdk = TajiriSDK.instance;
 
   @override
   void onReady() {
+    streamOrdersChange();
     Future.wait([
       fetchOrders(),
     ]);
@@ -26,60 +28,118 @@ class OrderHistoryController extends GetxController {
     super.onReady();
   }
 
+  streamOrdersChange() async {
+    final supabase = Supabase.instance.client;
+
+    supabase
+        .channel("orderUpdate")
+        .onPostgresChanges(
+            table: 'orders',
+            event: PostgresChangeEvent.all,
+            schema: 'public',
+            filter: PostgresChangeFilter(
+                type: PostgresChangeFilterType.eq,
+                column: 'restaurantId',
+                value: user?.restaurantId ?? ""),
+            callback: (value) async {
+              final eventType = value.eventType;
+              final oldOrderReceveid = value.oldRecord;
+              final newOrderReceveid = value.newRecord;
+
+              final player = AudioPlayer();
+              await player.play(UrlSource(urlSound),
+                  mode: PlayerMode.mediaPlayer);
+
+              if (newOrderReceveid['status'] == AppConstants.ORDER_NEW) {
+                final player = AudioPlayer();
+                await player.play(UrlSource(urlSound),
+                    mode: PlayerMode.mediaPlayer);
+              }
+              try {
+                final idOrder = newOrderReceveid['id'];
+                if (idOrder == null) {
+                  throw "ID NULL";
+                }
+                fetchOrderById(idOrder);
+              } catch (e) {
+                print("Erreur channel.listen $e");
+                fetchOrders();
+              }
+
+              update();
+            })
+        .subscribe();
+  }
+
   Future<void> fetchOrders() async {
     final DateTime today = DateTime.now();
     final DateTime sevenDaysAgo = today.subtract(const Duration(days: 2));
-    String startDate =
-        DateFormat("yyyy-MM-dd").format(startRangeDate ?? sevenDaysAgo);
-    String endDate = DateFormat("yyyy-MM-dd").format(endRangeDate ?? today);
-    String? ownerId = (user?.role?.permissions?[0].dashboardUnique ?? false)
-        ? user?.id
-        : null;
+    final ownerId = user?.id;
+    final GetOrdersDto dto = GetOrdersDto(
+      startDate: startRangeDate ?? sevenDaysAgo,
+      endDate: endRangeDate ?? today,
+      ownerId: ownerId,
+    );
     final connected = await AppConnectivityService.connectivity();
     if (connected) {
       isProductLoading = true;
       update();
-      final response =
-          await _ordersRepository.getOrders(startDate, endDate, ownerId);
-      response.when(
-        success: (data) async {
-          final json = data as List<dynamic>;
-          final orderData =
-              json.map((item) => OrdersDataEntity.fromJson(item)).toList();
 
-          final reOrderDataByUpdatedAt = orderListByRecentUpdateDate(orderData);
-          orders.assignAll(reOrderDataByUpdatedAt);
-          ordersInit.assignAll(reOrderDataByUpdatedAt);
-          isProductLoading = false;
-          update();
-        },
-        failure: (failure, status) {
-          isProductLoading = false;
-          update();
-        },
-      );
+      try {
+        final result = await tajiriSdk.ordersService.getOrders(dto);
+        orders.assignAll(result);
+        ordersInit.assignAll(result);
+      } catch (e) {
+        AppHelpersCommon.showBottomSnackBar(
+          Get.context!,
+          mt.Text(e.toString()),
+          const Duration(seconds: 2),
+          true,
+        );
+      }
+      isProductLoading = false;
+      update();
     }
   }
 
-  List<OrdersDataEntity> orderListByRecentUpdateDate(
-      List<OrdersDataEntity> orders) {
+  Future<void> fetchOrderById(String idOrder) async {
+    print("====Fetch Order by id==");
+    final connected = await AppConnectivityService.connectivity();
+    if (connected) {
+      try {
+        final order = await tajiriSdk.ordersService.getOrder(idOrder);
+        print(
+            "====Fetch Order=by id=${order.grandTotal}=${order.orderNumber}=");
+
+        updateOrderList(order);
+        update();
+      } catch (e) {
+        AppHelpersCommon.showBottomSnackBar(
+          Get.context!,
+          mt.Text(e.toString()),
+          const Duration(seconds: 2),
+          true,
+        );
+      }
+    }
+  }
+
+  void updateOrderList(Order newOrder) {
+    final indexInit = ordersInit.indexWhere((order) => order.id == newOrder.id);
+    print("update order list $indexInit");
+    if (indexInit != -1) {
+      // Replace the old order with the new order in ordersInit
+      ordersInit[indexInit] = newOrder;
+    } else {
+      // Add the new order to ordersInit if it doesn't exist
+      ordersInit.insert(0, newOrder);
+    }
+
+    orders.assignAll(ordersInit);
+  }
+
+  List<Order> orderListByRecentUpdateDate(List<Order> orders) {
     orders.sort((a, b) => b.updatedAt!.compareTo(a.updatedAt!));
     return orders;
-  }
-
-  tableOrWaitessNoNullOrNotEmpty(OrdersDataEntity orderItem) {
-    if (user?.restaurantUser![0].restaurant?.listingType == "TABLE") {
-      return orderItem.tableId != null ? true : false;
-    } else {
-      return orderItem.waitressId != null ? true : false;
-    }
-  }
-
-  String tableOrWaitressName(OrdersDataEntity orderItem) {
-    if (checkListingType(user) == ListingType.waitress) {
-      return orderItem.waitressId != null ? orderItem.waitress?.name ?? "" : "";
-    } else {
-      return orderItem.tableId != null ? orderItem.table?.name ?? "" : "";
-    }
   }
 }

@@ -63,7 +63,7 @@ class AppMenuModalComponent extends StatelessWidget {
                     ),
                   ),
                   Text(
-                    user?.role?.name ?? '',
+                    user?.role ?? '',
                     style: Style.interNormal(color: Style.grey800, size: 12),
                   ),
                 ],
@@ -73,11 +73,11 @@ class AppMenuModalComponent extends StatelessWidget {
             const Divider(
               thickness: 2,
             ),
-            20.verticalSpace,
+           /* 20.verticalSpace,
             buildComponent(
               "Rapport de ventes",
               null,
-            ),
+            ),*/
             20.verticalSpace,
             buildComponent(
               "Déconnexion",

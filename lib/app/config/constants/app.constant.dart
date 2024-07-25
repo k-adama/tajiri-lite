@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:tajiri_sdk/tajiri_sdk.dart';
 import 'package:tajiri_waitress/domain/entities/orders_data.entity.dart';
 
 class AppConstants {
@@ -26,8 +27,7 @@ class AppConstants {
   static const String ORDER_DELIVERED = 'DELIVERED';
   static const String ORDER_PAID = 'PAID';
 
-  static bool getStatusOrderInProgressOrDone(
-      OrdersDataEntity order, String status) {
+  static bool getStatusOrderInProgressOrDone(Order order, String status) {
     bool checking = false;
     switch (status) {
       case "IN_PROGRESS":
@@ -43,7 +43,7 @@ class AppConstants {
     return checking;
   }
 
-  static String getStatusInFrench(OrdersDataEntity order) {
+  static String getStatusInFrench(Order order) {
     String status = "";
     switch (order.status) {
       case ORDER_COOKING:
@@ -75,7 +75,7 @@ class AppConstants {
     return status;
   }
 
-  static String getOrderTypeInFrench(OrdersDataEntity order) {
+  static String getOrderTypeInFrench(Order order) {
     String orderType = "";
     switch (order.orderType) {
       case orderOnPLace:
@@ -101,6 +101,9 @@ final tabs = [
 const onPlaceSvg = "assets/svgs/onplace.svg";
 const takeAwaySvg = "assets/svgs/take_away_icon.svg";
 const deliveredSvg = "assets/svgs/ic_round-delivery-dining.svg";
+
+const urlSound =
+    'https://xuyfavsmxnbbaefzkdam.supabase.co/storage/v1/object/public/tajiri-foods/core/mixkit-arabian-mystery-harp-notification-2489.wav';
 
 const List<Map<String, dynamic>> SETTLE_ORDERS = [
   {
