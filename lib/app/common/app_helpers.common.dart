@@ -240,7 +240,7 @@ getMaxYChart(List<Order> orders, String viewSelected) {
   final List<Map<String, dynamic>> ordersForChart =
       getReportChart(orders, viewSelected);
   double maxY = ordersForChart
-      .map((entry) => entry['y'].toDouble())
+      .map((entry) => entry['y'] == null ? 0.0 : entry['y'].toDouble())
       .reduce((max, current) => max > current ? max : current);
 
   return maxY + 10.0;
@@ -363,7 +363,7 @@ getMinYChart(List<Order> orders, String viewSelected) {
   final List<Map<String, dynamic>> ordersForChart =
       getReportChart(orders, viewSelected);
   double minY = ordersForChart
-      .map((entry) => entry['y'].toDouble())
+      .map((entry) => entry['y'] == null ? 0.0 : entry['y'].toDouble())
       .reduce((min, current) => min < current ? min : current);
 
   return minY;
@@ -394,7 +394,8 @@ List<LineChartBarData> getFlatSpot(List<Order> orders, String viewSelected) {
   final List<DataPoint> dataPoints = ordersForChart.map((item) {
     int index = ordersForChart.indexOf(item);
 
-    return DataPoint(index.toDouble(), (item["y"] as int).toDouble());
+    return DataPoint(index.toDouble(),
+        item["y"] == null ? 0.0 : (item["y"] as int).toDouble());
   }).toList();
 
   final List<FlSpot> flSpots = dataPoints.map((dataPoint) {

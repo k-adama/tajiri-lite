@@ -154,8 +154,8 @@ class _ChartBarComponentState extends State<ChartBarComponent> {
     );
   }
 
-  Widget bottomTitleWidgets(double value, TitleMeta meta,
-      List<Order> orders, String viewSelected) {
+  Widget bottomTitleWidgets(
+      double value, TitleMeta meta, List<Order> orders, String viewSelected) {
     return SideTitleWidget(
       axisSide: meta.axisSide,
       child: getTextChart(orders, value, viewSelected),
