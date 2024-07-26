@@ -41,7 +41,7 @@ class AuthController extends GetxController {
       }
       isLoading = true;
       update();
-      
+
       try {
         final response = await tajiriSdk.authService.login(email, password);
         final user = await tajiriSdk.staffService.getStaff("me");
@@ -72,6 +72,8 @@ class AuthController extends GetxController {
 
         Get.offAllNamed(Routes.HOME);
       } catch (e) {
+        isLoading = false;
+        update();
         Mixpanel.instance.track('Login',
             properties: {"Method used": "Phone", "Status": "Faillure"});
         AppHelpersCommon.showCheckTopSnackBar(

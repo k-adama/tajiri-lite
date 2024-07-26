@@ -52,6 +52,9 @@ class HomeController extends GetxController {
 
   List<String> filterItems = [
     TrKeysConstant.day,
+    TrKeysConstant.yesterday,
+    TrKeysConstant.beforeYesterday,
+
     // TrKeysConstant.week,
     // TrKeysConstant.month,
   ];
@@ -75,6 +78,12 @@ class HomeController extends GetxController {
       case TrKeysConstant.day:
         handleDaySelection();
         break;
+      case TrKeysConstant.yesterday:
+        handleYesterDaySelection();
+        break;
+      case TrKeysConstant.beforeYesterday:
+        handleBeforeYesterDaySelection();
+        break;
       case TrKeysConstant.week:
         handleWeekSelection();
         break;
@@ -97,6 +106,8 @@ class HomeController extends GetxController {
 
     DateTime startDateComparaison = params['startDate']!;
     DateTime endDateComparaison = params['endDate']!;
+
+    print("date de comparaison : $params");
 
     String? ownerId = user?.id;
     final GetOrdersDto dto = GetOrdersDto(
@@ -244,6 +255,23 @@ class HomeController extends GetxController {
 
       params["startDate"] = newDate;
       params["endDate"] = newDate;
+    } else if (selectFiler.value == TrKeysConstant.yesterday) {
+      final now = DateTime.now();
+      final debut = DateTime(now.year, now.month, now.day - 1, 0, 0);
+      final fin = DateTime(now.year, now.month, now.day, 0, 0)
+          .subtract(const Duration(seconds: 1));
+
+      params["startDate"] = debut;
+      params["endDate"] = fin;
+    } else if (selectFiler.value == TrKeysConstant.beforeYesterday) {
+      final now = DateTime.now();
+      final debut =
+          startDate = DateTime(now.year, now.month, now.day - 2, 0, 0);
+      final fin = endDate = DateTime(now.year, now.month, now.day - 1, 0, 0)
+          .subtract(const Duration(seconds: 1));
+
+      params["startDate"] = debut;
+      params["endDate"] = fin;
     }
 
     return params;
@@ -269,6 +297,30 @@ class HomeController extends GetxController {
   void handleDaySelection() {
     startDate = dateTimeNow;
     endDate = dateTimeNow;
+  }
+
+  void handleYesterDaySelection() {
+    final now = DateTime.now();
+    startDate = DateTime(now.year, now.month, now.day - 1, 0, 0);
+    endDate = DateTime(now.year, now.month, now.day, 0, 0)
+        .subtract(const Duration(seconds: 1));
+
+    print("handleYesterDaySelection Star date : $startDate");
+    print(" handleYesterDaySelection End date : $endDate");
+
+    update();
+  }
+
+  void handleBeforeYesterDaySelection() {
+    final now = DateTime.now();
+    startDate = DateTime(now.year, now.month, now.day - 2, 0, 0);
+    endDate = DateTime(now.year, now.month, now.day - 1, 0, 0)
+        .subtract(const Duration(seconds: 1));
+
+    print("handleBeforeYesterDaySelection Star date : $startDate");
+    print(" handleBeforeYesterDaySelection End date : $endDate");
+
+    update();
   }
 
   void handleWeekSelection() {
