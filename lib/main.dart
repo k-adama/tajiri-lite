@@ -69,7 +69,7 @@ void main() async {
                 ),
                 child: GetMaterialApp(
                   debugShowCheckedModeBanner: false,
-                  title: "Tajiri Waitress",
+                  title: "Tajiri Lite",
                   initialBinding: SplashBinding(),
                   initialRoute: PresentationScreenRoute.INITIAL,
                   getPages: PresentationScreenRoute.routes,

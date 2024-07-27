@@ -1,6 +1,7 @@
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:tajiri_waitress/app/config/constants/app.constant.dart';
 import 'package:tajiri_waitress/app/config/constants/auth.constant.dart';
+import 'package:tajiri_waitress/app/config/constants/restaurant.constant.dart';
 import 'package:tajiri_waitress/app/config/constants/user.constant.dart';
 
 class LocalStorageService {
@@ -47,9 +48,9 @@ class LocalStorageService {
   bool getAppThemeMode() =>
       _preferences?.getBool(AppConstants.keyAppThemeMode) ?? false;
 
-  void logout(){
+  void logout() {
     delete(AuthConstant.keyToken);
     delete(UserConstant.keyUser);
+    delete(RestaurantConstant.keyRestaurant);
   }
 }
-
