@@ -2,6 +2,7 @@ import 'package:get/get.dart';
 import 'package:tajiri_waitress/app/common/app_helpers.common.dart';
 import 'package:tajiri_waitress/app/config/constants/app.constant.dart';
 import 'package:tajiri_waitress/app/config/constants/tr_keys.constant.dart';
+import 'package:tajiri_waitress/app/extensions/staff.extension.dart';
 import 'package:tajiri_waitress/app/mixpanel/mixpanel.dart';
 import 'package:tajiri_waitress/presentation/controllers/order_history/order_history.controller.dart';
 import 'package:tajiri_waitress/presentation/controllers/pos/pos.controller.dart';
@@ -93,6 +94,7 @@ class HomeController extends GetxController {
     }
 
     isFetching.value = true;
+
     update();
     fetchDataForReports();
   }
@@ -107,9 +109,10 @@ class HomeController extends GetxController {
     DateTime startDateComparaison = params['startDate']!;
     DateTime endDateComparaison = params['endDate']!;
 
-    print("date de comparaison : $params");
+    String? ownerId = user?.idOwnerForGetOrder;
 
-    String? ownerId = user?.id;
+    print("----getDatesForComparison $params $ownerId");
+    print("----startDate $startDate  endDate $endDate ");
     final GetOrdersDto dto = GetOrdersDto(
         startDate: startDateComparaison,
         endDate: endDateComparaison,
@@ -240,38 +243,30 @@ class HomeController extends GetxController {
       params["startDate"] = lastWeekDates["start"]!;
       params["endDate"] = lastWeekDates["end"]!;
     } else if (selectFiler.value == TrKeysConstant.month) {
-      // String item = getLastMonths()[selectedMonth.toInt() - 1];
-      // comparisonDate.value = item;
       int monthIndex = getCurrentMonth();
       Map<String, DateTime> selectedMonthDates =
           getFirstAndLastDayOfMonth(monthIndex);
       params["startDate"] = selectedMonthDates["start"]!;
       params["endDate"] = selectedMonthDates["end"]!;
-      // comparisonDate.value = monthNames[monthIndex - 1];
     } else if (selectFiler.value == TrKeysConstant.day) {
-      DateTime newDate = DateTime.parse(dateTimeNow.toIso8601String());
+      DateTime newDate = dateTimeNow;
 
-      newDate = newDate.subtract(const Duration(days: 7));
+      newDate = dateTimeNow.subtract(const Duration(days: 7));
 
       params["startDate"] = newDate;
       params["endDate"] = newDate;
     } else if (selectFiler.value == TrKeysConstant.yesterday) {
-      final now = DateTime.now();
-      final debut = DateTime(now.year, now.month, now.day - 1, 0, 0);
-      final fin = DateTime(now.year, now.month, now.day, 0, 0)
-          .subtract(const Duration(seconds: 1));
+      DateTime newDate = startDate;
+      newDate = newDate.subtract(const Duration(days: 7));
 
-      params["startDate"] = debut;
-      params["endDate"] = fin;
+      params["startDate"] = newDate;
+      params["endDate"] = newDate;
     } else if (selectFiler.value == TrKeysConstant.beforeYesterday) {
-      final now = DateTime.now();
-      final debut =
-          startDate = DateTime(now.year, now.month, now.day - 2, 0, 0);
-      final fin = endDate = DateTime(now.year, now.month, now.day - 1, 0, 0)
-          .subtract(const Duration(seconds: 1));
+      DateTime newDate = startDate;
+      newDate = newDate.subtract(const Duration(days: 7));
 
-      params["startDate"] = debut;
-      params["endDate"] = fin;
+      params["startDate"] = newDate;
+      params["endDate"] = newDate;
     }
 
     return params;
@@ -286,11 +281,14 @@ class HomeController extends GetxController {
     switch (selectFiler.value) {
       case TrKeysConstant.day:
         return 0;
-      case TrKeysConstant.week:
+      case TrKeysConstant.yesterday:
         return 1;
-      default:
-        handleDefaultSelection();
+      case TrKeysConstant.beforeYesterday:
         return 2;
+      case TrKeysConstant.week:
+        return 3;
+      default:
+        return 4;
     }
   }
 
@@ -301,12 +299,12 @@ class HomeController extends GetxController {
 
   void handleYesterDaySelection() {
     final now = DateTime.now();
-    startDate = DateTime(now.year, now.month, now.day - 1, 0, 0);
-    endDate = DateTime(now.year, now.month, now.day, 0, 0)
-        .subtract(const Duration(seconds: 1));
+    DateTime yesterday = DateTime(now.year, now.month, now.day - 1);
+    startDate = yesterday;
+    endDate = yesterday;
 
     print("handleYesterDaySelection Star date : $startDate");
-    print(" handleYesterDaySelection End date : $endDate");
+    print("handleYesterDaySelection End date : $endDate");
 
     update();
   }
@@ -385,7 +383,13 @@ class HomeController extends GetxController {
           break;
         case 1:
           Mixpanel.instance.track('Dashboard Reports filter',
-              properties: {"Periode used": "Week", "Status": status});
+              properties: {"Periode used": "Yesterday", "Status": status});
+          break;
+        case 2:
+          Mixpanel.instance.track('Dashboard Reports filter', properties: {
+            "Periode used": "Before Yesterday",
+            "Status": status
+          });
           break;
         default:
           Mixpanel.instance.track('Dashboard Reports filter',

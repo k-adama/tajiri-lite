@@ -7,6 +7,7 @@ import 'package:supabase_flutter/supabase_flutter.dart';
 import 'package:tajiri_sdk/tajiri_sdk.dart';
 import 'package:tajiri_waitress/app/common/app_helpers.common.dart';
 import 'package:tajiri_waitress/app/config/constants/app.constant.dart';
+import 'package:tajiri_waitress/app/extensions/staff.extension.dart';
 import 'package:tajiri_waitress/app/services/app_connectivity.service.dart';
 
 class OrderHistoryController extends GetxController {
@@ -74,7 +75,7 @@ class OrderHistoryController extends GetxController {
   Future<void> fetchOrders() async {
     final DateTime today = DateTime.now();
     final DateTime sevenDaysAgo = today.subtract(const Duration(days: 2));
-    final ownerId = user?.id;
+    final ownerId = user?.idOwnerForGetOrder;
     final GetOrdersDto dto = GetOrdersDto(
       startDate: startRangeDate ?? sevenDaysAgo,
       endDate: endRangeDate ?? today,
