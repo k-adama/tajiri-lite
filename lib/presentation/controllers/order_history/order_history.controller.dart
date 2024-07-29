@@ -1,5 +1,6 @@
 import 'package:audioplayers/audioplayers.dart';
 import 'package:flutter/material.dart' as mt;
+import 'package:flutter/material.dart';
 import 'package:get/get_rx/src/rx_types/rx_types.dart';
 import 'package:get/get_state_manager/src/simple/get_controllers.dart';
 import 'package:get/route_manager.dart';
@@ -17,6 +18,10 @@ class OrderHistoryController extends GetxController {
   List<Order> orders = List<Order>.empty().obs;
   List<Order> ordersInit = List<Order>.empty().obs;
   final Staff? user = AppHelpersCommon.getUserInLocalStorage();
+  bool? get canDelete {
+    return user?.canCancel;
+  }
+
   final tajiriSdk = TajiriSDK.instance;
 
   @override
@@ -91,6 +96,7 @@ class OrderHistoryController extends GetxController {
         orders.assignAll(result);
         ordersInit.assignAll(result);
       } catch (e) {
+        print("Erreur fetchOrder $e");
         AppHelpersCommon.showBottomSnackBar(
           Get.context!,
           mt.Text(e.toString()),
@@ -125,6 +131,28 @@ class OrderHistoryController extends GetxController {
     }
   }
 
+  Future<void> updateOrderStatus(
+      BuildContext context, String currentOrderId, String status) async {
+    print("---updateOrderStatus---");
+    if (currentOrderId.isEmpty) return;
+    try {
+      isProductLoading = true;
+      update();
+      final dto = UpdateOrderDto(status: status);
+      await tajiriSdk.ordersService.updateOrder(currentOrderId, dto);
+      isProductLoading = false;
+      update();
+    } catch (e) {
+      print("Erreur update order $e");
+      AppHelpersCommon.showCheckTopSnackBar(
+        context,
+        status.toString(),
+      );
+      isProductLoading = false;
+      update();
+    }
+  }
+
   void updateOrderList(Order newOrder) {
     final indexInit = ordersInit.indexWhere((order) => order.id == newOrder.id);
     print("update order list $indexInit");
@@ -137,10 +165,5 @@ class OrderHistoryController extends GetxController {
     }
 
     orders.assignAll(ordersInit);
-  }
-
-  List<Order> orderListByRecentUpdateDate(List<Order> orders) {
-    orders.sort((a, b) => b.updatedAt!.compareTo(a.updatedAt!));
-    return orders;
   }
 }

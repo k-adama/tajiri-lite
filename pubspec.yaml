@@ -65,6 +65,7 @@ dependencies:
   pull_to_refresh: ^2.0.0
   proste_indexed_stack: ^0.2.4
   audioplayers: ^6.0.0
+  flutter_slidable: ^3.1.1
 
 dev_dependencies:
   flutter_test:

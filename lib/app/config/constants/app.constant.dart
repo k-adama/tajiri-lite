@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:tajiri_sdk/tajiri_sdk.dart';
-import 'package:tajiri_waitress/domain/entities/orders_data.entity.dart';
 
 class AppConstants {
   AppConstants._();
@@ -9,6 +8,10 @@ class AppConstants {
   static const String keyAppThemeMode = 'keyAppThemeMode';
   static const TYPE_QUERY_ONLY_PRODUCT = 'ONLY_PRODUCT';
   static const String clientTypeRestaurant = 'RESTAURANT';
+
+  static const String orderPaid = 'PAID';
+  static const String orderCancelled = 'CANCELLED';
+  static const String orderReady = 'READY';
 
   //..........................
   static const String orderOnPLace = 'ON_PLACE';
@@ -26,6 +29,9 @@ class AppConstants {
   static const String ORDER_TAKEN_BY_COURIER = 'TAKEN_BY_COURIER';
   static const String ORDER_DELIVERED = 'DELIVERED';
   static const String ORDER_PAID = 'PAID';
+
+  //Permissions
+  static const String CANCEL_ORDER = 'CANCEL_ORDER';
 
   static bool getStatusOrderInProgressOrDone(Order order, String status) {
     bool checking = false;
