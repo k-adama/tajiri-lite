@@ -246,10 +246,30 @@ getMaxYChart(List<Order> orders, String viewSelected) {
   return maxY + 10.0;
 }
 
-getReportChart(List<Order> orders, String viewSelected) {
+getReportChart(List<Order> orders, String? viewSelected) {
   List<Map<String, dynamic>> ordersForChart;
 
-  if (viewSelected == TrKeysConstant.day) {
+  if (viewSelected == TrKeysConstant.week ||
+      viewSelected == TrKeysConstant.month) {
+    Map<String, Map<String, dynamic>> ordersByTime = {
+      "x": {"time": "0", "total": 45},
+    };
+    if (viewSelected == TrKeysConstant.week) {
+      ordersByTime = calculateTotalSalesByDayOfWeek(orders);
+    } else if (viewSelected == TrKeysConstant.month) {
+      ordersByTime = calculateClassAndGrandTotalByWeek(orders);
+      List<String> sortedKeys = ordersByTime.keys.toList()..sort();
+      Map<String, Map<String, dynamic>> sortedData = {};
+      for (String key in sortedKeys) {
+        sortedData[key] = ordersByTime[key]!;
+      }
+
+      ordersByTime = sortedData;
+    }
+    ordersForChart = ordersByTime.entries.map((entry) {
+      return {"x": entry.key, "y": entry.value["grandTotal"]};
+    }).toList();
+  } else {
     Map<int, Map<String, dynamic>> ordersByHours = orders.fold(
       {},
       (Map<int, Map<String, dynamic>> acc, Order order) {
@@ -277,25 +297,6 @@ getReportChart(List<Order> orders, String viewSelected) {
       final int hourB = int.parse(b['x'].split(':')[0]);
       return hourA.compareTo(hourB);
     });
-  } else {
-    Map<String, Map<String, dynamic>> ordersByTime = {
-      "x": {"time": "0", "total": 45},
-    };
-    if (viewSelected == TrKeysConstant.week) {
-      ordersByTime = calculateTotalSalesByDayOfWeek(orders);
-    } else if (viewSelected == TrKeysConstant.month) {
-      ordersByTime = calculateClassAndGrandTotalByWeek(orders);
-      List<String> sortedKeys = ordersByTime.keys.toList()..sort();
-      Map<String, Map<String, dynamic>> sortedData = {};
-      for (String key in sortedKeys) {
-        sortedData[key] = ordersByTime[key]!;
-      }
-
-      ordersByTime = sortedData;
-    }
-    ordersForChart = ordersByTime.entries.map((entry) {
-      return {"x": entry.key, "y": entry.value["grandTotal"]};
-    }).toList();
   }
 
   return ordersForChart;
@@ -422,6 +423,6 @@ List<LineChartBarData> getFlatSpot(List<Order> orders, String viewSelected) {
       ),
     ),
   ];
-  debugPrint(ordersForChart.toString());
+  debugPrint(ordersForChart.toString() + "d");
   return lineChartBarData;
 }
