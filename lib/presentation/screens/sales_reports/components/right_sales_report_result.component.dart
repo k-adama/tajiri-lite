@@ -1,6 +1,3 @@
-import 'dart:developer';
-
-import 'package:custom_sliding_segmented_control/custom_sliding_segmented_control.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:get/get.dart';
@@ -54,8 +51,6 @@ class _BottomSalesReportResultComponentState
 
   @override
   void initState() {
-    final e = widget.data.map((e) => e.toJson()).toList();
-    log("---------$e");
     super.initState();
   }
 
@@ -66,38 +61,43 @@ class _BottomSalesReportResultComponentState
         flex: 4,
         child: Column(
           children: [
-            SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: CustomSlidingSegmentedControl<int>(
-                initialValue: swithValue,
-                customSegmentSettings: CustomSegmentSettings(
-                  radius: 64,
-                  borderRadius: BorderRadius.circular(64),
-                ),
-                children: {
-                  for (var categorie in listCategorieFilter)
-                    listCategorieFilter.indexOf(categorie): Center(
-                      child: Text(
-                        categorie,
-                        style: (swithValue ==
-                                listCategorieFilter.indexOf(categorie))
-                            ? Style.interBold(color: Style.white, size: 14)
-                            : Style.interNormal(size: 14),
+            SizedBox(
+              height: 40,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: listCategorieFilter.length,
+                itemBuilder: (context, index) {
+                  final categorie = listCategorieFilter[index];
+                  return GestureDetector(
+                    onTap: () => changedSwitch(index),
+                    child: AnimatedContainer(
+                      duration: const Duration(milliseconds: 300),
+                      margin: const EdgeInsets.only(right: 10),
+                      padding: const EdgeInsets.symmetric(
+                          vertical: 10.0, horizontal: 14.0),
+                      decoration: BoxDecoration(
+                        color: swithValue == index
+                            ? Style.brandBlue950
+                            : Colors.transparent,
+                        borderRadius: BorderRadius.circular(64),
+                        border: Border.all(
+                          color: swithValue == index
+                              ? Colors.transparent
+                              : Style.black,
+                          width: 1.5,
+                        ),
                       ),
-                    )
+                      child: Center(
+                        child: Text(
+                          categorie,
+                          style: swithValue == index
+                              ? Style.interBold(color: Colors.white, size: 14)
+                              : Style.interNormal(color: Style.black, size: 14),
+                        ),
+                      ),
+                    ),
+                  );
                 },
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(
-                    64,
-                  ),
-                ),
-                thumbDecoration: BoxDecoration(
-                  color: Style.brandColor500,
-                  borderRadius: BorderRadius.circular(40),
-                ),
-                duration: const Duration(milliseconds: 300),
-                curve: Curves.easeInToLinear,
-                onValueChanged: changedSwitch,
               ),
             ),
             27.verticalSpace,
