@@ -32,6 +32,7 @@ class AppConstants {
 
   //Permissions
   static const String CANCEL_ORDER = 'CANCEL_ORDER';
+  static const String UPDATE_ORDER_PRODUCTS = 'UPDATE_ORDER_PRODUCTS';
 
   static bool getStatusOrderInProgressOrDone(Order order, String status) {
     bool checking = false;
@@ -48,6 +49,11 @@ class AppConstants {
 
     return checking;
   }
+
+  static const List<Color> linearGradientBlue = [
+    Color(0xff0000DD),
+    Color(0xff6666FF),
+  ];
 
   static String getStatusInFrench(Order order) {
     String status = "";
@@ -170,3 +176,7 @@ List<Map<String, dynamic>> PAIEMENTS = [
     'icon': autreAsset,
   },
 ];
+
+const DISHESID = "da1b8165-fd18-47bd-adb0-796b6b8e9415";
+const DRINKSID = "25a48e57-211a-406c-bdbc-f76903551def";
+const DIVERSID = "83f141d7-0dc6-4312-be63-116a3a309519";

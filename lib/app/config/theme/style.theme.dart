@@ -29,6 +29,7 @@ class Style {
   static const Color grey800 = Color(0xFF303136);
   static const Color grey950 = Color(0xFF0C0C0E);
   static const Color brandColor500 = Color(0xFF0000DD);
+  static const Color brandColor50 = Color(0xFFE5E5FF);
   static const Color brandBlue100 = Color(0xFFCCCCFF);
   static const Color brandBlue200 = Color(0xFF9999FF);
   static const Color green = Color(0xFF71C761);
@@ -61,7 +62,17 @@ class Style {
   static const Color shimmerBaseDark = Color.fromRGBO(117, 117, 117, 0.29);
   static const Color bodyNewColor = Color(0xFFEFF0F7);
 
-  /// gradiant
+  // degradés colors
+  static const List<Color> gradientPlat = [
+    Color(0xffE5E5FF),
+    Color(0xffCCCCFF),
+  ];
+
+  static const List<Color> linearGradientBlue = [
+    Color(0xff0000DD),
+    Color(0xff6666FF),
+  ];
+
   static const List<Color> gradientEntreDessert = [
     Color(0xff9999FF),
     Color(0xff6666FF),

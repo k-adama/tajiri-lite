@@ -1,9 +1,13 @@
+import 'package:intl/intl.dart';
 import 'package:tajiri_sdk/tajiri_sdk.dart';
 
 enum ListingType {
   table,
   waitress;
 }
+
+final customFormatForView = DateFormat('dd-MM-yyyy');
+final customFormatForRequest = DateFormat('yyyy-MM-dd HH:mm:ss.SSSSSS');
 
 String formatNumber(double number) {
   if (number >= 1000000) {
@@ -13,24 +17,25 @@ String formatNumber(double number) {
   } else {
     return number.toStringAsFixed(1).replaceAll(RegExp(r'\.0$'), '');
   }
-  
 }
+
 String getNameFromOrderDetail(OrderProduct? orderProduct) {
   if (orderProduct == null) {
     return 'N/A';
   }
-  if (orderProduct.product == null) {
-    return 'Produit supprimé';
-  } else {
-    return orderProduct.product.name ?? 'N/A';
-  }
-}
-ListingType? checkListingType(Staff? user) {
-  if (false) { //user?.restaurantUser?[0].restaurant?.listingEnable != true
-    return null;
-  }
 
-  return false//user!.restaurantUser?[0].restaurant?.listingType == "TABLE"
-      ? ListingType.table
-      : ListingType.waitress;
+  return orderProduct.product.name;
+}
+
+ListingType? checkListingType(Staff? user) {
+  return ListingType.waitress;
+}
+
+String convertTofrenchDate(String originalDate) {
+  // Parse la date d'entrée
+  DateTime parsedDate = customFormatForRequest.parse(originalDate);
+  // Formate la date dans le format de sortie
+  String formattedDate = customFormatForView.format(parsedDate);
+
+  return formattedDate;
 }

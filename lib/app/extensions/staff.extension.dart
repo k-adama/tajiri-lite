@@ -46,6 +46,10 @@ extension StaffExtension on Staff? {
     return isOwner || hasPermission(AppConstants.CANCEL_ORDER);
   }
 
+  bool get canUpdate {
+    return isOwner || hasPermission(AppConstants.UPDATE_ORDER_PRODUCTS);
+  }
+
   Role get getRole => Role.fromString(this?.role ?? "UNKNOWN");
 
   String? get idOwnerForGetOrder {

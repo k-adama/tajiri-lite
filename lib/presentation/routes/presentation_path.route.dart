@@ -9,6 +9,8 @@ abstract class Routes {
   static const ORDER_HISTORY = _Paths.ORDER_HISTORY;
   static const CART = _Paths.CART;
   static const SEARCH_PRODUCT = _Paths.SEARCH_PRODUCT;
+  static const SALES_REPORT = _Paths.SALES_REPORT;
+  static const SALES_REPORT_RESULT = _Paths.SALES_REPORT_RESULT;
 }
 
 abstract class _Paths {
@@ -21,4 +23,6 @@ abstract class _Paths {
   static const ORDER_HISTORY = "/order_history";
   static const CART = "/cart";
   static const SEARCH_PRODUCT = "/search_product";
+  static const SALES_REPORT = "/sales_report";
+  static const SALES_REPORT_RESULT = "/sales_report_result";
 }
