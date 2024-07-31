@@ -8,7 +8,6 @@ import 'package:intl/intl.dart';
 import 'package:tajiri_sdk/tajiri_sdk.dart';
 import 'package:tajiri_waitress/app/common/app_helpers.common.dart';
 import 'package:tajiri_waitress/app/config/theme/style.theme.dart';
-import 'package:tajiri_waitress/domain/entities/orders_data.entity.dart';
 import 'package:tajiri_waitress/presentation/controllers/home/home.controller.dart';
 
 class ChartBarComponent extends StatefulWidget {

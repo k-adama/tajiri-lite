@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:tajiri_sdk/tajiri_sdk.dart';
-import 'package:tajiri_waitress/domain/entities/orders_data.entity.dart';
 
 class AppConstants {
   AppConstants._();
@@ -9,6 +8,10 @@ class AppConstants {
   static const String keyAppThemeMode = 'keyAppThemeMode';
   static const TYPE_QUERY_ONLY_PRODUCT = 'ONLY_PRODUCT';
   static const String clientTypeRestaurant = 'RESTAURANT';
+
+  static const String orderPaid = 'PAID';
+  static const String orderCancelled = 'CANCELLED';
+  static const String orderReady = 'READY';
 
   //..........................
   static const String orderOnPLace = 'ON_PLACE';
@@ -27,6 +30,10 @@ class AppConstants {
   static const String ORDER_DELIVERED = 'DELIVERED';
   static const String ORDER_PAID = 'PAID';
 
+  //Permissions
+  static const String CANCEL_ORDER = 'CANCEL_ORDER';
+  static const String UPDATE_ORDER_PRODUCTS = 'UPDATE_ORDER_PRODUCTS';
+
   static bool getStatusOrderInProgressOrDone(Order order, String status) {
     bool checking = false;
     switch (status) {
@@ -42,6 +49,11 @@ class AppConstants {
 
     return checking;
   }
+
+  static const List<Color> linearGradientBlue = [
+    Color(0xff0000DD),
+    Color(0xff6666FF),
+  ];
 
   static String getStatusInFrench(Order order) {
     String status = "";
@@ -164,3 +176,7 @@ List<Map<String, dynamic>> PAIEMENTS = [
     'icon': autreAsset,
   },
 ];
+
+const DISHESID = "da1b8165-fd18-47bd-adb0-796b6b8e9415";
+const DRINKSID = "25a48e57-211a-406c-bdbc-f76903551def";
+const DIVERSID = "83f141d7-0dc6-4312-be63-116a3a309519";

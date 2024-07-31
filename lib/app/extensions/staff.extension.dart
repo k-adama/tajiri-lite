@@ -1,6 +1,7 @@
 // ignore_for_file: constant_identifier_names
 
 import 'package:tajiri_sdk/tajiri_sdk.dart';
+import 'package:tajiri_waitress/app/config/constants/app.constant.dart';
 
 enum Role {
   OWNER(value: 'OWNER'),
@@ -39,6 +40,14 @@ extension StaffExtension on Staff? {
     return this!
         .permissions
         .any((permission) => permission.name == permissionName);
+  }
+
+  bool get canCancel {
+    return isOwner || hasPermission(AppConstants.CANCEL_ORDER);
+  }
+
+  bool get canUpdate {
+    return isOwner || hasPermission(AppConstants.UPDATE_ORDER_PRODUCTS);
   }
 
   Role get getRole => Role.fromString(this?.role ?? "UNKNOWN");

@@ -201,6 +201,7 @@ class HomeController extends GetxController {
       update();
       eventFilter(indexFilter: indexFilter, status: "Succes");
     } catch (e) {
+      print("error :$e");
       eventFilter(indexFilter: indexFilter, status: "Failure");
       isFetching.value = false;
       update();

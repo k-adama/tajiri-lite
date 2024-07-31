@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
+import 'package:get/route_manager.dart';
 import 'package:tajiri_waitress/app/common/app_helpers.common.dart';
 import 'package:tajiri_waitress/app/config/theme/style.theme.dart';
+import 'package:tajiri_waitress/presentation/routes/presentation_screen.route.dart';
 
 class AppMenuModalComponent extends StatelessWidget {
   const AppMenuModalComponent({super.key});
@@ -73,11 +75,16 @@ class AppMenuModalComponent extends StatelessWidget {
             const Divider(
               thickness: 2,
             ),
-           /* 20.verticalSpace,
+            20.verticalSpace,
             buildComponent(
               "Rapport de ventes",
-              null,
-            ),*/
+              () {
+                Get.toNamed(
+                  Routes.SALES_REPORT,
+                  preventDuplicates: false,
+                );
+              },
+            ),
             20.verticalSpace,
             buildComponent(
               "Déconnexion",
