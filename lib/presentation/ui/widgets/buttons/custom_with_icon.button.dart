@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:tajiri_waitress/app/common/app_helpers.common.dart';
 import 'package:tajiri_waitress/app/config/theme/style.theme.dart';
 import 'package:tajiri_waitress/presentation/ui/widgets/buttons/effects/animation_button.effect.dart';
+import 'package:tajiri_waitress/presentation/ui/widgets/dialogs/smal_alert.dialog.dart';
 
 class CustomButtonWithIcon extends StatelessWidget {
   final String title;
@@ -42,7 +44,18 @@ class CustomButtonWithIcon extends StatelessWidget {
       child: SizedBox(
         height: height,
         child: GestureDetector(
-          onTap: isGrised ? null : onPressed,
+          onTap: isGrised
+              ? null
+              : isLoading
+                  ? () {
+                      print("========Chargement en cours========");
+                      AppHelpersCommon.showCheckTopSnackBarInfo(
+                        context,
+                        displayDuration: const Duration(seconds: 1),
+                        "Veuillez patienter Chargement en cours...",
+                      );
+                    }
+                  : onPressed,
           child: Container(
             padding: const EdgeInsets.symmetric(horizontal: 10),
             decoration: BoxDecoration(

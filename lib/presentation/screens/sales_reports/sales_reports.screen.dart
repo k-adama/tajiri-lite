@@ -139,10 +139,15 @@ class _SalesReportScreenState extends State<SalesReportScreen> {
                         title: "Voir le rapport d’hier",
                         textColor: Style.brandColor500,
                         isUnderline: true,
+                        isLoading:
+                            saleReportsController.isLoadingYesterdayReport,
                         background: Style.brandColor50,
-                        isLoading: false,
                         radius: 4,
-                        onPressed: () {},
+                        onPressed: () {
+                          saleReportsController.getYesterdayDateRange();
+                          saleReportsController.fetchOrdersReports(
+                              isYesterday: true);
+                        },
                       ),
                     ],
                   ),

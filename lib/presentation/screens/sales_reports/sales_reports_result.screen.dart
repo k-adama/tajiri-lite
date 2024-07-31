@@ -9,9 +9,17 @@ import 'package:tajiri_waitress/presentation/screens/sales_reports/components/pd
 import 'package:tajiri_waitress/presentation/screens/sales_reports/components/right_sales_report_result.component.dart';
 import 'package:tajiri_waitress/presentation/ui/widgets/buttons/custom_with_icon.button.dart';
 
-class SaleReportsResultScreen extends StatelessWidget {
+class SaleReportsResultScreen extends StatefulWidget {
   const SaleReportsResultScreen({super.key});
 
+  @override
+  State<SaleReportsResultScreen> createState() =>
+      _SaleReportsResultScreenState();
+}
+
+class _SaleReportsResultScreenState extends State<SaleReportsResultScreen> {
+  final startDate = Get.arguments[0] as String;
+  final endDate = Get.arguments[1] as String;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -49,8 +57,8 @@ class SaleReportsResultScreen extends StatelessWidget {
                   final pdfFile = await PdfReportComponent.generate(
                       salesReportController
                           .getDataForShareReport(salesReportController.sales),
-                      salesReportController.startDate,
-                      salesReportController.endDate);
+                      startDate,
+                      endDate);
                   ApiPdfService.shareFile(pdfFile);
                 },
               ),

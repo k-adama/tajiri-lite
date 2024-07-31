@@ -117,7 +117,7 @@ class PdfReportComponent {
   static List<Widget> customReportTablePdf(
       List<Map<String, dynamic>> salesDetails) {
     var totalqty = 0;
-    var totalturnover = 0;
+    var totalturnover = 0.0;
     return [
       itemRow(
         isHeader: true,
@@ -128,7 +128,7 @@ class PdfReportComponent {
       ...List.generate(salesDetails.length, (index) {
         final item = salesDetails[index];
         final qtyItem = int.tryParse("${item['quantity']}") ?? 0;
-        final priceItem = int.tryParse("${item['totalPrice']}") ?? 0;
+        final priceItem = num.tryParse("${item['totalPrice']}") ?? 0;
 
         totalqty += qtyItem;
         totalturnover += priceItem;

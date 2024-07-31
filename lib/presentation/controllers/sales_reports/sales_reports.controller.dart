@@ -34,8 +34,8 @@ class SalesReportsController extends GetxController {
   final tajiriSdk = TajiriSDK.instance;
 
   bool isLoadingReport = false;
-  String startDate = "";
-  String endDate = "";
+  bool isLoadingYesterdayReport = false;
+
   final total = 0.obs;
 
 //Categorie Supabase
@@ -53,24 +53,27 @@ class SalesReportsController extends GetxController {
     super.onReady();
   }
 
-  Future<void> fetchOrdersReports() async {
-    startDate = "${pickStartDate.text} ${pickStartTime.text}";
-    endDate = "${pickEndDate.text} ${pickEndTime.text}";
+  Future<void> fetchOrdersReports({bool isYesterday = false}) async {
+    final startDate = "${pickStartDate.text} ${pickStartTime.text}";
+    final endDate = "${pickEndDate.text} ${pickEndTime.text}";
     final connected = await AppConnectivityService.connectivity();
     if (connected) {
-      isLoadingReport = true;
+      if (isYesterday) {
+        isLoadingYesterdayReport = true;
+      } else {
+        isLoadingReport = true;
+      }
       update();
-
       print("======================> startDate $startDate");
-      print("======================> startDate $endDate");
+      print("======================> endDate $endDate");
 
       DateTime formattedStartDate = convertToDateTime(startDate);
-      DateTime formattedSendDate = convertToDateTime(endDate);
+      DateTime formattedEndDate = convertToDateTime(endDate);
 
       try {
         final GetOrdersDto dto = GetOrdersDto(
           startDate: formattedStartDate,
-          endDate: formattedSendDate,
+          endDate: formattedEndDate,
           ownerId: user?.idOwnerForGetOrder,
         );
 
@@ -90,12 +93,23 @@ class SalesReportsController extends GetxController {
         sales.assignAll(salesData);
         extraSales.assignAll(extraSaleData);
 
-        isLoadingReport = false;
+        if (isYesterday) {
+          isLoadingYesterdayReport = false;
+        } else {
+          isLoadingReport = false;
+        }
         update();
-        Get.toNamed(Routes.SALES_REPORT_RESULT);
+        Get.toNamed(
+          Routes.SALES_REPORT_RESULT,
+          arguments: [startDate, endDate],
+        );
       } catch (e) {
         print("==========================> error $e");
-        isLoadingReport = false;
+        if (isYesterday) {
+          isLoadingYesterdayReport = false;
+        } else {
+          isLoadingReport = false;
+        }
         update();
       }
     }
@@ -142,7 +156,7 @@ class SalesReportsController extends GetxController {
   DateTime convertToDateTime(String dateTimeString) {
     List<String> parts = dateTimeString.split(' ');
     if (parts.length < 3) {
-      throw FormatException("Invalid date time format");
+      throw const FormatException("Invalid date time format");
     }
 
     String datePart = parts[0];
@@ -156,7 +170,7 @@ class SalesReportsController extends GetxController {
     return dateTime;
   }
 
-  pickTime(BuildContext context) async {
+  Future<TimeOfDay?> pickTime(BuildContext context) async {
     TimeOfDay? picked = await showTimePicker(
       context: context,
       initialTime: TimeOfDay.now(),
@@ -177,7 +191,7 @@ class SalesReportsController extends GetxController {
     return picked;
   }
 
-  pickDateFormatted(DateTime? pickedDate) {
+  String? pickDateFormatted(DateTime? pickedDate) {
     if (pickedDate != null) {
       debugPrint('$pickedDate');
       String formattedDate = customFormatForRequest.format(pickedDate);
@@ -186,10 +200,11 @@ class SalesReportsController extends GetxController {
       return formattedDate;
     } else {
       debugPrint("pickedDate is null");
+      return null;
     }
   }
 
-  pickTimeFormatted(TimeOfDay? timeOfDay) {
+  String? pickTimeFormatted(TimeOfDay? timeOfDay) {
     if (timeOfDay != null) {
       DateTime now = DateTime.now();
       DateTime date = DateTime(
@@ -203,10 +218,12 @@ class SalesReportsController extends GetxController {
       debugPrint(formattedTime);
 
       return formattedTime;
-    } else {}
+    } else {
+      return null;
+    }
   }
 
-  pickDate(BuildContext context) async {
+  Future<DateTime?> pickDate(BuildContext context) async {
     // Locale myLocale = const Locale('fr', 'FR');
     DateTime? pickedDate = await showDatePickerDialog(
       context: context,
@@ -237,6 +254,20 @@ class SalesReportsController extends GetxController {
     );
 
     return pickedDate;
+  }
+
+  getYesterdayDateRange() {
+    print("======getYesterdayDateRange=======");
+    final now = DateTime.now();
+    final yesterdayStart = DateTime(now.year, now.month, now.day - 1);
+    final yesterdayEnd = DateTime(now.year, now.month, now.day - 1, 23, 59, 59);
+    //
+    pickStartDate.text = customFormatForRequest.format(yesterdayStart);
+    pickStartTime.text = DateFormat('HH:mm').format(yesterdayStart);
+
+    //
+    pickEndDate.text = customFormatForRequest.format(yesterdayEnd);
+    pickEndTime.text = DateFormat('HH:mm').format(yesterdayEnd);
   }
 
   List<SaleItem> filterSalesDataByMainCatId(
