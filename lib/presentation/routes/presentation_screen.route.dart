@@ -1,6 +1,7 @@
 import 'package:get/route_manager.dart';
 import 'package:tajiri_waitress/presentation/controllers/auth/auth.binding.dart';
 import 'package:tajiri_waitress/presentation/controllers/home/home.binding.dart';
+import 'package:tajiri_waitress/presentation/controllers/order_history/paiement/paiement.binding.dart';
 import 'package:tajiri_waitress/presentation/controllers/pos/cart/cart.binding.dart';
 import 'package:tajiri_waitress/presentation/controllers/pos/pos.binding.dart';
 import 'package:tajiri_waitress/presentation/controllers/order_history/order_history.binding.dart';
@@ -8,6 +9,7 @@ import 'package:tajiri_waitress/presentation/controllers/sales_reports/sales_rep
 import 'package:tajiri_waitress/presentation/controllers/splash/splash.binding.dart';
 import 'package:tajiri_waitress/presentation/screens/auth/login.screen.dart';
 import 'package:tajiri_waitress/presentation/screens/home/home.screen.dart';
+import 'package:tajiri_waitress/presentation/screens/order_history/paiement/paiement.screen.dart';
 import 'package:tajiri_waitress/presentation/screens/pos/cart/cart.screen.dart';
 import 'package:tajiri_waitress/presentation/screens/pos/components/pos_search_product_screen.component.dart';
 import 'package:tajiri_waitress/presentation/screens/pos/pos.screen.dart';
@@ -46,6 +48,11 @@ class PresentationScreenRoute {
       name: _Paths.ORDER_HISTORY,
       page: () => const OrderHistoryScreen(),
       binding: OrderHistoryBinding(),
+    ),
+    GetPage(
+      name: _Paths.PAIEMENT,
+      page: () => const PaiementScreen(),
+      binding: PaiementBinding(),
     ),
     GetPage(
       name: _Paths.CART,

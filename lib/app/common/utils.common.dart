@@ -1,5 +1,6 @@
 import 'package:intl/intl.dart';
 import 'package:tajiri_sdk/tajiri_sdk.dart';
+import 'package:tajiri_waitress/domain/entities/printer_model.entity.dart';
 
 enum ListingType {
   table,
@@ -38,4 +39,26 @@ String convertTofrenchDate(String originalDate) {
   String formattedDate = customFormatForView.format(parsedDate);
 
   return formattedDate;
+}
+
+int calculateTotalPrice(List<OrderPrinterProduct> items) {
+  int totalPrice = 0;
+
+  for (var item in items) {
+    totalPrice += item.totalPrice;
+  }
+
+  return totalPrice;
+}
+
+double grandTotalPrice(List<OrderProduct?> items) {
+  double grandTotalPrice = 0;
+
+  for (var item in items) {
+    if (item?.price != null && item?.quantity != null) {
+      grandTotalPrice += item!.price * item.quantity;
+    }
+  }
+
+  return grandTotalPrice;
 }

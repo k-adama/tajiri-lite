@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_screenutil/flutter_screenutil.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:get/instance_manager.dart';
@@ -143,20 +144,37 @@ class _OrdersItemComponentState extends State<OrdersItemComponent> {
                     ? Container()
                     : Padding(
                         padding: const EdgeInsets.only(left: 10, right: 10),
-                        child: CustomButton(
-                          background: Style.brandBlue50,
-                          title: "Modifier la commande",
-                          isGrised:
-                              false, //AppHelpersCommon.getUserInLocalStorage()?.canUpdateOrCanceledOrder() ==false, // grised add product button if user can't update or cancel
-                          textColor: Style.brandColor500,
-                          haveBorder: false,
-                          radius: 5,
-                          onPressed: () {
-                            homeController.posController
-                                .addItemsFromOrderToCart(widget.order);
-                            Get.toNamed(Routes.POS, arguments: true);
-                          },
-                          isUnderline: true,
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: CustomButton(
+                                background: Style.brandBlue50,
+                                title: "Modifier la commande",
+                                isGrised:
+                                    false, //AppHelpersCommon.getUserInLocalStorage()?.canUpdateOrCanceledOrder() ==false, // grised add product button if user can't update or cancel
+                                textColor: Style.brandColor500,
+                                haveBorder: false,
+                                radius: 5,
+                                onPressed: () {
+                                  homeController.posController
+                                      .addItemsFromOrderToCart(widget.order);
+                                  Get.toNamed(Routes.POS, arguments: true);
+                                },
+                                isUnderline: true,
+                              ),
+                            ),
+                            12.horizontalSpace,
+                            CustomButton(
+                              title: "Faire payer",
+                              textColor: Style.white,
+                              background: Style.brandColor500,
+                              radius: 4,
+                              onPressed: () {
+                                Get.toNamed(Routes.PAIEMENT,
+                                    arguments: [widget.order]);
+                              },
+                            )
+                          ],
                         ),
                       ),
                 10.verticalSpace,

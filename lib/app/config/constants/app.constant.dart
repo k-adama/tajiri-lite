@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:tajiri_sdk/tajiri_sdk.dart';
 
 class AppConstants {
@@ -109,6 +110,11 @@ final tabs = [
   const Tab(text: "En cours"),
   const Tab(text: "Prête"),
 ];
+
+String? getNamePaiementById(String? id) {
+  final payment = PAIEMENTS.firstWhereOrNull((element) => element['id'] == id);
+  return payment != null ? payment['name'] : null;
+}
 
 const onPlaceSvg = "assets/svgs/onplace.svg";
 const takeAwaySvg = "assets/svgs/take_away_icon.svg";
