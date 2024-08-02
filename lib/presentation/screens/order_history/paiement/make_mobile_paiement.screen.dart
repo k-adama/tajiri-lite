@@ -5,7 +5,9 @@ import 'package:tajiri_waitress/app/config/theme/style.theme.dart';
 import 'package:tajiri_waitress/app/extensions/info_card.extension.dart';
 import 'package:tajiri_waitress/domain/entities/means_paiement_entity.dart';
 import 'package:tajiri_waitress/presentation/screens/order_history/paiement/components/amount_to_paid.component.dart';
+import 'package:tajiri_waitress/presentation/screens/order_history/paiement/components/orange_validation_code.component.dart';
 import 'package:tajiri_waitress/presentation/ui/widgets/buttons/custom.button.dart';
+import 'package:tajiri_waitress/presentation/ui/widgets/text_fields/custom_phone.text_field.dart';
 
 class MakeMobilePaiementScreen extends StatefulWidget {
   final Order? order;
@@ -49,63 +51,72 @@ class _MakeMobilePaiementScreenState extends State<MakeMobilePaiementScreen> {
                       style: Style.interNormal(size: 13, color: Style.grey500),
                     ),
                     12.verticalSpace,
-                    TextFormField(
-                      controller: TextEditingController(),
-                      cursorColor: Style.brandColor500,
-                      style: Style.interNormal(
-                        size: 13,
-                      ),
-                      keyboardType: TextInputType.number,
-                      decoration: InputDecoration(
-                        contentPadding:
-                            const EdgeInsets.symmetric(horizontal: 12),
-                        focusedBorder: null,
-                        border: OutlineInputBorder(
-                          borderRadius: BorderRadius.circular(6),
-                          borderSide: const BorderSide(
-                            color: Style.grey100,
-                            width: .5,
-                          ),
-                        ),
-                      ),
-                    ),
+                    CustomPhoneTextField(
+                        controller: TextEditingController(),
+                        hintText: "Numéro de téléphone du client"),
                     24.verticalSpace,
-                    Divider(),
+                    if (widget.mobileMeansOfPayment.name == "OM")
+                      OrangeValidationCodeComponent(),
+                    const Divider(),
                     24.verticalSpace,
-                    RichText(
-                      text: TextSpan(
-                        children: [
-                          TextSpan(
-                            text: 'En faisant ',
-                            style: Style.interNormal(
-                              size: 14,
-                              fontWeight: FontWeight.w400,
+                    widget.mobileMeansOfPayment.name == "OM"
+                        ? Column(
+                            crossAxisAlignment: CrossAxisAlignment.start,
+                            children: [
+                              Text(
+                                "Comment obtenir le code de confirmation ? ",
+                                style: Style.interBold(size: 19),
+                              ),
+                              8.verticalSpace,
+                              const Row(
+                                children: [
+                                  InfoMobilePaiementCard(
+                                    title: "En composant",
+                                    description: "#144*82#",
+                                  ),
+                                  Spacer(),
+                                  InfoMobilePaiementCard(
+                                    title: "En ouvrant l’application",
+                                    description: "Orange Money",
+                                  ),
+                                ],
+                              )
+                            ],
+                          ).infoCardBg()
+                        : RichText(
+                            text: TextSpan(
+                              children: [
+                                TextSpan(
+                                  text: 'En faisant ',
+                                  style: Style.interNormal(
+                                    size: 14,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                ),
+                                TextSpan(
+                                  text: '"suivant" ',
+                                  style: Style.interNormal(
+                                    size: 14,
+                                    fontWeight: FontWeight.w700,
+                                  ),
+                                ),
+                                TextSpan(
+                                  text:
+                                      'un lien de validation sera envoyé au numéro du client.',
+                                  style: Style.interNormal(
+                                    size: 14,
+                                    fontWeight: FontWeight.w400,
+                                  ),
+                                ),
+                              ],
                             ),
-                          ),
-                          TextSpan(
-                            text: '"suivant" ',
-                            style: Style.interNormal(
-                              size: 14,
-                              fontWeight: FontWeight.w700,
-                            ),
-                          ),
-                          TextSpan(
-                            text:
-                                'un lien de validation sera envoyé au numéro du client.',
-                            style: Style.interNormal(
-                              size: 14,
-                              fontWeight: FontWeight.w400,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ).infoCardBg(),
+                          ).infoCardBg(),
                     24.verticalSpace,
                   ],
                 ),
               ),
             ),
-            Divider(),
+            const Divider(),
             Container(
               padding: const EdgeInsets.symmetric(horizontal: 16),
               child: Column(
@@ -135,6 +146,34 @@ class _MakeMobilePaiementScreenState extends State<MakeMobilePaiementScreen> {
           ],
         ),
       ),
+    );
+  }
+}
+
+class InfoMobilePaiementCard extends StatelessWidget {
+  final String title;
+  final String description;
+
+  const InfoMobilePaiementCard(
+      {super.key, required this.title, required this.description});
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Text(title),
+        8.verticalSpace,
+        Container(
+          padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 4),
+          decoration: BoxDecoration(
+              borderRadius: BorderRadius.circular(4), color: Colors.white),
+          child: Text(
+            description,
+            style: Style.interNormal(fontWeight: FontWeight.w500, size: 14),
+          ),
+        ),
+      ],
     );
   }
 }
