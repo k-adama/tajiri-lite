@@ -163,17 +163,18 @@ class _OrdersItemComponentState extends State<OrdersItemComponent> {
                                 isUnderline: true,
                               ),
                             ),
-                            12.horizontalSpace,
-                            CustomButton(
-                              title: "Faire payer",
-                              textColor: Style.white,
-                              background: Style.brandColor500,
-                              radius: 4,
-                              onPressed: () {
-                                Get.toNamed(Routes.PAIEMENT,
-                                    arguments: [widget.order]);
-                              },
-                            )
+                            //TODO : UNCOMMENT FOR PAIEMENT SCREEN
+                            // 12.horizontalSpace,
+                            // CustomButton(
+                            //   title: "Faire payer",
+                            //   textColor: Style.white,
+                            //   background: Style.brandColor500,
+                            //   radius: 4,
+                            //   onPressed: () {
+                            //     Get.toNamed(Routes.PAIEMENT,
+                            //         arguments: [widget.order]);
+                            //   },
+                            // )
                           ],
                         ),
                       ),
