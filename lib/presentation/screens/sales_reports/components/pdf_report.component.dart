@@ -8,12 +8,10 @@ import 'package:tajiri_waitress/app/services/api_pdf.service.dart';
 import 'package:tajiri_waitress/presentation/screens/sales_reports/components/right_sales_report_result.component.dart';
 
 class PdfReportComponent {
-  static final user = AppHelpersCommon.getUserInLocalStorage();
-  static final restaurant = AppHelpersCommon.getRestaurantInLocalStorage();
-
   static Future<File> generate(
       Map<String, dynamic> data, String startDate, String endDate) async {
     final pdf = Document();
+    final user = AppHelpersCommon.getUserInLocalStorage();
 
     pdf.addPage(
       MultiPage(
@@ -31,6 +29,8 @@ class PdfReportComponent {
   }
 
   static Widget buildAppBar(Staff? user) {
+    final restaurant = AppHelpersCommon.getRestaurantInLocalStorage();
+
     return Container(
       width: double.infinity,
       child: Center(

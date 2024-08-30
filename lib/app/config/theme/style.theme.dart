@@ -32,7 +32,13 @@ class Style {
   static const Color brandColor50 = Color(0xFFE5E5FF);
   static const Color brandBlue100 = Color(0xFFCCCCFF);
   static const Color brandBlue200 = Color(0xFF9999FF);
+
+  static const Color brandYellow500 = Color(0xFFFFC300);
+  static const Color brandYellow50 = Color(0xFFFFF9E5);
+
   static const Color green = Color(0xFF71C761);
+  static const Color alertGreen50 = Color(0xFFF5FFE5);
+
   static const Color yellowLigther = Color(0xFFFFE48C);
   static const Color hintColor = Color(0xFFBABABA);
   static const Color dontHaveAccBtnBack = Color(0xFFF8F8F8);

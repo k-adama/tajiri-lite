@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:tajiri_sdk/tajiri_sdk.dart';
 
 class AppConstants {
@@ -33,6 +34,9 @@ class AppConstants {
   //Permissions
   static const String CANCEL_ORDER = 'CANCEL_ORDER';
   static const String UPDATE_ORDER_PRODUCTS = 'UPDATE_ORDER_PRODUCTS';
+  static const String VIEW_ORDERS_FULL = 'VIEW_ORDERS_FULL';
+  static const String VIEW_INVENTORY = "VIEW_INVENTORY";
+  static const String MANAGE_INVENTORY = "MANAGE_INVENTORY";
 
   static bool getStatusOrderInProgressOrDone(Order order, String status) {
     bool checking = false;
@@ -109,6 +113,11 @@ final tabs = [
   const Tab(text: "En cours"),
   const Tab(text: "Prête"),
 ];
+
+String? getNamePaiementById(String? id) {
+  final payment = PAIEMENTS.firstWhereOrNull((element) => element['id'] == id);
+  return payment != null ? payment['name'] : null;
+}
 
 const onPlaceSvg = "assets/svgs/onplace.svg";
 const takeAwaySvg = "assets/svgs/take_away_icon.svg";

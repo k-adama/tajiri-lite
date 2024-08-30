@@ -10,8 +10,8 @@ class TableController extends GetxController {
   bool isListView = true;
   String? tableId;
   Rx<taj_sdk.Table?> selectedTable = Rx<taj_sdk.Table?>(null);
-  static final user = AppHelpersCommon.getUserInLocalStorage();
-  final restaurantId = user?.restaurantId;
+  final user = AppHelpersCommon.getUserInLocalStorage();
+  String? get restaurantId => user?.restaurantId;
   final tajiriSdk = TajiriSDK.instance;
 
   @override

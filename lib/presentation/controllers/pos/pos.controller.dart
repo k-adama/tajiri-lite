@@ -39,8 +39,8 @@ class PosController extends GetxController {
   // cart
   RxInt selectedBagIndex =
       0.obs; // toujours le seul pannier selectionné par default ici
-  static final initialBag = BagDataEntity(index: 0, bagProducts: []);
-  RxList<BagDataEntity> bags = <BagDataEntity>[initialBag].obs;
+  RxList<BagDataEntity> bags =
+      <BagDataEntity>[BagDataEntity(index: 0, bagProducts: [])].obs;
   int totalAmount = 0;
   List<SideDishAndQuantityEntity> sideDishAndQuantity = [];
   List<TypeOfCooking> typesOfCooking = [];
@@ -56,9 +56,9 @@ class PosController extends GetxController {
   final categoriesSupabase = List<CategorySupabaseEntity>.empty().obs;
   BagDataEntity get selectbag => bags[selectedBagIndex.value];
   bool get hasTableManagement => checkListingType(user) == ListingType.table;
-  static final user = AppHelpersCommon.getUserInLocalStorage();
+  final user = AppHelpersCommon.getUserInLocalStorage();
   final restaurant = AppHelpersCommon.getRestaurantInLocalStorage();
-  final restaurantId = user?.restaurantId;
+  String? get restaurantId => user?.restaurantId;
   final tajiriSdk = TajiriSDK.instance;
 
   @override
