@@ -9,6 +9,7 @@ import 'package:tajiri_waitress/app/common/app_helpers.common.dart';
 import 'package:tajiri_waitress/app/common/utils.common.dart';
 import 'package:tajiri_waitress/app/config/constants/app.constant.dart';
 import 'package:tajiri_waitress/app/config/theme/style.theme.dart';
+import 'package:tajiri_waitress/app/extensions/staff.extension.dart';
 import 'package:tajiri_waitress/app/extensions/string.extension.dart';
 import 'package:tajiri_waitress/presentation/controllers/home/home.controller.dart';
 import 'package:tajiri_waitress/presentation/controllers/order_history/order_history.controller.dart';
@@ -150,8 +151,8 @@ class _OrdersItemComponentState extends State<OrdersItemComponent> {
                               child: CustomButton(
                                 background: Style.brandBlue50,
                                 title: "Modifier la commande",
-                                isGrised:
-                                    false, //AppHelpersCommon.getUserInLocalStorage()?.canUpdateOrCanceledOrder() ==false, // grised add product button if user can't update or cancel
+                                isGrised: user.canUpdate ==
+                                    false, // grised add product button if user can't update or cancel
                                 textColor: Style.brandColor500,
                                 haveBorder: false,
                                 radius: 5,
@@ -167,6 +168,7 @@ class _OrdersItemComponentState extends State<OrdersItemComponent> {
                             // 12.horizontalSpace,
                             // CustomButton(
                             //   title: "Faire payer",
+                            //   isGrised: user.canUpdate ==false, // grised add product button if user can't update or cancel
                             //   textColor: Style.white,
                             //   background: Style.brandColor500,
                             //   radius: 4,
