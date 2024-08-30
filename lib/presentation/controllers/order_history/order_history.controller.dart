@@ -79,7 +79,7 @@ class OrderHistoryController extends GetxController {
 
   Future<void> fetchOrders() async {
     final DateTime today = DateTime.now();
-    final DateTime sevenDaysAgo = today.subtract(const Duration(days: 2));
+    final DateTime sevenDaysAgo = today.subtract(const Duration(days: 14));
     final ownerId = user?.idOwnerForGetOrder;
     final GetOrdersDto dto = GetOrdersDto(
       startDate: startRangeDate ?? sevenDaysAgo,

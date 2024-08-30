@@ -34,6 +34,9 @@ class AppConstants {
   //Permissions
   static const String CANCEL_ORDER = 'CANCEL_ORDER';
   static const String UPDATE_ORDER_PRODUCTS = 'UPDATE_ORDER_PRODUCTS';
+  static const String VIEW_ORDERS_FULL = 'VIEW_ORDERS_FULL';
+  static const String VIEW_INVENTORY = "VIEW_INVENTORY";
+  static const String MANAGE_INVENTORY = "MANAGE_INVENTORY";
 
   static bool getStatusOrderInProgressOrDone(Order order, String status) {
     bool checking = false;
