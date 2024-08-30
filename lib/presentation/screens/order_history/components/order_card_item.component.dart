@@ -9,6 +9,7 @@ import 'package:tajiri_sdk/tajiri_sdk.dart';
 import 'package:tajiri_waitress/app/common/app_helpers.common.dart';
 import 'package:tajiri_waitress/app/config/constants/app.constant.dart';
 import 'package:tajiri_waitress/app/config/theme/style.theme.dart';
+import 'package:tajiri_waitress/app/extensions/staff.extension.dart';
 import 'package:tajiri_waitress/presentation/controllers/order_history/order_history.controller.dart';
 import 'package:tajiri_waitress/presentation/screens/order_history/components/order_cancel_dialog.component.dart';
 import 'package:tajiri_waitress/presentation/screens/order_history/components/order_status_message.component.dart';
@@ -59,6 +60,7 @@ class _OrdersListItemComponentState extends State<OrdersListItemComponent> {
                   if ((orderData.status != AppConstants.orderReady) &&
                       (orderData.status != AppConstants.orderCancelled))
                     OrderSlideButton(
+                      isGrised: _ordersController.user.canCancel == false,
                       onTap: () {
                         AppHelpersCommon.showAlertDialog(
                           context: context,
@@ -102,19 +104,24 @@ class _OrdersListItemComponentState extends State<OrdersListItemComponent> {
 class OrderSlideButton extends StatelessWidget {
   final VoidCallback onTap;
   final String title;
+  final bool isGrised;
 
-  const OrderSlideButton({super.key, required this.onTap, required this.title});
+  const OrderSlideButton(
+      {super.key,
+      required this.onTap,
+      required this.title,
+      this.isGrised = false});
 
   @override
   Widget build(BuildContext context) {
     return Expanded(
       child: GestureDetector(
-        onTap: onTap,
+        onTap: isGrised ? null : onTap,
         child: Container(
           height: 72.r,
           padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 20),
-          decoration: const BoxDecoration(
-            color: Style.red,
+          decoration: BoxDecoration(
+            color: isGrised ? Style.grey200 : Style.red,
             borderRadius: BorderRadius.all(
               Radius.circular(8),
             ),
