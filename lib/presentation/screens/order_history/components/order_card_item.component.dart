@@ -14,6 +14,7 @@ import 'package:tajiri_waitress/presentation/controllers/order_history/order_his
 import 'package:tajiri_waitress/presentation/screens/order_history/components/order_cancel_dialog.component.dart';
 import 'package:tajiri_waitress/presentation/screens/order_history/components/order_status_message.component.dart';
 import 'package:tajiri_waitress/presentation/screens/order_history/components/orders_item.component.dart';
+import 'package:tajiri_waitress/presentation/ui/custom_pagination.component.dart';
 
 class OrdersListItemComponent extends StatefulWidget {
   final List<Order> orders;
@@ -37,6 +38,22 @@ class _OrdersListItemComponentState extends State<OrdersListItemComponent> {
     _ordersController.fetchOrders();
   }
 
+  Future<List<int>> fetchOrdersFromApi(int page, int pageSize) async {
+    await Future.delayed(const Duration(seconds: 2)); // Simuler un délai
+
+    // Simuler une fin de données après 5 pages
+    if (page > 5) {
+      // Retourner une liste plus petite pour la dernière page
+      return List.generate(pageSize ~/ 2, (index) => index + 1);
+    }
+
+    // Pour les 5 premières pages, retourner une liste complète
+    final res =
+        List.generate(pageSize, (index) => (page - 1) * pageSize + index + 1);
+
+    return res;
+  }
+
   @override
   Widget build(BuildContext context) {
     return SmartRefresher(
@@ -45,58 +62,170 @@ class _OrdersListItemComponentState extends State<OrdersListItemComponent> {
       enablePullUp: false,
       onRefresh: _onRefresh,
       onLoading: _onLoading,
-      child: ListView.builder(
-          padding: const EdgeInsets.only(bottom: 100),
-          itemCount: widget.orders.length,
-          itemBuilder: (BuildContext context, index) {
-            Order orderData = widget.orders[index];
-            return Slidable(
-              enabled: orderData.status != AppConstants.orderPaid &&
-                  _ordersController.canDelete == true,
-              endActionPane: ActionPane(
-                extentRatio: 0.35,
-                motion: const ScrollMotion(),
-                children: [
-                  if ((orderData.status != AppConstants.orderReady) &&
-                      (orderData.status != AppConstants.orderCancelled))
-                    OrderSlideButton(
-                      isGrised: _ordersController.user.canCancel == false,
-                      onTap: () {
-                        AppHelpersCommon.showAlertDialog(
-                          context: context,
-                          child: OrderCancelDialogComponent(
-                            noCancel: () {
-                              Navigator.pop(context);
-                              Slidable.of(context)?.close();
-                            },
-                            cancel: () {
-                              _ordersController.updateOrderStatus(
-                                context,
-                                orderData.id.toString(),
-                                AppConstants.orderCancelled,
-                              );
-                              Navigator.pop(context);
-                              Slidable.of(context)?.close();
-                            },
-                          ),
-                          radius: 10,
-                        );
-                      },
-                      title: "Annuler",
-                    ),
-                  if (orderData.status == AppConstants.orderCancelled)
-                    const OrderStatusMessageComponent(
-                        status: "annulée", textColor: Style.red),
-                  if (orderData.status == AppConstants.orderReady)
-                    const OrderStatusMessageComponent(
-                        status: "prête", textColor: Style.secondaryColor),
-                ],
-              ),
-              child: OrdersItemComponent(
-                order: orderData,
-              ),
-            );
-          }),
+      child: CustomPaginationList<int>(
+        fetchItems: fetchOrdersFromApi,
+        itemBuilder: (context, index) {
+          Order orderData = widget.orders[index];
+          return Slidable(
+            enabled: orderData.status != AppConstants.orderPaid &&
+                _ordersController.canDelete == true,
+            endActionPane: ActionPane(
+              extentRatio: 0.35,
+              motion: const ScrollMotion(),
+              children: [
+                if ((orderData.status != AppConstants.orderReady) &&
+                    (orderData.status != AppConstants.orderCancelled))
+                  OrderSlideButton(
+                    isGrised: _ordersController.user.canCancel == false,
+                    onTap: () {
+                      AppHelpersCommon.showAlertDialog(
+                        context: context,
+                        child: OrderCancelDialogComponent(
+                          noCancel: () {
+                            Navigator.pop(context);
+                            Slidable.of(context)?.close();
+                          },
+                          cancel: () {
+                            _ordersController.updateOrderStatus(
+                              context,
+                              orderData.id.toString(),
+                              AppConstants.orderCancelled,
+                            );
+                            Navigator.pop(context);
+                            Slidable.of(context)?.close();
+                          },
+                        ),
+                        radius: 10,
+                      );
+                    },
+                    title: "Annuler",
+                  ),
+                if (orderData.status == AppConstants.orderCancelled)
+                  const OrderStatusMessageComponent(
+                      status: "annulée", textColor: Style.red),
+                if (orderData.status == AppConstants.orderReady)
+                  const OrderStatusMessageComponent(
+                      status: "prête", textColor: Style.secondaryColor),
+              ],
+            ),
+            child: OrdersItemComponent(
+              order: orderData,
+            ),
+          );
+        },
+        loadingWidget: const Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              CircularProgressIndicator(),
+              SizedBox(height: 16),
+              Text('Chargement des commandes...'),
+            ],
+          ),
+        ),
+        pageSize: 15,
+
+        /* Order orderData = widget.orders[order];
+         Slidable(
+          enabled: orderData.status != AppConstants.orderPaid &&
+              _ordersController.canDelete == true,
+          endActionPane: ActionPane(
+            extentRatio: 0.35,
+            motion: const ScrollMotion(),
+            children: [
+              if ((orderData.status != AppConstants.orderReady) &&
+                  (orderData.status != AppConstants.orderCancelled))
+                OrderSlideButton(
+                  isGrised: _ordersController.user.canCancel == false,
+                  onTap: () {
+                    AppHelpersCommon.showAlertDialog(
+                      context: context,
+                      child: OrderCancelDialogComponent(
+                        noCancel: () {
+                          Navigator.pop(context);
+                          Slidable.of(context)?.close();
+                        },
+                        cancel: () {
+                          _ordersController.updateOrderStatus(
+                            context,
+                            orderData.id.toString(),
+                            AppConstants.orderCancelled,
+                          );
+                          Navigator.pop(context);
+                          Slidable.of(context)?.close();
+                        },
+                      ),
+                      radius: 10,
+                    );
+                  },
+                  title: "Annuler",
+                ),
+              if (orderData.status == AppConstants.orderCancelled)
+                const OrderStatusMessageComponent(
+                    status: "annulée", textColor: Style.red),
+              if (orderData.status == AppConstants.orderReady)
+                const OrderStatusMessageComponent(
+                    status: "prête", textColor: Style.secondaryColor),
+            ],
+          ),
+          child: OrdersItemComponent(
+            order: orderData,
+          ),
+        ),*/
+      ),
+
+      /* ListView.builder(
+              padding: const EdgeInsets.only(bottom: 100),
+              itemCount: widget.orders.length,
+              itemBuilder: (BuildContext context, index) {
+                Order orderData = widget.orders[index];
+                return Slidable(
+                  enabled: orderData.status != AppConstants.orderPaid &&
+                      _ordersController.canDelete == true,
+                  endActionPane: ActionPane(
+                    extentRatio: 0.35,
+                    motion: const ScrollMotion(),
+                    children: [
+                      if ((orderData.status != AppConstants.orderReady) &&
+                          (orderData.status != AppConstants.orderCancelled))
+                        OrderSlideButton(
+                          isGrised: _ordersController.user.canCancel == false,
+                          onTap: () {
+                            AppHelpersCommon.showAlertDialog(
+                              context: context,
+                              child: OrderCancelDialogComponent(
+                                noCancel: () {
+                                  Navigator.pop(context);
+                                  Slidable.of(context)?.close();
+                                },
+                                cancel: () {
+                                  _ordersController.updateOrderStatus(
+                                    context,
+                                    orderData.id.toString(),
+                                    AppConstants.orderCancelled,
+                                  );
+                                  Navigator.pop(context);
+                                  Slidable.of(context)?.close();
+                                },
+                              ),
+                              radius: 10,
+                            );
+                          },
+                          title: "Annuler",
+                        ),
+                      if (orderData.status == AppConstants.orderCancelled)
+                        const OrderStatusMessageComponent(
+                            status: "annulée", textColor: Style.red),
+                      if (orderData.status == AppConstants.orderReady)
+                        const OrderStatusMessageComponent(
+                            status: "prête", textColor: Style.secondaryColor),
+                    ],
+                  ),
+                  child: OrdersItemComponent(
+                    order: orderData,
+                  ),
+                );
+              }),*/
     );
   }
 }
